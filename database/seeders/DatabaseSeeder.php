@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Plan;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +13,45 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create admin user
+        User::create([
+            'name' => 'Administrator',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('admin123'),
+            'is_admin' => true,
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Create test user
+        User::create([
+            'name' => 'User Test',
+            'email' => 'user@user.com',
+            'password' => bcrypt('user123'),
+            'is_admin' => false,
+        ]);
+
+        // Create default plans
+        Plan::create([
+            'name' => 'Basic Plan',
+            'price' => 99.00,
+            'duration_days' => 30,
+            'features' => ['Feature 1', 'Feature 2'],
+            'is_active' => true
+        ]);
+
+        Plan::create([
+            'name' => 'Premium Plan',
+            'price' => 199.00,
+            'duration_days' => 30,
+            'features' => ['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4'],
+            'is_active' => true
+        ]);
+
+        Plan::create([
+            'name' => 'Enterprise Plan',
+            'price' => 299.00,
+            'duration_days' => 30,
+            'features' => ['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4', 'Feature 5'],
+            'is_active' => true
         ]);
     }
 }

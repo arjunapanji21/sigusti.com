@@ -1,5 +1,7 @@
-<x-app-layout>
-    <div class="space-y-6">
+@extends('layouts.app')
+
+@section('content')
+<div class="space-y-6">
         @if(auth()->user()->is_admin)
             <!-- Admin Dashboard -->
             <!-- Stats Overview -->
@@ -295,4 +297,4 @@
             @endif
         @endif
     </div>
-</x-app-layout>
+@endsection

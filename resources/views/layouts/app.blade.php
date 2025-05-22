@@ -26,26 +26,46 @@
                             <x-icon name="chart-bar" class="mr-3 h-5 w-5"/>
                             <span>Dashboard</span>
                         </x-nav-link>
-                        <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.*')">
+                        <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.*')">
                             <x-icon name="users" class="mr-3 h-5 w-5"/>
                             <span>Users</span>
                         </x-nav-link>
-                        <x-nav-link href="{{ route('admin.activities.index') }}" :active="request()->routeIs('admin.activities.*')">
+                        <x-nav-link href="{{ route('activities.index') }}" :active="request()->routeIs('activities.*')">
                             <x-icon name="clock" class="mr-3 h-5 w-5"/>
                             <span>Activities</span>
                         </x-nav-link>
-                        <x-nav-link href="{{ route('admin.subscriptions.index') }}" :active="request()->routeIs('admin.subscriptions.*')">
+                        <x-nav-link href="{{ route('subscription.index') }}" :active="request()->routeIs('subscription.*')">
                             <x-icon name="credit-card" class="mr-3 h-5 w-5"/>
                             <span>Subscriptions</span>
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
+                            <x-icon name="book-open" class="mr-3 h-5 w-5"/>
+                            <span>Documentation</span>
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('support') }}" :active="request()->routeIs('support')">
+                            <x-icon name="support" class="mr-3 h-5 w-5"/>
+                            <span>Support</span>
                         </x-nav-link>
                     @else
                         <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                             <x-icon name="home" class="mr-3 h-5 w-5"/>
                             <span>Dashboard</span>
                         </x-nav-link>
-                        <x-nav-link href="{{ route('subscription') }}" :active="request()->routeIs('subscription')">
+                        <x-nav-link href="{{ route('subscription.index') }}" :active="request()->routeIs('subscription.*')">
                             <x-icon name="credit-card" class="mr-3 h-5 w-5"/>
                             <span>Subscription</span>
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('download') }}" :active="request()->routeIs('download')">
+                            <x-icon name="download" class="mr-3 h-5 w-5"/>
+                            <span>Download</span>
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
+                            <x-icon name="book-open" class="mr-3 h-5 w-5"/>
+                            <span>Documentation</span>
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('support') }}" :active="request()->routeIs('support')">
+                            <x-icon name="support" class="mr-3 h-5 w-5"/>
+                            <span>Support</span>
                         </x-nav-link>
                     @endif
                 </nav>
@@ -89,7 +109,9 @@
         <main class="lg:pl-64">
             <div class="py-6">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {{ $slot }}
+                    <x-alerts />
+                    @yield('content')
+                    {{ $slot ?? '' }}
                 </div>
             </div>
         </main>

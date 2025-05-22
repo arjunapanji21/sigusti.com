@@ -10,7 +10,8 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('license_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('license_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('type'); // success, error, warning, info
             $table->string('description');
             $table->string('ip_address')->nullable();

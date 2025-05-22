@@ -13,21 +13,30 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         <x-icon name="home" class="mr-3 h-5 w-5" />
-                        <span>License Dashboard</span>
+                        <span>Dashboard</span>
                     </x-nav-link>
 
                     @if (auth()->user()->is_admin)
-                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
                             <x-icon name="users" class="mr-3 h-5 w-5" />
                             <span>Users</span>
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.subscriptions.index')" :active="request()->routeIs('admin.subscriptions.*')">
+                        <x-nav-link :href="route('activities.index')" :active="request()->routeIs('activities.*')">
+                            <x-icon name="clock" class="mr-3 h-5 w-5" />
+                            <span>Activities</span>
+                        </x-nav-link>
+                        <x-nav-link :href="route('subscription.index')" :active="request()->routeIs('subscription.*')">
                             <x-icon name="credit-card" class="mr-3 h-5 w-5" />
                             <span>Subscriptions</span>
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.licenses.index')" :active="request()->routeIs('admin.licenses.*')">
-                            <x-icon name="key" class="mr-3 h-5 w-5" />
-                            <span>Licenses</span>
+                    @else
+                        <x-nav-link :href="route('subscription.index')" :active="request()->routeIs('subscription.*')">
+                            <x-icon name="credit-card" class="mr-3 h-5 w-5" />
+                            <span>Subscription</span>
+                        </x-nav-link>
+                        <x-nav-link :href="route('download')" :active="request()->routeIs('download')">
+                            <x-icon name="download" class="mr-3 h-5 w-5" />
+                            <span>Download</span>
                         </x-nav-link>
                     @endif
                 </div>

@@ -25,7 +25,7 @@ class DashboardController extends Controller
                 ->take(5)
                 ->get();
             
-            return view('dashboard', compact(
+            return view('pages.dashboard', compact(
                 'totalUsers',
                 'totalLicenses',
                 'activeLicenses',
@@ -44,6 +44,6 @@ class DashboardController extends Controller
                 ->get();
         }
         
-        return view('dashboard', compact('license', 'recentActivity'));
+        return view('pages.dashboard', compact('license', 'recentActivity'));
     }
 }
