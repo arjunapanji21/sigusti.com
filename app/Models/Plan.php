@@ -9,16 +9,23 @@ class Plan extends Model
 {
     protected $fillable = [
         'name',
+        'description',
         'price',
+        'discount_percentage',
         'duration_days',
-        'features',
+        'daily_limit',
+        'monthly_limit',
+        'max_device',
         'is_active'
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
+        'price' => 'string',
+        'discount_percentage' => 'integer',
         'duration_days' => 'integer',
-        'features' => 'array',
+        'daily_limit' => 'integer',
+        'monthly_limit' => 'integer',
+        'max_device' => 'integer',
         'is_active' => 'boolean'
     ];
 
@@ -36,5 +43,33 @@ class Plan extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function getSalePriceAttribute()
+    {
+        if (!$this->discount_percentage) {
+            return $this->price;
+        }
+        return (int) ($this->price * (100 - $this->discount_percentage) / 100);
+    }
+
+    public function isOnSale()
+    {
+        return $this->discount_percentage > 0;
+    }
+
+    public function getDiscountBadgeAttribute()
+    {
+        return $this->isOnSale() ? "Save {$this->discount_percentage}%" : null;
+    }
+
+    public function getOriginalPriceFormattedAttribute()
+    {
+        return 'Rp. ' . number_format($this->price);
+    }
+
+    public function getSalePriceFormattedAttribute()
+    {
+        return 'Rp. ' . number_format($this->sale_price);
     }
 }

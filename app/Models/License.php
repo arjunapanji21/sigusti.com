@@ -3,15 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use App\Models\LicenseActivity; // Add this import
 
 class License extends Model
 {
     protected $fillable = [
         'user_id',
+        'plan_id',
         'license_key',
         'expires_at',
         'daily_limit',
-        'monthly_limit', 
+        'monthly_limit',
         'daily_usage',
         'monthly_usage',
         'is_active',
@@ -20,8 +23,8 @@ class License extends Model
 
     protected $casts = [
         'expires_at' => 'datetime',
-        'is_active' => 'boolean',
-        'last_check' => 'datetime'
+        'last_check' => 'datetime',
+        'is_active' => 'boolean'
     ];
 
     public function user()
@@ -29,26 +32,18 @@ class License extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function isValid()
+    public function plan()
     {
-        return $this->is_active && 
-               $this->expires_at->isFuture() &&
-               $this->daily_usage < $this->daily_limit &&
-               $this->monthly_usage < $this->monthly_limit;
+        return $this->belongsTo(Plan::class);
+    }
+
+    public function isValid(): bool
+    {
+        return $this->is_active && !$this->expires_at->isPast();
     }
 
     public function activities()
     {
-        return $this->hasMany(Activity::class);
-    }
-
-    public function logActivity($type, $description)
-    {
-        return $this->activities()->create([
-            'type' => $type,
-            'description' => $description,
-            'ip_address' => request()->ip(),
-            'user_agent' => request()->userAgent(),
-        ]);
+        return $this->hasMany(LicenseActivity::class);
     }
 }

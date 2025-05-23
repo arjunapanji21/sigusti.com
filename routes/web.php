@@ -7,12 +7,13 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LicenseController;
+use App\Http\Controllers\PaymentController;
 
 // Public routes
-Route::get('/', function () {
-    return view('pages.landing');
-})->name('home');
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -41,27 +42,38 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [UsersController::class, 'show'])->name('users.show');
     Route::put('/users/{user}', [UsersController::class, 'update'])->name('users.update');
+
     
-    // Activity logs
-    Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
-    Route::get('/activities/{activity}', [ActivityController::class, 'show'])->name('activities.show');
-    
-    // Subscription and payment routes
-    Route::get('/subscription', [SubscriptionController::class, 'index'])->name('subscription.index');
-    Route::get('/subscription/payments/{payment}', [SubscriptionController::class, 'show'])->name('subscription.show');
-    
-    // User-only routes
-    Route::middleware(['can:user-actions'])->group(function () {
-        Route::post('/subscription/{plan}/purchase', [SubscriptionController::class, 'purchase'])
-            ->name('subscription.purchase');
-        Route::post('/subscription/confirm-payment', [SubscriptionController::class, 'confirmPayment'])
-            ->name('subscription.confirm-payment');
+    // License and Payment routes
+    Route::prefix('licenses')->name('licenses.')->group(function () {
+        Route::get('/', [LicenseController::class, 'index'])->name('index');
+        Route::get('/{license}', [LicenseController::class, 'show'])->name('show');
+        Route::middleware(['can:admin-actions'])->group(function () {
+            Route::put('/{license}/activate', [LicenseController::class, 'activate'])->name('activate');
+            Route::put('/{license}/deactivate', [LicenseController::class, 'deactivate'])->name('deactivate');
+        });
     });
-    
+
+    Route::prefix('payments')->name('payments.')->group(function () {
+        Route::get('/', [PaymentController::class, 'index'])->name('index');
+        Route::get('/create', [PaymentController::class, 'create'])->name('create');
+        Route::post('/initiate', [PaymentController::class, 'initiate'])->name('initiate');
+        Route::get('/{payment}/upload', [PaymentController::class, 'showUpload'])->name('upload');
+        Route::post('/{payment}/upload', [PaymentController::class, 'uploadProof'])->name('upload.store');
+        Route::get('/{payment}', [PaymentController::class, 'show'])->name('show');
+        
+        // Admin routes
+        Route::middleware(['can:admin-actions'])->group(function () {
+            Route::put('/{payment}/approve', [PaymentController::class, 'approve'])->name('approve');
+            Route::put('/{payment}/reject', [PaymentController::class, 'reject'])->name('reject');
+        });
+    });
+
     // Admin-only routes
     Route::middleware(['can:admin-actions'])->group(function () {
-        Route::post('/subscription/payments/{payment}/verify', [SubscriptionController::class, 'verifyPayment'])
-            ->name('subscription.verify-payment');
+        
+        // Add Plans Resource Routes
+        Route::resource('plans', PlanController::class);
     });
 
     // Documentation and Support routes

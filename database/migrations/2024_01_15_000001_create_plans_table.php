@@ -11,9 +11,13 @@ class CreatePlansTable extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('price', 10, 2);
+            $table->string('description')->nullable();
+            $table->string('price');
+            $table->integer('discount_percentage')->nullable();
             $table->integer('duration_days');
-            $table->json('features')->nullable();
+            $table->integer('daily_limit');
+            $table->integer('monthly_limit');
+            $table->integer('max_device');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

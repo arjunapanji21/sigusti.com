@@ -21,14 +21,6 @@
                             <x-icon name="users" class="mr-3 h-5 w-5" />
                             <span>Users</span>
                         </x-nav-link>
-                        <x-nav-link :href="route('activities.index')" :active="request()->routeIs('activities.*')">
-                            <x-icon name="clock" class="mr-3 h-5 w-5" />
-                            <span>Activities</span>
-                        </x-nav-link>
-                        <x-nav-link :href="route('subscription.index')" :active="request()->routeIs('subscription.*')">
-                            <x-icon name="credit-card" class="mr-3 h-5 w-5" />
-                            <span>Subscriptions</span>
-                        </x-nav-link>
                     @else
                         <x-nav-link :href="route('subscription.index')" :active="request()->routeIs('subscription.*')">
                             <x-icon name="credit-card" class="mr-3 h-5 w-5" />

@@ -9,7 +9,8 @@
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-gray-50">
+<body class="font-sans antialiased">
+    <div id="toast-container" class="fixed top-4 right-4 z-[9999]"></div>
     <div class="min-h-screen">
         <!-- Sidebar -->
         <aside class="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 z-30 hidden lg:block">
@@ -30,14 +31,37 @@
                             <x-icon name="users" class="mr-3 h-5 w-5"/>
                             <span>Users</span>
                         </x-nav-link>
-                        <x-nav-link href="{{ route('activities.index') }}" :active="request()->routeIs('activities.*')">
-                            <x-icon name="clock" class="mr-3 h-5 w-5"/>
-                            <span>Activities</span>
+                        <x-nav-link href="{{ route('plans.index') }}" :active="request()->routeIs('plans.*')">
+                            <x-icon name="template" class="mr-3 h-5 w-5"/>
+                            <span>Plans</span>
                         </x-nav-link>
-                        <x-nav-link href="{{ route('subscription.index') }}" :active="request()->routeIs('subscription.*')">
-                            <x-icon name="credit-card" class="mr-3 h-5 w-5"/>
-                            <span>Subscriptions</span>
-                        </x-nav-link>
+
+                        <!-- License Management -->
+                        @can('admin-actions')
+                            <x-nav-link href="{{ route('licenses.index') }}" :active="request()->routeIs('licenses.*')">
+                                <x-icon name="key" class="mr-3 h-5 w-5"/>
+                                <span>Licenses</span>
+                            </x-nav-link>
+                        @else
+                            <x-nav-link href="{{ route('licenses.index') }}" :active="request()->routeIs('licenses.*')">
+                                <x-icon name="key" class="mr-3 h-5 w-5"/>
+                                <span>My License</span>
+                            </x-nav-link>
+                        @endcan
+
+                        <!-- Payment Management -->
+                        @can('admin-actions')
+                            <x-nav-link href="{{ route('payments.index') }}" :active="request()->routeIs('payments.*')">
+                                <x-icon name="credit-card" class="mr-3 h-5 w-5"/>
+                                <span>Payments</span>
+                            </x-nav-link>
+                        @else
+                            <x-nav-link href="{{ route('payments.index') }}" :active="request()->routeIs('payments.*')">
+                                <x-icon name="credit-card" class="mr-3 h-5 w-5"/>
+                                <span>My Payments</span>
+                            </x-nav-link>
+                        @endcan
+
                         <x-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
                             <x-icon name="book-open" class="mr-3 h-5 w-5"/>
                             <span>Documentation</span>
@@ -51,14 +75,32 @@
                             <x-icon name="home" class="mr-3 h-5 w-5"/>
                             <span>Dashboard</span>
                         </x-nav-link>
-                        <x-nav-link href="{{ route('subscription.index') }}" :active="request()->routeIs('subscription.*')">
-                            <x-icon name="credit-card" class="mr-3 h-5 w-5"/>
-                            <span>Subscription</span>
-                        </x-nav-link>
-                        <x-nav-link href="{{ route('download') }}" :active="request()->routeIs('download')">
-                            <x-icon name="download" class="mr-3 h-5 w-5"/>
-                            <span>Download</span>
-                        </x-nav-link>
+                        
+                        @can('admin-actions')
+                            <x-nav-link href="{{ route('licenses.index') }}" :active="request()->routeIs('licenses.*')">
+                                <x-icon name="key" class="mr-3 h-5 w-5"/>
+                                <span>Licenses</span>
+                            </x-nav-link>
+                        @else
+                            <x-nav-link href="{{ route('licenses.index') }}" :active="request()->routeIs('licenses.*')">
+                                <x-icon name="key" class="mr-3 h-5 w-5"/>
+                                <span>My License</span>
+                            </x-nav-link>
+                        @endcan
+
+                        <!-- Payment Management -->
+                        @can('admin-actions')
+                            <x-nav-link href="{{ route('payments.index') }}" :active="request()->routeIs('payments.*')">
+                                <x-icon name="credit-card" class="mr-3 h-5 w-5"/>
+                                <span>Payments</span>
+                            </x-nav-link>
+                        @else
+                            <x-nav-link href="{{ route('payments.index') }}" :active="request()->routeIs('payments.*')">
+                                <x-icon name="credit-card" class="mr-3 h-5 w-5"/>
+                                <span>My Payments</span>
+                            </x-nav-link>
+                        @endcan
+
                         <x-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
                             <x-icon name="book-open" class="mr-3 h-5 w-5"/>
                             <span>Documentation</span>
@@ -115,9 +157,6 @@
                 </div>
             </div>
         </main>
-    </div>
-
-    @stack('modals')
-    @stack('scripts')
-</body>
+        @stack('scripts')
+    </body>
 </html>

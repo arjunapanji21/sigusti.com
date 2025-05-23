@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\LicenseActivity; // Add this import
 
 class Payment extends Model
 {
@@ -11,6 +12,7 @@ class Payment extends Model
     public const STATUS_PROCESSING = 'processing';
     public const STATUS_APPROVED = 'approved';
     public const STATUS_REJECTED = 'rejected';
+    public const STATUS_EXPIRED = 'expired'; // Add this constant
 
     protected $fillable = [
         'user_id',
@@ -21,13 +23,15 @@ class Payment extends Model
         'status',
         'reference_number',
         'proof_of_payment',
-        'admin_notes'
+        'admin_notes',
+        'expires_at'  // Add this line
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
         'created_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
+        'expires_at' => 'datetime' // Add this line
     ];
 
     // Scope for pending payments
@@ -65,6 +69,11 @@ class Payment extends Model
         return $this->belongsTo(Subscription::class);
     }
 
+    public function license()
+    {
+        return $this->belongsTo(License::class);
+    }
+
     // Check if payment can be processed
     public function canBeProcessed(): bool
     {
@@ -87,5 +96,43 @@ class Payment extends Model
     public function belongsToUser(?int $userId): bool
     {
         return $this->user_id === $userId;
+    }
+
+    // Add this method
+    public function isExpired(): bool 
+    {
+        if ($this->status === self::STATUS_EXPIRED) {
+            return true;
+        }
+        
+        if ($this->expires_at && $this->expires_at->isPast()) {
+            $this->update(['status' => self::STATUS_EXPIRED]);
+            return true;
+        }
+
+        return false;
+    }
+
+    public function approve()
+    {
+        if (!$this->canBeProcessed()) {
+            throw new \Exception('Payment cannot be processed');
+        }
+
+        $this->status = self::STATUS_APPROVED;
+        $this->save();
+
+        // Activate existing license instead of creating new one
+        $license = $this->license;
+        $license->is_active = true;
+        $license->save();
+
+        // Record activity
+        $license->activities()->create([
+            'activity_type' => 'payment_approved',
+            'details' => 'Payment approved and license activated'
+        ]);
+
+        return $license;
     }
 }

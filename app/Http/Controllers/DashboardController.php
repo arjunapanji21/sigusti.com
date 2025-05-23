@@ -34,16 +34,8 @@ class DashboardController extends Controller
             ));
         }
 
-        $license = License::where('user_id', auth()->id())->first();
-        $recentActivity = null;
+        $licenses = License::where('user_id', auth()->id())->get();
         
-        if ($license) {
-            $recentActivity = $license->activities()
-                ->latest()
-                ->take(5)
-                ->get();
-        }
-        
-        return view('pages.dashboard', compact('license', 'recentActivity'));
+        return view('pages.dashboard', compact('licenses'));
     }
 }

@@ -245,118 +245,66 @@
         <div id="pricing" class="py-12 md:py-16 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
-                    <h2 class="text-3xl font-extrabold text-gray-900">
-                        Simple, Transparent Pricing
-                    </h2>
-                    <p class="mt-4 text-lg text-gray-600">
-                        Choose the plan that best fits your needs
-                    </p>
+                    <h2 class="text-3xl font-extrabold text-gray-900">Simple, Transparent Pricing</h2>
+                    <p class="mt-4 text-lg text-gray-600">Choose the plan that best fits your needs</p>
                 </div>
                 <div class="mt-12 grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-3">
-                    <!-- Basic Plan -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <div class="px-6 py-8">
-                            <h3 class="text-2xl font-semibold text-gray-900">Basic</h3>
-                            <p class="mt-4 text-gray-600">Perfect for individuals</p>
-                            <p class="mt-8">
-                                <span class="text-4xl font-extrabold text-gray-900">$9</span>
-                                <span class="text-gray-600">/month</span>
-                            </p>
-                            <ul class="mt-8 space-y-4">
-                                <li class="flex items-center">
-                                    <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="ml-3">Basic automation features</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="ml-3">Up to 100 automated messages/day</span>
-                                </li>
-                            </ul>
+                    @foreach($plans as $plan)
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden {{ $loop->iteration === 2 ? 'border-2 border-green-500' : '' }}">
+                            <!-- Sale badge for featured plan -->
+                            @if($loop->iteration === 2 && $plan->isOnSale())
+                                <div class="absolute -top-5 left-0 right-0 flex justify-center">
+                                    <span class="inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold bg-red-500 text-white shadow-sm">
+                                        Limited Time Offer!
+                                    </span>
+                                </div>
+                            @endif
+                            <div class="px-6 py-8">
+                                <h3 class="text-2xl font-semibold text-gray-900">{{ $plan->name }}</h3>
+                                <p class="mt-4 text-gray-600">{{ $plan->description ?? 'Perfect for ' . strtolower($plan->name) . ' users' }}</p>
+                                <p class="mt-8">
+                                    @if($plan->isOnSale())
+                                        <span class="text-4xl font-extrabold text-gray-900">{{ $plan->sale_price_formatted }}</span>
+                                        <span class="text-gray-600">/{{ $plan->duration_days }} hari</span>
+                                        <span class="block mt-1">
+                                            <span class="text-lg text-gray-500 line-through">{{ $plan->original_price_formatted }}</span>
+                                            <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                {{ $plan->discount_badge }}
+                                            </span>
+                                        </span>
+                                    @else
+                                        <span class="text-4xl font-extrabold text-gray-900">{{ $plan->original_price_formatted }}</span>
+                                        <span class="text-gray-600">/{{ $plan->duration_days }} hari</span>
+                                    @endif
+                                </p>
+                                <ul class="mt-8 space-y-4">
+                                    <li class="flex items-center">
+                                        <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="ml-3">{{ number_format($plan->daily_limit) }} pesan per hari</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="ml-3">{{ number_format($plan->monthly_limit) }} pesan per bulan</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="ml-3">{{ $plan->max_device }} perangkat</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="px-6 py-4 bg-gray-50">
+                                <a href="{{ route('register') }}" class="block w-full text-center px-4 py-2 {{ $loop->iteration === 2 ? 'bg-green-600 text-white hover:bg-green-700' : 'border border-green-600 text-green-600 hover:bg-green-50' }} rounded-md">
+                                    Get Started
+                                </a>
+                            </div>
                         </div>
-                        <div class="px-6 py-4 bg-gray-50">
-                            <a href="#" class="block w-full text-center px-4 py-2 border border-green-600 text-green-600 rounded-md hover:bg-green-50">
-                                Get Started
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Pro Plan -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden border-2 border-green-500">
-                        <div class="px-6 py-8">
-                            <h3 class="text-2xl font-semibold text-gray-900">Pro</h3>
-                            <p class="mt-4 text-gray-600">For small businesses</p>
-                            <p class="mt-8">
-                                <span class="text-4xl font-extrabold text-gray-900">$29</span>
-                                <span class="text-gray-600">/month</span>
-                            </p>
-                            <ul class="mt-8 space-y-4">
-                                <li class="flex items-center">
-                                    <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="ml-3">All Basic features</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="ml-3">Unlimited automated messages</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="ml-3">Advanced analytics</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="px-6 py-4 bg-gray-50">
-                            <a href="#" class="block w-full text-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-                                Get Started
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Enterprise Plan -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <div class="px-6 py-8">
-                            <h3 class="text-2xl font-semibold text-gray-900">Enterprise</h3>
-                            <p class="mt-4 text-gray-600">For large organizations</p>
-                            <p class="mt-8">
-                                <span class="text-4xl font-extrabold text-gray-900">$99</span>
-                                <span class="text-gray-600">/month</span>
-                            </p>
-                            <ul class="mt-8 space-y-4">
-                                <li class="flex items-center">
-                                    <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="ml-3">All Pro features</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="ml-3">Priority support</span>
-                                </li>
-                                <li class="flex items-center">
-                                    <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span class="ml-3">Custom integrations</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="px-6 py-4 bg-gray-50">
-                            <a href="#" class="block w-full text-center px-4 py-2 border border-green-600 text-green-600 rounded-md hover:bg-green-50">
-                                Contact Sales
-                            </a>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
