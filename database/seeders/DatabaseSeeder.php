@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Plan;
+use App\Models\PaymentMethod;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,6 +22,32 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin123'),
             'email_verified_at' => now(),
             'is_admin' => true,
+        ]);
+
+        // Create payment methods
+        PaymentMethod::create([
+            'type' => 'bank_transfer',
+            'provider' => 'BRI',
+            'account_number' => '227701007757506',
+            'account_name' => 'Arjun Panji Prakarsa'
+        ]);
+        PaymentMethod::create([
+            'type' => 'bank_transfer',
+            'provider' => 'BCA',
+            'account_number' => '8190587607',
+            'account_name' => 'Arjuna Panji Prakarsa'
+        ]);
+        PaymentMethod::create([
+            'type' => 'e-wallet',
+            'provider' => 'DANA',
+            'account_number' => '081271310334',
+            'account_name' => 'Arjuna Panji Prakarsa'
+        ]);
+        PaymentMethod::create([
+            'type' => 'e-wallet',
+            'provider' => 'GoPay',
+            'account_number' => '081271310334',
+            'account_name' => 'Arjuna Panji Prakarsa'
         ]);
 
         // Create plans
