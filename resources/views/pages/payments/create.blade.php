@@ -79,76 +79,39 @@
                 <div>
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Payment Method</h3>
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        <!-- Bank Transfer -->
-                        <label class="relative border rounded-lg p-4 flex cursor-pointer focus-within:ring-2 focus-within:ring-green-500">
-                            <input type="radio" name="payment_method" value="bank_transfer" class="sr-only" required
-                                onchange="updatePaymentMethod('bank')">
-                            <span class="flex items-center">
-                                <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                                </svg>
-                                <span class="ml-3">
-                                    <span class="block text-sm font-medium text-gray-900">Bank Transfer</span>
-                                    <span class="block text-sm text-gray-500">Transfer to our bank account</span>
-                                </span>
-                            </span>
-                        </label>
-
-                        <!-- E-Wallet -->
-                        <label class="relative border rounded-lg p-4 flex cursor-pointer focus-within:ring-2 focus-within:ring-green-500">
-                            <input type="radio" name="payment_method" value="ewallet" class="sr-only" required
-                                onchange="updatePaymentMethod('ewallet')">
-                            <span class="flex items-center">
-                                <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                </svg>
-                                <span class="ml-3">
-                                    <span class="block text-sm font-medium text-gray-900">E-Wallet</span>
-                                    <span class="block text-sm text-gray-500">Pay with DANA, OVO, or GoPay</span>
-                                </span>
-                            </span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Payment Instructions -->
-                <div id="bank_instructions" class="hidden">
-                    <div class="bg-gray-50 rounded-lg p-4">
-                        <h4 class="font-medium text-gray-900">Bank Transfer Instructions</h4>
-                        <div class="mt-2 space-y-3">
-                            <div class="flex justify-between items-center p-3 bg-white rounded border">
-                                <div>
-                                    <p class="text-sm text-gray-600">Bank BCA</p>
-                                    <p class="font-mono text-gray-900">1234567890</p>
-                                    <p class="text-sm text-gray-600">a.n. WAWA PROJECT</p>
-                                </div>
-                                <button type="button" onclick="copyToClipboard('1234567890')" class="text-green-600 hover:text-green-700">
-                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+                        @foreach($bankTransfers as $method)
+                            <label class="relative border rounded-lg p-4 flex cursor-pointer focus-within:ring-2 focus-within:ring-green-500">
+                                <input type="radio" name="payment_method_id" value="{{ $method->id }}" class="sr-only" required
+                                    data-type="{{ $method->type }}"
+                                    onchange="updatePaymentMethod('{{ $method->type }}', {{ $method->id }})">
+                                <span class="flex items-center">
+                                    <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
                                     </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="ewallet_instructions" class="hidden">
-                    <div class="bg-gray-50 rounded-lg p-4">
-                        <h4 class="font-medium text-gray-900">E-Wallet Payment</h4>
-                        <div class="mt-2 space-y-3">
-                            <div class="flex justify-between items-center p-3 bg-white rounded border">
-                                <div>
-                                    <p class="text-sm text-gray-600">DANA / OVO / GoPay</p>
-                                    <p class="font-mono text-gray-900">081234567890</p>
-                                    <p class="text-sm text-gray-600">a.n. WAWA PROJECT</p>
-                                </div>
-                                <button type="button" onclick="copyToClipboard('081234567890')" class="text-green-600 hover:text-green-700">
-                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+                                    <span class="ml-3">
+                                        <span class="block text-sm font-medium text-gray-900">{{ $method->provider.' / '.$method->account_number }}</span>
+                                        <span class="block text-sm text-gray-500">a.n. {{ $method->account_name }}</span>
+                                    </span>
+                                </span>
+                            </label>
+                        @endforeach
+                        
+                        @foreach($ewallets as $method)
+                            <label class="relative border rounded-lg p-4 flex cursor-pointer focus-within:ring-2 focus-within:ring-green-500">
+                                <input type="radio" name="payment_method_id" value="{{ $method->id }}" class="sr-only" required
+                                    data-type="{{ $method->type }}"
+                                    onchange="updatePaymentMethod('{{ $method->type }}', {{ $method->id }})">
+                                <span class="flex items-center">
+                                    <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
                                     </svg>
-                                </button>
-                            </div>
-                        </div>
+                                    <span class="ml-3">
+                                        <span class="block text-sm font-medium text-gray-900">{{ $method->provider.' / '.$method->account_number }}</span>
+                                        <span class="block text-sm text-gray-500">a.n. {{ $method->account_name }}</span>
+                                    </span>
+                                </span>
+                            </label>
+                        @endforeach
                     </div>
                 </div>
 
@@ -214,10 +177,10 @@
         // Initial price display update
         document.addEventListener('DOMContentLoaded', updatePriceDisplay);
 
-        function updatePaymentMethod(method) {
-            document.getElementById('bank_instructions').classList.add('hidden');
-            document.getElementById('ewallet_instructions').classList.add('hidden');
-            document.getElementById(method + '_instructions').classList.remove('hidden');
+        function updatePaymentMethod(type, methodId) {
+            document.getElementById('bank_transfer_instructions').classList.add('hidden');
+            document.getElementById('e-wallet_instructions').classList.add('hidden');
+            document.getElementById(type + '_instructions').classList.remove('hidden');
         }
     </script>
 </x-app-layout>

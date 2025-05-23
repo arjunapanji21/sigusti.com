@@ -58,4 +58,14 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => now(),
         ])->save();
     }
+
+    public function licenses()
+    {
+        return $this->hasMany(License::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

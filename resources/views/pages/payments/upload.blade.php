@@ -9,7 +9,7 @@
 
             <!-- Payment Details -->
             <div class="p-6">
-                <div class="mb-8">
+                <div class="mb-8 text-center">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Payment Summary</h3>
                     <dl class="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
                         <div>
@@ -17,40 +17,33 @@
                             <dd class="mt-1 text-sm text-gray-900">{{ $payment->plan->name }}</dd>
                         </div>
                         <div>
-                            <dt class="text-sm font-medium text-gray-500">Amount</dt>
-                            <dd class="mt-1 text-sm text-gray-900">Rp. {{ number_format($payment->amount) }}</dd>
+                            <dt class="text-sm font-medium text-gray-500">Reference Number</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $payment->reference_number }}</dd>
                         </div>
                         <div>
                             <dt class="text-sm font-medium text-gray-500">Payment Method</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ ucfirst(str_replace('_', ' ', $payment->paymentMethod->type)) }}</dd>
                         </div>
                         <div>
-                            <dt class="text-sm font-medium text-gray-500">Reference Number</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $payment->reference_number }}</dd>
+                            <dt class="text-sm font-medium text-gray-500">Amount</dt>
+                            <dd class="mt-1 text-sm text-gray-900">
+                                Subtotal: Rp. {{ number_format($payment->amount_before_tax) }}<br>
+                                <span class="">Tax (11%): Rp. {{ number_format($payment->tax_amount) }}</span><br>
+                                <span class="text-xl font-bold">Total: Rp. {{ number_format($payment->amount) }}</span>
+                            </dd>
                         </div>
                     </dl>
                 </div>
 
                 <!-- Payment Account Info -->
-                @if($payment->payment_method === 'bank_transfer')
-                    <div class="bg-gray-50 rounded-lg p-4 mb-8">
-                        <h4 class="font-medium text-gray-900">Bank Account Details</h4>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-600">Bank BCA</p>
-                            <p class="font-mono text-gray-900">1234567890</p>
-                            <p class="text-sm text-gray-600">a.n. WAWA PROJECT</p>
-                        </div>
+                <div class="bg-gray-50 rounded-lg p-4 mb-8">
+                    <h4 class="font-medium text-gray-900">{{ ucfirst(str_replace('_', ' ', $payment->paymentMethod->type)) }} Details</h4>
+                    <div class="mt-2">
+                        <p class="text-sm text-gray-600">{{ $payment->paymentMethod->provider }}</p>
+                        <p class="font-mono text-gray-900">{{ $payment->paymentMethod->account_number }}</p>
+                        <p class="text-sm text-gray-600">a.n. {{ $payment->paymentMethod->account_name }}</p>
                     </div>
-                @else
-                    <div class="bg-gray-50 rounded-lg p-4 mb-8">
-                        <h4 class="font-medium text-gray-900">E-Wallet Details</h4>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-600">DANA / OVO / GoPay</p>
-                            <p class="font-mono text-gray-900">081234567890</p>
-                            <p class="text-sm text-gray-600">a.n. WAWA PROJECT</p>
-                        </div>
-                    </div>
-                @endif
+                </div>
 
                 <!-- Payment Deadline -->
                 <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">

@@ -123,4 +123,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+
+    /* tax percentage */
+    'tax_percentage' => env('APP_TAX_PERCENTAGE', 11),
+
 ];

@@ -18,10 +18,18 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Administrator',
             'email' => 'admin@admin.com',
-            'phone' => '6281271310334', // Added phone number
+            'phone' => '0', // Added phone number
             'password' => bcrypt('admin123'),
             'email_verified_at' => now(),
             'is_admin' => true,
+        ]);
+        User::create([
+            'name' => 'Tester',
+            'email' => 'test@test.com',
+            'phone' => '1', // Added phone number
+            'password' => bcrypt('test123'),
+            'email_verified_at' => now(),
+            'is_admin' => false,
         ]);
 
         // Create payment methods

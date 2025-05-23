@@ -18,15 +18,27 @@ class Payment extends Model
         'user_id',
         'plan_id',
         'license_id',
+        'payment_method_id',
         'amount',
-        'payment_method',
-        'payment_frequency', // Add this line
+        'payment_frequency',
         'status',
         'reference_number',
         'proof_of_payment',
         'admin_notes',
-        'expires_at'  // Add this line
+        'expires_at'
     ];
+
+    protected $appends = ['tax_amount', 'total_amount'];
+
+    public function getAmountBeforeTaxAttribute()
+    {
+        return round($this->amount / (1 + config('app.tax_percentage') / 100));
+    }
+
+    public function getTaxAmountAttribute()
+    {
+        return round($this->amount_before_tax * config('app.tax_percentage') / 100);
+    }
 
     protected $casts = [
         'amount' => 'decimal:2',
@@ -68,6 +80,12 @@ class Payment extends Model
     public function license()
     {
         return $this->belongsTo(License::class);
+    }
+
+    // Add this relationship
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class);
     }
 
     // Check if payment can be processed

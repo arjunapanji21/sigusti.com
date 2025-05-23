@@ -22,6 +22,9 @@ class DashboardController extends Controller
                 ->whereYear('created_at', now()->year)
                 ->where('status', Payment::STATUS_APPROVED)
                 ->sum('amount');
+            $yearlyRevenue = Payment::whereYear('created_at', now()->year)
+                ->where('status', Payment::STATUS_APPROVED)
+                ->sum('amount');
 
             // Recent Users
             $recentUsers = User::where('is_admin', false)
@@ -56,6 +59,7 @@ class DashboardController extends Controller
                 'totalLicenses',
                 'activeLicenses',
                 'monthlyRevenue',
+                'yearlyRevenue',
                 'recentUsers',
                 'expiringLicenses',
                 'serverLoad',

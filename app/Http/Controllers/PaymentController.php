@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Payment;
 use App\Models\Plan;
 use App\Models\License;
+use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as PDF; // Updated import
 
@@ -27,11 +28,14 @@ class PaymentController extends Controller
             ->orderBy('price')
             ->get();
         $pendingPayment = Payment::where('user_id', auth()->id())
-            ->where('status', 'pending')
+            ->where('status', Payment::STATUS_PENDING_PAYMENT)
             ->whereNull('proof_of_payment')
             ->first();
+        
+        $bankTransfers = PaymentMethod::where('type', 'bank_transfer')->get();
+        $ewallets = PaymentMethod::where('type', 'e-wallet')->get();
 
-        return view('pages.payments.create', compact('plans', 'pendingPayment'));
+        return view('pages.payments.create', compact('plans', 'pendingPayment', 'bankTransfers', 'ewallets'));
     }
 
     public function initiate(Request $request)
@@ -40,20 +44,21 @@ class PaymentController extends Controller
             $request->validate([
                 'plan_id' => 'required|exists:plans,id',
                 'payment_frequency' => 'required|in:monthly,yearly',
-                'payment_method' => 'required|in:bank_transfer,ewallet',
+                'payment_method_id' => 'required|exists:payment_methods,id',
             ]);
 
+            $paymentMethod = PaymentMethod::findOrFail($request->payment_method_id);
             $plan = Plan::findOrFail($request->plan_id);
             $price = $request->payment_frequency === 'yearly' 
-                ? $plan->yearly_price 
-                : ($plan->isOnSale() ? $plan->sale_price : $plan->price);
+            ? $plan->yearly_price 
+            : ($plan->isOnSale() ? $plan->sale_price : $plan->price);
             
             $durationDays = $request->payment_frequency === 'yearly' 
-                ? $plan->duration_days * 12 
-                : $plan->duration_days;
+            ? $plan->duration_days * 12 
+            : $plan->duration_days;
             
             $expiresAt = now()->addHour();
-
+        
             // Create inactive license
             $license = License::create([
                 'user_id' => auth()->id(),
@@ -71,9 +76,9 @@ class PaymentController extends Controller
                 'user_id' => auth()->id(),
                 'plan_id' => $plan->id,
                 'license_id' => $license->id,
-                'amount' => $price,
-                'payment_method' => $request->payment_method,
-                'payment_frequency' => $request->payment_frequency, // Add this line
+                'payment_method_id' => $request->payment_method_id,
+                'amount' => $price + ($price * config('app.tax_percentage') / 100),
+                'payment_frequency' => $request->payment_frequency,
                 'status' => Payment::STATUS_PENDING_PAYMENT,
                 'reference_number' => 'PAY-' . strtoupper(uniqid()),
                 'expires_at' => $expiresAt
@@ -86,6 +91,7 @@ class PaymentController extends Controller
             return redirect()->route('payments.upload', $payment);
             
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return redirect()->route('payments.create')
                 ->with('error', 'Failed to create payment. Please try again.');
         }
@@ -102,6 +108,7 @@ class PaymentController extends Controller
                 ->with('error', 'Payment session expired. Please start a new payment.');
         }
 
+        $payment->load(['plan', 'paymentMethod']);
         return view('pages.payments.upload', compact('payment'));
     }
 
@@ -173,7 +180,7 @@ class PaymentController extends Controller
             abort(403);
         }
 
-        $payment->load(['user', 'plan']);
+        $payment->load(['user', 'plan', 'paymentMethod']);
         
         $pdf = PDF::loadView('pages.payments.invoice', compact('payment'));
         

@@ -5,7 +5,7 @@
     @if(auth()->user()->is_admin)
         <!-- Admin Dashboard -->
         <!-- Stats Overview -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center">
                     <div class="p-3 rounded-full bg-blue-100 bg-opacity-75">
@@ -45,6 +45,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Financial Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center">
                     <div class="p-3 rounded-full bg-yellow-100 bg-opacity-75">
@@ -53,8 +57,21 @@
                         </svg>
                     </div>
                     <div class="ml-5">
-                        <p class="text-gray-500">Monthly Revenue</p>
+                        <p class="text-gray-500">This Month Revenue</p>
                         <h3 class="text-3xl font-bold text-gray-700">{{ number_format($monthlyRevenue) }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white shadow rounded-lg p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 bg-opacity-75">
+                        <svg class="h-8 w-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="ml-5">
+                        <p class="text-gray-500">This Year Revenue</p>
+                        <h3 class="text-3xl font-bold text-gray-700">{{ number_format($yearlyRevenue) }}</h3>
                     </div>
                 </div>
             </div>
