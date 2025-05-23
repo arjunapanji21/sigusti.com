@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('monthly_limit')->default(0);
             $table->integer('daily_usage')->default(0);
             $table->integer('monthly_usage')->default(0);
+            $table->integer('max_device')->default(0);
             $table->boolean('is_active')->default(false);
             $table->timestamp('last_check')->nullable();
             $table->timestamps();

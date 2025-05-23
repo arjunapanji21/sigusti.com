@@ -67,6 +67,7 @@ class PaymentController extends Controller
                 'expires_at' => now()->addDays($durationDays),
                 'daily_limit' => $plan->daily_limit,
                 'monthly_limit' => $plan->monthly_limit,
+                'max_device' => $plan->max_device,
                 'daily_usage' => 0,
                 'monthly_usage' => 0,
                 'is_active' => false,
