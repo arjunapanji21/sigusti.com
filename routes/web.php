@@ -12,6 +12,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LicenseController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\SupportController;
 
 // Public routes
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -96,16 +97,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('pages/documentation');
     })->name('documentation');
 
-    Route::get('/support', function () {
-        return view('pages/support');
-    })->name('support');
-
-    Route::get('/download', function () {
-        return view('pages/download');
-    })->name('download');
-});
-
-// Error pages
-Route::fallback(function () {
-    return view('pages.errors.404');
+    Route::get('/support', [SupportController::class, 'index'])->name('support');
+    Route::post('/support', [SupportController::class, 'store'])->name('support.store');
 });
