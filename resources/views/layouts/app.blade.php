@@ -8,6 +8,25 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        .toast-enter { animation: slideIn 0.3s ease-out forwards; }
+        .toast-exit { animation: slideOut 0.3s ease-out forwards; }
+        #toast-container {
+            pointer-events: none;
+        }
+        #toast-container > div {
+            pointer-events: auto;
+        }
+    </style>
 </head>
 <body class="font-sans antialiased">
     <div id="toast-container" class="fixed top-4 right-4 z-[9999]"></div>
@@ -152,11 +171,89 @@
             <div class="py-6">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <x-alerts />
+                    @if (session('success'))
+                        <div x-data="{}" x-init="showToast('{{ session('success') }}', 'green')"></div>
+                    @endif
+                    @if (session('error'))
+                        <div x-data="{}" x-init="showToast('{{ session('error') }}', 'red')"></div>
+                    @endif
+                    @if (session('warning'))
+                        <div x-data="{}" x-init="showToast('{{ session('warning') }}', 'yellow')"></div>
+                    @endif
+                    @if (session('info'))
+                        <div x-data="{}" x-init="showToast('{{ session('info') }}', 'blue')"></div>
+                    @endif
                     @yield('content')
                     {{ $slot ?? '' }}
                 </div>
             </div>
         </main>
         @stack('scripts')
+        <script>
+            window.toggleLicense = function(licenseId) {
+                const container = document.getElementById(`license-${licenseId}`);
+                if (!container) return;
+                
+                const textElement = container.querySelector('.license-text');
+                const keyElement = container.querySelector('.license-key');
+                
+                if (textElement.classList.contains('hidden')) {
+                    textElement.classList.remove('hidden');
+                    keyElement.classList.add('hidden');
+                } else {
+                    textElement.classList.add('hidden');
+                    keyElement.classList.remove('hidden');
+                }
+            }
+
+            window.copyLicense = function(licenseId) {
+                const container = document.getElementById(`license-${licenseId}`);
+                if (!container) return;
+
+                const licenseKey = container.querySelector('.license-key')?.textContent;
+                if (!licenseKey) return;
+
+                navigator.clipboard.writeText(licenseKey)
+                    .then(() => {
+                        const button = container.querySelector('button:last-child');
+                        if (button) {
+                            button.classList.remove('text-gray-400', 'hover:text-gray-600');
+                            button.classList.add('text-green-500');
+                            
+                            setTimeout(() => {
+                                button.classList.remove('text-green-500');
+                                button.classList.add('text-gray-400', 'hover:text-gray-600');
+                            }, 1000);
+                        }
+                        
+                        showToast('License key copied to clipboard!');
+                    })
+                    .catch(() => {
+                        showToast('Failed to copy license key', 'red');
+                    });
+            }
+
+            function showToast(message, type = 'green') {
+                const container = document.getElementById('toast-container');
+                if (!container) return;
+
+                const toast = document.createElement('div');
+                toast.className = `toast-enter fixed top-4 right-4 z-[9999] bg-white border border-${type}-500 text-${type}-700 px-4 py-2 rounded-lg shadow-md`;
+                toast.innerText = message;
+
+                container.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.classList.remove('toast-enter');
+                    toast.classList.add('toast-exit');
+                }, 3000);
+
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 3300);
+            }
+        </script>
     </body>
 </html>

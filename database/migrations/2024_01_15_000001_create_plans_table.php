@@ -12,7 +12,7 @@ class CreatePlansTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('price');
+            $table->integer('price');
             $table->integer('discount_percentage')->nullable();
             $table->integer('duration_days');
             $table->integer('daily_limit');

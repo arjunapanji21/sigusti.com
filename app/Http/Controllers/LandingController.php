@@ -8,7 +8,11 @@ class LandingController extends Controller
 {
     public function index()
     {
-        $plans = Plan::active()->orderBy('price')->get();
+        // get active plans except for the one with id 1
+        $plans = Plan::active()
+            ->where('id', '!=', 1)
+            ->orderBy('price')
+            ->get();
         return view('pages.landing', compact('plans'));
     }
 }

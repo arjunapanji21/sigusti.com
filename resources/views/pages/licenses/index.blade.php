@@ -46,13 +46,30 @@
                                             <img class="h-8 w-8 rounded-full" src="{{ $license->user->profile_photo_url }}" alt="">
                                             <div class="ml-4">
                                                 <div class="text-sm font-medium text-gray-900">{{ $license->user->name }}</div>
-                                                <div class="text-sm text-gray-500">{{ $license->user->email }}</div>
                                             </div>
                                         </div>
                                     </td>
                                 @endcan
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-mono text-gray-900">{{ $license->license_key }}</div>
+                                    <div class="relative">
+                                        <p id="license-{{ $license->id }}" class="font-mono text-sm pr-12">
+                                            <span class="license-text">{{ str_repeat('•', 10) }}</span>
+                                            <span class="license-key hidden">{{ Str::limit($license->license_key, 10) }}</span>
+                                        </p>
+                                        <div class="absolute right-0 top-1/2 -translate-y-1/2 flex space-x-2">
+                                            <button onclick="toggleLicense('{{ $license->id }}')" class="text-gray-400 hover:text-gray-600">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                            </button>
+                                            <button onclick="copyLicense('{{ $license->id }}')" class="text-gray-400 hover:text-gray-600">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ $license->plan->name }}</div>
@@ -78,6 +95,13 @@
                                 </td>
                             </tr>
                         @endforeach
+                        @if($licenses->isEmpty())
+                            <tr>
+                                <td colspan="{{ auth()->user()->can('admin-actions') ? 7 : 6 }}" class="px-6 py-4 text-center text-sm text-gray-500">
+                                    No licenses found.
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

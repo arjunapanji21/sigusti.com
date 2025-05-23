@@ -35,11 +35,6 @@ class Plan extends Model
         return $query->where('is_active', true);
     }
 
-    public function subscriptions()
-    {
-        return $this->hasMany(Subscription::class);
-    }
-
     public function payments()
     {
         return $this->hasMany(Payment::class);
@@ -71,5 +66,26 @@ class Plan extends Model
     public function getSalePriceFormattedAttribute()
     {
         return 'Rp. ' . number_format($this->sale_price);
+    }
+
+    public function getYearlyPriceAttribute()
+    {
+        $basePrice = $this->isOnSale() ? $this->sale_price : $this->price;
+        return (int) ($basePrice * 12 * 0.8); // 20% discount for yearly
+    }
+
+    public function getYearlyPriceFormattedAttribute()
+    {
+        return 'Rp. ' . number_format($this->yearly_price);
+    }
+
+    public function getMonthlyPriceAttribute()
+    {
+        return $this->isOnSale() ? $this->sale_price : $this->price;
+    }
+
+    public function getMonthlyPriceFormattedAttribute()
+    {
+        return 'Rp. ' . number_format($this->monthly_price);
     }
 }

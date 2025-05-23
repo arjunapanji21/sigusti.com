@@ -11,6 +11,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LicenseController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Auth\VerificationController;
 
 // Public routes
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -31,9 +32,20 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 });
 
-// Protected routes
+// Email Verification Routes  
 Route::middleware(['auth'])->group(function () {
-    // Common routes for both admin and users
+    Route::get('/email/verify', [VerificationController::class, 'notice'])
+        ->name('verification.notice');
+
+    Route::get('/email/verify/{token}', [VerificationController::class, 'verify'])
+        ->name('verification.verify');
+
+    Route::post('/email/resend', [VerificationController::class, 'resend'])
+        ->name('verification.resend');
+});
+
+// Protected routes that require email verification
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -61,6 +73,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{payment}/upload', [PaymentController::class, 'showUpload'])->name('upload');
         Route::post('/{payment}/upload', [PaymentController::class, 'uploadProof'])->name('upload.store');
         Route::get('/{payment}', [PaymentController::class, 'show'])->name('show');
+        Route::get('/{payment}/invoice', [PaymentController::class, 'downloadInvoice'])->name('invoice.download');
         
         // Admin routes
         Route::middleware(['can:admin-actions'])->group(function () {

@@ -12,13 +12,13 @@ class CancelExpiredPayments extends Command
 
     public function handle()
     {
-        $expiredPayments = Payment::where('status', 'pending')
+        $expiredPayments = Payment::where('status', Payment::STATUS_PENDING_PAYMENT)
             ->whereNull('proof_of_payment')
             ->where('expires_at', '<', now())
             ->get();
 
         foreach ($expiredPayments as $payment) {
-            $payment->update(['status' => 'canceled']);
+            $payment->update(['status' => Payment::STATUS_EXPIRED]);
         }
 
         $this->info(count($expiredPayments) . ' expired payments canceled.');

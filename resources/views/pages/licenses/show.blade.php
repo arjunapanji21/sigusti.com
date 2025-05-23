@@ -37,7 +37,25 @@
                     <dl class="mt-4 space-y-4">
                         <div>
                             <dt class="text-sm font-medium text-gray-500">License Key</dt>
-                            <dd class="mt-1 text-sm font-mono bg-gray-50 p-2 rounded">{{ $license->license_key }}</dd>
+                            <dd class="mt-1 relative">
+                                <p id="license-{{ $license->id }}" class="font-mono text-sm bg-gray-50 p-2 rounded">
+                                    <span class="license-text">{{ str_repeat('•', 20) }}</span>
+                                    <span class="license-key hidden">{{ $license->license_key }}</span>
+                                </p>
+                                <div class="absolute right-2 top-1/2 -translate-y-1/2 flex space-x-2">
+                                    <button onclick="toggleLicense('{{ $license->id }}')" class="text-gray-400 hover:text-gray-600">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </button>
+                                    <button onclick="copyLicense('{{ $license->id }}')" class="text-gray-400 hover:text-gray-600">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </dd>
                         </div>
                         <div>
                             <dt class="text-sm font-medium text-gray-500">Status</dt>

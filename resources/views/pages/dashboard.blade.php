@@ -2,13 +2,10 @@
 
 @section('content')
 <div class="space-y-6">
-    <!-- Toast Container - Add this at the top -->
-    <div id="toast-container" class="fixed top-4 right-4 z-50"></div>
-    
     @if(auth()->user()->is_admin)
         <!-- Admin Dashboard -->
         <!-- Stats Overview -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center">
                     <div class="p-3 rounded-full bg-blue-100 bg-opacity-75">
@@ -48,51 +45,157 @@
                     </div>
                 </div>
             </div>
+            <div class="bg-white shadow rounded-lg p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 bg-opacity-75">
+                        <svg class="h-8 w-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="ml-5">
+                        <p class="text-gray-500">Monthly Revenue</p>
+                        <h3 class="text-3xl font-bold text-gray-700">{{ number_format($monthlyRevenue) }}</h3>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Recent Activity -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Recent Users -->
-            <div class="bg-white shadow rounded-lg">
-                <div class="p-6 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-800">Recent Users</h3>
-                </div>
-                <div class="divide-y divide-gray-200">
-                    @foreach($recentUsers as $user)
-                        <div class="p-4 flex items-center">
-                            <img class="h-10 w-10 rounded-full" src="{{ $user->profile_photo_url }}" alt="">
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">{{ $user->name }}</p>
-                                <p class="text-sm text-gray-500">{{ $user->email }}</p>
+        <!-- Analytics Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Recent Activity -->
+            <div class="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Recent Users -->
+                <div class="bg-white shadow rounded-lg">
+                    <div class="p-6 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800">Recent Users</h3>
+                    </div>
+                    <div class="divide-y divide-gray-200">
+                        @foreach($recentUsers as $user)
+                            <div class="p-4 flex items-center">
+                                <img class="h-10 w-10 rounded-full" src="{{ $user->profile_photo_url }}" alt="">
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-900">{{ $user->name }}</p>
+                                    <p class="text-sm text-gray-500">{{ $user->email }}</p>
+                                </div>
+                                <span class="ml-auto text-xs text-gray-500">
+                                    Joined {{ $user->created_at->diffForHumans() }}
+                                </span>
                             </div>
-                            <span class="ml-auto text-xs text-gray-500">
-                                Joined {{ $user->created_at->diffForHumans() }}
-                            </span>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Expiring Licenses -->
+                <div class="bg-white shadow rounded-lg">
+                    <div class="p-6 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800">Expiring Licenses</h3>
+                    </div>
+                    <div class="divide-y divide-gray-200">
+                        @foreach($expiringLicenses as $license)
+                            <div class="p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">{{ $license->user->name }}</p>
+                                        <p class="text-xs text-gray-500">License: {{ Str::limit($license->license_key, 20) }}</p>
+                                    </div>
+                                    <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">
+                                        Expires {{ $license->expires_at->diffForHumans() }}
+                                    </span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
-            <!-- Expiring Licenses -->
-            <div class="bg-white shadow rounded-lg">
-                <div class="p-6 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-800">Expiring Licenses</h3>
+            <!-- Quick Stats -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">System Health</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-sm text-gray-500">Server Load</span>
+                            <span class="text-sm font-medium text-gray-900">{{ $serverLoad }}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: {{ $serverLoad }}%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-sm text-gray-500">API Usage</span>
+                            <span class="text-sm font-medium text-gray-900">{{ number_format($apiRequests) }} reqs/min</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-600 h-2 rounded-full" style="width: {{ min(($apiRequests / 1000) * 100, 100) }}%"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="divide-y divide-gray-200">
-                    @foreach($expiringLicenses as $license)
-                        <div class="p-4">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="text-sm font-medium text-gray-900">{{ $license->user->name }}</p>
-                                    <p class="text-xs text-gray-500">License: {{ Str::limit($license->license_key, 20) }}</p>
-                                </div>
-                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">
-                                    Expires {{ $license->expires_at->diffForHumans() }}
-                                </span>
+
+                <!-- Recent Events -->
+                <div class="mt-6">
+                    <h4 class="text-sm font-medium text-gray-500 mb-3">Recent Events</h4>
+                    <div class="space-y-3">
+                        @foreach($systemEvents as $event)
+                        <div class="flex items-start">
+                            <span class="flex-shrink-0 w-2 h-2 mt-1.5 rounded-full {{ $event->type === 'error' ? 'bg-red-600' : 'bg-green-600' }}"></span>
+                            <div class="ml-3">
+                                <p class="text-sm text-gray-600">{{ $event->message }}</p>
+                                <p class="text-xs text-gray-400">{{ $event->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Recent Payments (formerly Transactions) -->
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">Recent Payments</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach($recentPayments as $payment)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <img class="h-8 w-8 rounded-full" src="{{ $payment->user->profile_photo_url }}" alt="">
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">{{ $payment->user->name }}</div>
+                                        <div class="text-sm text-gray-500">{{ $payment->user->email }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ $payment->plan->name }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">Rp. {{ number_format($payment->amount) }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $payment->status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                    {{ $payment->status }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $payment->created_at->format('M d, Y') }}
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     @else
@@ -169,16 +272,13 @@
                                 <div class="absolute right-2 top-2 flex space-x-2">
                                     <button onclick="toggleLicense('{{ $license->id }}')" class="text-gray-400 hover:text-gray-600">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
                                     </button>
                                     <button onclick="copyLicense('{{ $license->id }}')" class="text-gray-400 hover:text-gray-600">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                                         </svg>
                                     </button>
                                 </div>
@@ -269,90 +369,3 @@
     @endif
 </div>
 @endsection
-
-@push('scripts')
-<style>
-    @keyframes slideIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-    }
-    .toast-enter { animation: slideIn 0.3s ease-out forwards; }
-    .toast-exit { animation: slideOut 0.3s ease-out forwards; }
-    #toast-container {
-        pointer-events: none;
-    }
-    #toast-container > div {
-        pointer-events: auto;
-    }
-</style>
-
-<script>
-    function showToast(message, type = 'green') {
-        const container = document.getElementById('toast-container');
-        if (!container) return;
-
-        const toast = document.createElement('div');
-        toast.className = `fixed top-4 right-4 bg-${type}-50 border border-${type}-200 text-${type}-800 px-4 py-3 rounded-lg shadow-lg flex items-center toast-enter max-w-md`;
-        
-        toast.innerHTML = `
-            <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-            <span class="text-sm">${message}</span>
-        `;
-        
-        container.appendChild(toast);
-
-        // Remove after delay
-        setTimeout(() => {
-            toast.classList.replace('toast-enter', 'toast-exit');
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-    }
-
-    function copyLicense(licenseId) {
-        const container = document.getElementById(`license-${licenseId}`);
-        if (!container) return;
-
-        const licenseKey = container.querySelector('.license-key')?.textContent;
-        if (!licenseKey) return;
-
-        navigator.clipboard.writeText(licenseKey)
-            .then(() => {
-                const button = container.querySelector('button:last-child');
-                if (button) {
-                    button.classList.remove('text-gray-400', 'hover:text-gray-600');
-                    button.classList.add('text-green-500');
-                    
-                    setTimeout(() => {
-                        button.classList.remove('text-green-500');
-                        button.classList.add('text-gray-400', 'hover:text-gray-600');
-                    }, 1000);
-                }
-                
-                showToast('License key copied to clipboard!');
-            })
-            .catch(() => {
-                showToast('Failed to copy license key', 'error');
-            });
-    }
-
-    function toggleLicense(licenseId) {
-        const container = document.getElementById(`license-${licenseId}`);
-        const textElement = container.querySelector('.license-text');
-        const keyElement = container.querySelector('.license-key');
-        
-        if (textElement.classList.contains('hidden')) {
-            textElement.classList.remove('hidden');
-            keyElement.classList.add('hidden');
-        } else {
-            textElement.classList.add('hidden');
-            keyElement.classList.remove('hidden');
-        }
-    }
-</script>
-@endpush

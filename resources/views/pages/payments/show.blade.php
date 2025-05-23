@@ -8,26 +8,29 @@
                         <h2 class="text-2xl font-bold text-gray-900">Payment Details</h2>
                         <p class="mt-1 text-sm text-gray-600">Transaction #{{ $payment->id }}</p>
                     </div>
-                    @can('admin-actions')
-                        @if($payment->status === 'pending')
-                            <div class="flex space-x-3">
+                    <div class="flex space-x-3">
+                        <a href="{{ route('payments.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-green-600 bg-white hover:bg-gray-50">
+                            Back to Payments
+                        </a>
+                        @can('admin-actions')
+                            @if($payment->status !== 'approved')
                                 <form action="{{ route('payments.approve', $payment) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">
+                                    <button type="submit" class="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">
                                         Approve Payment
                                     </button>
                                 </form>
                                 <form action="{{ route('payments.reject', $payment) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                    <button type="submit" class="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-red-600 bg-white hover:bg-gray-50">
                                         Reject Payment
                                     </button>
                                 </form>
-                            </div>
-                        @endif
-                    @endcan
+                            @endif
+                        @endcan
+                    </div>
                 </div>
             </div>
 
@@ -45,14 +48,26 @@
                             <dd class="mt-1">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                     {{ $payment->status === 'approved' ? 'bg-green-100 text-green-800' : 
-                                       ($payment->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
-                                    {{ ucfirst($payment->status) }}
+                                       ($payment->status === 'pending_payment' ? 'bg-yellow-100 text-yellow-800' : 
+                                        ($payment->status === 'pending_approval' ? 'bg-blue-100 text-blue-800' : 
+                                         'bg-red-100 text-red-800')) }}">
+                                    {{ ucfirst(str_replace('_', ' ', $payment->status)) }}
                                 </span>
                             </dd>
                         </div>
                         <div>
                             <dt class="text-sm font-medium text-gray-500">Date</dt>
                             <dd class="mt-1 text-sm text-gray-900">{{ $payment->created_at->format('M d, Y H:i') }}</dd>
+                        </div>
+                        <!-- Add Download Invoice Button -->
+                        <div class="mt-4">
+                            <a href="{{ route('payments.invoice.download', $payment) }}" 
+                               class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                                Download Invoice
+                            </a>
                         </div>
                     </dl>
                 </div>
@@ -66,7 +81,7 @@
                         </div>
                         <div>
                             <dt class="text-sm font-medium text-gray-500">Duration</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ $payment->plan->duration_days }} days</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $payment->payment_frequency == 'yearly' ? $payment->plan->duration_days * 12 : $payment->plan->duration_days }} days</dd>
                         </div>
                         <div>
                             <dt class="text-sm font-medium text-gray-500">Features</dt>
@@ -93,13 +108,13 @@
                              style="max-height: 400px; object-fit: contain;">
                     </div>
                 </div>
-            @elseif(!$payment->isExpired() && $payment->status === 'pending')
+            @elseif(!$payment->isExpired() && $payment->status === 'pending_payment')
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">No Proof of Payment Uploaded</h3>
                     <p class="text-sm text-gray-500 mb-4">Please upload your proof of payment to complete the transaction.</p>
                     <a href="{{ route('payments.upload', $payment) }}" 
                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">
-                        Upload Payment Proof
+                        Upload Bukti Pembayaran
                     </a>
                 </div>
             @endif

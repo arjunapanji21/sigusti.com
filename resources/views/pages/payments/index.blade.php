@@ -48,7 +48,7 @@
                                 @endcan
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ $payment->plan->name }}</div>
-                                    <div class="text-sm text-gray-500">{{ $payment->plan->duration_days }} days</div>
+                                    <div class="text-sm text-gray-500">{{ $payment->payment_frequency == 'yearly' ? $payment->plan->duration_days * 12 : $payment->plan->duration_days }} days</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     Rp. {{ number_format($payment->amount) }}
@@ -56,8 +56,10 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                         {{ $payment->status === 'approved' ? 'bg-green-100 text-green-800' : 
-                                           ($payment->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
-                                        {{ ucfirst($payment->status) }}
+                                           ($payment->status === 'pending_payment' ? 'bg-yellow-100 text-yellow-800' : 
+                                            ($payment->status === 'pending_approval' ? 'bg-blue-100 text-blue-800' : 
+                                             'bg-red-100 text-red-800')) }}">
+                                        {{ ucfirst(str_replace('_', ' ', $payment->status)) }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -65,21 +67,28 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <a href="{{ route('payments.show', $payment) }}" class="text-green-600 hover:text-green-900">View</a>
-                                    @if(auth()->user()->can('admin-actions') && $payment->status === 'pending')
+                                    @if(auth()->user()->can('admin-actions') && $payment->status !== 'approved')
                                         <form action="{{ route('payments.approve', $payment) }}" method="POST" class="inline-block ml-2">
                                             @csrf
                                             @method('PUT')
-                                            <button type="submit" class="text-green-600 hover:text-green-900">Approve</button>
+                                            <button type="submit" class="cursor-pointer text-green-600 hover:text-green-900">Approve</button>
                                         </form>
                                         <form action="{{ route('payments.reject', $payment) }}" method="POST" class="inline-block ml-2">
                                             @csrf
                                             @method('PUT')
-                                            <button type="submit" class="text-red-600 hover:text-red-900">Reject</button>
+                                            <button type="submit" class="cursor-pointer text-red-600 hover:text-red-900">Reject</button>
                                         </form>
                                     @endif
                                 </td>
                             </tr>
                         @endforeach
+                        @if($payments->isEmpty())
+                            <tr>
+                                <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">
+                                    No payments found.
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

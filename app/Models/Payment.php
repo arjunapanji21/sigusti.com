@@ -8,8 +8,8 @@ use App\Models\LicenseActivity; // Add this import
 
 class Payment extends Model
 {
-    public const STATUS_PENDING = 'pending';
-    public const STATUS_PROCESSING = 'processing';
+    public const STATUS_PENDING_PAYMENT = 'pending_payment'; // Changed from pending
+    public const STATUS_PENDING_APPROVAL = 'pending_approval'; // Changed from waiting_approval
     public const STATUS_APPROVED = 'approved';
     public const STATUS_REJECTED = 'rejected';
     public const STATUS_EXPIRED = 'expired'; // Add this constant
@@ -17,9 +17,10 @@ class Payment extends Model
     protected $fillable = [
         'user_id',
         'plan_id',
-        'subscription_id',
+        'license_id',
         'amount',
         'payment_method',
+        'payment_frequency', // Add this line
         'status',
         'reference_number',
         'proof_of_payment',
@@ -40,10 +41,10 @@ class Payment extends Model
         return $query->where('status', self::STATUS_PENDING);
     }
 
-    // Scope for processing payments
-    public function scopeProcessing(Builder $query): Builder
+    // Scope for waiting approval payments
+    public function scopeWaitingApproval(Builder $query): Builder
     {
-        return $query->where('status', self::STATUS_PROCESSING);
+        return $query->where('status', self::STATUS_WAITING_APPROVAL);
     }
 
     // Scope for a specific user's payments
@@ -64,11 +65,6 @@ class Payment extends Model
         return $this->belongsTo(Plan::class);
     }
 
-    public function subscription()
-    {
-        return $this->belongsTo(Subscription::class);
-    }
-
     public function license()
     {
         return $this->belongsTo(License::class);
@@ -77,7 +73,7 @@ class Payment extends Model
     // Check if payment can be processed
     public function canBeProcessed(): bool
     {
-        return $this->status === self::STATUS_PENDING;
+        return $this->status === self::STATUS_PENDING_APPROVAL;
     }
 
     // Check if payment is approved
@@ -122,16 +118,18 @@ class Payment extends Model
         $this->status = self::STATUS_APPROVED;
         $this->save();
 
-        // Activate existing license instead of creating new one
+        // Activate license and update expiry based on plan duration
         $license = $this->license;
-        $license->is_active = true;
-        $license->save();
+        if ($license) {
+            $license->is_active = true;
+            $license->save();
 
-        // Record activity
-        $license->activities()->create([
-            'activity_type' => 'payment_approved',
-            'details' => 'Payment approved and license activated'
-        ]);
+            // Record activity
+            $license->activities()->create([
+                'activity_type' => 'payment_approved',
+                'details' => 'Payment approved and license activated'
+            ]);
+        }
 
         return $license;
     }

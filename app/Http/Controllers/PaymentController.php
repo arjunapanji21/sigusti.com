@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use App\Models\Plan;
+use App\Models\License;
 use Illuminate\Http\Request;
-use App\Models\License; // Add this line
+use Barryvdh\DomPDF\Facade\Pdf as PDF; // Updated import
 
 class PaymentController extends Controller
 {
@@ -20,7 +21,11 @@ class PaymentController extends Controller
 
     public function create()
     {
-        $plans = Plan::where('is_active', true)->get();
+        // get active plans except for the one with id 1
+        $plans = Plan::active()
+            ->where('id', '!=', 1)
+            ->orderBy('price')
+            ->get();
         $pendingPayment = Payment::where('user_id', auth()->id())
             ->where('status', 'pending')
             ->whereNull('proof_of_payment')
@@ -34,11 +39,19 @@ class PaymentController extends Controller
         try {
             $request->validate([
                 'plan_id' => 'required|exists:plans,id',
+                'payment_frequency' => 'required|in:monthly,yearly',
                 'payment_method' => 'required|in:bank_transfer,ewallet',
             ]);
 
             $plan = Plan::findOrFail($request->plan_id);
-            $price = $plan->isOnSale() ? $plan->sale_price : $plan->price;
+            $price = $request->payment_frequency === 'yearly' 
+                ? $plan->yearly_price 
+                : ($plan->isOnSale() ? $plan->sale_price : $plan->price);
+            
+            $durationDays = $request->payment_frequency === 'yearly' 
+                ? $plan->duration_days * 12 
+                : $plan->duration_days;
+            
             $expiresAt = now()->addHour();
 
             // Create inactive license
@@ -46,7 +59,7 @@ class PaymentController extends Controller
                 'user_id' => auth()->id(),
                 'plan_id' => $plan->id,
                 'license_key' => \Str::random(32),
-                'expires_at' => now()->addDays($plan->duration_days),
+                'expires_at' => now()->addDays($durationDays),
                 'daily_limit' => $plan->daily_limit,
                 'monthly_limit' => $plan->monthly_limit,
                 'daily_usage' => 0,
@@ -57,10 +70,11 @@ class PaymentController extends Controller
             $payment = Payment::create([
                 'user_id' => auth()->id(),
                 'plan_id' => $plan->id,
-                'license_id' => $license->id, // Link payment to license
+                'license_id' => $license->id,
                 'amount' => $price,
                 'payment_method' => $request->payment_method,
-                'status' => Payment::STATUS_PENDING,
+                'payment_frequency' => $request->payment_frequency, // Add this line
+                'status' => Payment::STATUS_PENDING_PAYMENT,
                 'reference_number' => 'PAY-' . strtoupper(uniqid()),
                 'expires_at' => $expiresAt
             ]);
@@ -107,7 +121,7 @@ class PaymentController extends Controller
                 
                 $payment->update([
                     'proof_of_payment' => $path,
-                    'status' => Payment::STATUS_PROCESSING // Change status to processing after proof upload
+                    'status' => Payment::STATUS_PENDING_APPROVAL // Changed from STATUS_WAITING_APPROVAL
                 ]);
 
                 if ($payment->license) {
@@ -117,7 +131,7 @@ class PaymentController extends Controller
                     ]);
                 }
 
-                return redirect()->route('payments.show', $payment)
+                return redirect()->route('payments.index')
                     ->with('success', 'Payment proof uploaded successfully. Please wait for admin approval.');
 
             } catch (\Exception $e) {
@@ -140,6 +154,9 @@ class PaymentController extends Controller
 
     public function approve(Payment $payment)
     {
+        $license = $payment->license;
+        $license->is_active = true;
+        $license->save();
         $payment->approve();
         return back()->with('success', 'Payment approved successfully');
     }
@@ -148,5 +165,18 @@ class PaymentController extends Controller
     {
         $payment->update(['status' => 'rejected']);
         return back()->with('success', 'Payment rejected successfully');
+    }
+
+    public function downloadInvoice(Payment $payment)
+    {
+        if (!auth()->user()->can('admin-actions') && $payment->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $payment->load(['user', 'plan']);
+        
+        $pdf = PDF::loadView('pages.payments.invoice', compact('payment'));
+        
+        return $pdf->download('invoice-' . $payment->reference_number . '.pdf');
     }
 }

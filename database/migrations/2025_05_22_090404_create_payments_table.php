@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('status');
             $table->decimal('amount', 10, 2);
             $table->string('payment_method');
+            $table->string('payment_frequency'); // Add this line
             $table->string('reference_number')->unique();
             $table->string('proof_of_payment')->nullable();
             $table->text('admin_notes')->nullable();

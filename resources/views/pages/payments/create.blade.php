@@ -18,19 +18,22 @@
                         @foreach($plans as $plan)
                             <label class="relative border rounded-lg p-4 flex flex-col cursor-pointer focus-within:ring-2 focus-within:ring-green-500">
                                 <input type="radio" name="plan_id" value="{{ $plan->id }}" class="sr-only" required
-                                    onchange="updateSelectedPlan({{ $plan->price }}, {{ $plan->isOnSale() ? $plan->sale_price : $plan->price }})">
+                                    data-original-price="{{ $plan->price }}"
+                                    data-sale-price="{{ $plan->isOnSale() ? $plan->sale_price : $plan->price }}"
+                                    data-yearly-price="{{ $plan->yearly_price }}"
+                                    onchange="updateSelectedPlan(this)">
                                 <span class="flex-1">
                                     <span class="block text-sm font-medium text-gray-900">{{ $plan->name }}</span>
                                     @if($plan->isOnSale())
-                                        <span class="mt-1 flex items-center text-sm text-gray-500">
-                                            <span class="line-through">Rp. {{ number_format($plan->price) }}</span>
+                                        <span class="mt-1 flex items-center text-sm text-gray-500 price-display">
+                                            <span class="line-through original-price">Rp. {{ number_format($plan->price) }}</span>
                                             <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                                 Save {{ $plan->discount_percentage }}%
                                             </span>
                                         </span>
-                                        <span class="text-lg font-bold text-gray-900">Rp. {{ number_format($plan->sale_price) }}</span>
+                                        <span class="text-lg font-bold text-gray-900 final-price">Rp. {{ number_format($plan->sale_price) }}</span>
                                     @else
-                                        <span class="mt-1 text-lg font-bold text-gray-900">Rp. {{ number_format($plan->price) }}</span>
+                                        <span class="text-lg font-bold text-gray-900 final-price">Rp. {{ number_format($plan->price) }}</span>
                                     @endif
                                 </span>
                                 <span class="mt-4 border-t pt-4">
@@ -61,6 +64,15 @@
                             </label>
                         @endforeach
                     </div>
+                </div>
+
+                <!-- Payment Frequency -->
+                <div class="grid grid-cols-2 items-center justify-between">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Payment Frequency</h3>
+                    <select name="payment_frequency" id="payment_frequency" class="block w-full p-2 border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                    </select>
                 </div>
 
                 <!-- Payment Method Selection -->
@@ -163,14 +175,44 @@
     </div>
 
     <script>
-        function updateSelectedPlan(originalPrice, finalPrice) {
+        function updateSelectedPlan(radio) {
             // Add visual feedback for selected plan
-            document.querySelectorAll('[name="plan_id"]').forEach(radio => {
-                const card = radio.closest('label');
-                card.classList.toggle('ring-2', radio.checked);
-                card.classList.toggle('ring-green-500', radio.checked);
+            document.querySelectorAll('[name="plan_id"]').forEach(input => {
+                const card = input.closest('label');
+                card.classList.toggle('ring-2', input.checked);
+                card.classList.toggle('ring-green-500', input.checked);
             });
         }
+
+        function updatePriceDisplay() {
+            const frequency = document.getElementById('payment_frequency').value;
+            const planInputs = document.querySelectorAll('input[name="plan_id"]');
+            
+            planInputs.forEach(input => {
+                const card = input.closest('label');
+                const originalPriceSpan = card.querySelector('.original-price');
+                const finalPriceSpan = card.querySelector('.final-price');
+                
+                if (frequency === 'yearly') {
+                    const yearlyPrice = parseInt(input.dataset.yearlyPrice);
+                    if (originalPriceSpan) {
+                        originalPriceSpan.textContent = 'Rp. ' + (parseInt(input.dataset.originalPrice) * 12).toLocaleString();
+                    }
+                    finalPriceSpan.textContent = 'Rp. ' + yearlyPrice.toLocaleString();
+                } else {
+                    if (originalPriceSpan) {
+                        originalPriceSpan.textContent = 'Rp. ' + parseInt(input.dataset.originalPrice).toLocaleString();
+                    }
+                    finalPriceSpan.textContent = 'Rp. ' + parseInt(input.dataset.salePrice).toLocaleString();
+                }
+            });
+        }
+
+        // Add event listener for payment frequency changes
+        document.getElementById('payment_frequency').addEventListener('change', updatePriceDisplay);
+
+        // Initial price display update
+        document.addEventListener('DOMContentLoaded', updatePriceDisplay);
 
         function updatePaymentMethod(method) {
             document.getElementById('bank_instructions').classList.add('hidden');
