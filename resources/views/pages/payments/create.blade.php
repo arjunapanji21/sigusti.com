@@ -16,52 +16,54 @@
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Select Plan</h3>
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach($plans as $plan)
-                            <label class="relative border rounded-lg p-4 flex flex-col cursor-pointer focus-within:ring-2 focus-within:ring-green-500">
-                                <input type="radio" name="plan_id" value="{{ $plan->id }}" class="sr-only" required
-                                    data-original-price="{{ $plan->price }}"
-                                    data-sale-price="{{ $plan->isOnSale() ? $plan->sale_price : $plan->price }}"
-                                    data-yearly-price="{{ $plan->yearly_price }}"
-                                    onchange="updateSelectedPlan(this)">
-                                <span class="flex-1">
-                                    <span class="block text-sm font-medium text-gray-900">{{ $plan->name }}</span>
-                                    @if($plan->isOnSale())
-                                        <span class="mt-1 flex items-center text-sm text-gray-500 price-display">
-                                            <span class="line-through original-price">Rp. {{ number_format($plan->price) }}</span>
-                                            <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                Save {{ $plan->discount_percentage }}%
-                                            </span>
+                           @if(auth()->user()->can('admin-actions') || $plan->price > 0)
+                           <label class="relative border rounded-lg p-4 flex flex-col cursor-pointer focus-within:ring-2 focus-within:ring-green-500">
+                            <input type="radio" name="plan_id" value="{{ $plan->id }}" class="sr-only" required
+                                data-original-price="{{ $plan->price }}"
+                                data-sale-price="{{ $plan->isOnSale() ? $plan->sale_price : $plan->price }}"
+                                data-yearly-price="{{ $plan->yearly_price }}"
+                                onchange="updateSelectedPlan(this)">
+                            <span class="flex-1">
+                                <span class="block text-sm font-medium text-gray-900">{{ $plan->name }}</span>
+                                @if($plan->isOnSale())
+                                    <span class="mt-1 flex items-center text-sm text-gray-500 price-display">
+                                        <span class="line-through original-price">Rp. {{ number_format($plan->price) }}</span>
+                                        <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            Save {{ $plan->discount_percentage }}%
                                         </span>
-                                        <span class="text-lg font-bold text-gray-900 final-price">Rp. {{ number_format($plan->sale_price) }}</span>
-                                    @else
-                                        <span class="text-lg font-bold text-gray-900 final-price">Rp. {{ number_format($plan->price) }}</span>
-                                    @endif
-                                </span>
-                                <span class="mt-4 border-t pt-4">
-                                    <span class="block text-sm text-gray-500">Features:</span>
-                                    <ul class="mt-2 space-y-2 text-sm text-gray-500">
-                                        <li class="flex items-center">
-                                            <svg class="h-4 w-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                            {{ number_format($plan->daily_limit) }} daily messages
-                                        </li>
-                                        <li class="flex items-center">
-                                            <svg class="h-4 w-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                            {{ number_format($plan->monthly_limit) }} monthly messages
-                                        </li>
-                                        <li class="flex items-center">
-                                            <svg class="h-4 w-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                            {{ $plan->max_device }} devices
-                                        </li>
-                                    </ul>
-                                </span>
-                                <!-- Selected indicator -->
-                                <span class="absolute inset-0 rounded-lg ring-2 ring-transparent peer-checked:ring-green-500" aria-hidden="true"></span>
-                            </label>
+                                    </span>
+                                    <span class="text-lg font-bold text-gray-900 final-price">Rp. {{ number_format($plan->sale_price) }}</span>
+                                @else
+                                    <span class="text-lg font-bold text-gray-900 final-price">Rp. {{ number_format($plan->price) }}</span>
+                                @endif
+                            </span>
+                            <span class="mt-4 border-t pt-4">
+                                <span class="block text-sm text-gray-500">Features:</span>
+                                <ul class="mt-2 space-y-2 text-sm text-gray-500">
+                                    <li class="flex items-center">
+                                        <svg class="h-4 w-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        {{ number_format($plan->daily_limit) }} daily messages
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg class="h-4 w-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        {{ number_format($plan->monthly_limit) }} monthly messages
+                                    </li>
+                                    <li class="flex items-center">
+                                        <svg class="h-4 w-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        {{ $plan->max_device }} devices
+                                    </li>
+                                </ul>
+                            </span>
+                            <!-- Selected indicator -->
+                            <span class="absolute inset-0 rounded-lg ring-2 ring-transparent peer-checked:ring-green-500" aria-hidden="true"></span>
+                        </label>
+                           @endif
                         @endforeach
                     </div>
                 </div>

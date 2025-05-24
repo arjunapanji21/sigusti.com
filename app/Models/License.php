@@ -17,6 +17,7 @@ class License extends Model
         'monthly_limit',
         'daily_usage',
         'monthly_usage',
+        'max_device',
         'is_active',
         'last_check'
     ];

@@ -17,7 +17,7 @@ class DashboardController extends Controller
             // Basic Stats
             $totalUsers = User::where('is_admin', false)->count();
             $totalLicenses = License::count();
-            $activeLicenses = License::where('expires_at', '>', now())->count();
+            $activeLicenses = License::where('is_active', true)->count();
             $monthlyRevenue = Payment::whereMonth('created_at', now()->month)
                 ->whereYear('created_at', now()->year)
                 ->where('status', Payment::STATUS_APPROVED)

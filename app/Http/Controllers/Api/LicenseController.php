@@ -15,6 +15,7 @@ class LicenseController extends Controller
             'message' => 'License API is working'
         ]);
     }
+    
     public function verify(Request $request)
     {
         $request->validate([
@@ -57,7 +58,9 @@ class LicenseController extends Controller
         $license->update(['last_check' => now()]);
         $license->activities()->create([
             'activity_type' => 'license_check',
-            'details' => 'License verified from ' . $request->ip()
+            'details' => 'License verified from ' . $request->ip(),
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent()
         ]);
 
         // Reset daily usage if it's a new day
@@ -89,7 +92,6 @@ class LicenseController extends Controller
         $request->validate([
             'license_key' => 'required|string',
             'daily_usage' => 'required|integer|min:0',
-            'monthly_usage' => 'required|integer|min:0'
         ]);
 
         $license = License::where('license_key', $request->license_key)
@@ -103,38 +105,62 @@ class LicenseController extends Controller
             ], 404);
         }
 
+        // Reset daily usage if it's a new day
+        if ($license->last_check && $license->last_check->diffInDays(now()) >= 1) {
+            $license->update(['daily_usage' => 0]);
+        }
+
+        // Reset monthly usage if it's a new month
+        if ($license->last_check && $license->last_check->diffInMonths(now()) >= 1) {
+            $license->update(['monthly_usage' => 0]);
+        }
+
         // Check usage limits
-        if ($request->daily_usage > $license->daily_limit) {
+        if ($license->daily_usage > $license->daily_limit) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Daily usage limit exceeded'
+                'message' => 'Daily usage limit exceeded',
+                'data' => [
+                    'daily_remaining' => $license->daily_limit - $license->daily_usage,
+                    'monthly_remaining' => $license->monthly_limit - $license->monthly_usage
+                ]
             ], 403);
         }
 
-        if ($request->monthly_usage > $license->monthly_limit) {
+        if ($license->monthly_usage > $license->monthly_limit) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Monthly usage limit exceeded'
+                'message' => 'Monthly usage limit exceeded',
+                'data' => [
+                    'daily_remaining' => $license->daily_limit - $license->daily_usage,
+                    'monthly_remaining' => $license->monthly_limit - $license->monthly_usage
+                ]
             ], 403);
         }
+
+        // Modify the values by decreasing from current values
+        $newDailyUsage = $license->daily_usage + $request->daily_usage;
+        $newMonthlyUsage = $license->monthly_usage + $request->daily_usage;
 
         $license->update([
-            'daily_usage' => $request->daily_usage,
-            'monthly_usage' => $request->monthly_usage,
+            'daily_usage' => $newDailyUsage,
+            'monthly_usage' => $newMonthlyUsage,
             'last_check' => now()
         ]);
 
         $license->activities()->create([
             'activity_type' => 'usage_update',
-            'details' => "Usage updated - Daily: {$request->daily_usage}, Monthly: {$request->monthly_usage}"
+            'details' => "Usage updated - Daily: {$request->daily_usage}, Monthly: {$request->monthly_usage}",
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent()
         ]);
 
         return response()->json([
             'status' => 'success',
             'message' => 'Usage updated successfully',
             'data' => [
-                'daily_remaining' => $license->daily_limit - $request->daily_usage,
-                'monthly_remaining' => $license->monthly_limit - $request->monthly_usage
+                'daily_remaining' => $license->daily_limit - $license->daily_usage,
+                'monthly_remaining' => $license->monthly_limit - $license->monthly_usage
             ]
         ]);
     }

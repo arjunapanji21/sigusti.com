@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\LicenseActivity; // Add this import
+use App\Models\LicenseActivity;
+use Illuminate\Support\Facades\Request;
 
 class Payment extends Model
 {
@@ -145,7 +146,9 @@ class Payment extends Model
             // Record activity
             $license->activities()->create([
                 'activity_type' => 'payment_approved',
-                'details' => 'Payment approved and license activated'
+                'details' => 'Payment approved and license activated',
+                'ip_address' => Request::ip(),
+                'user_agent' => Request::userAgent()
             ]);
         }
 

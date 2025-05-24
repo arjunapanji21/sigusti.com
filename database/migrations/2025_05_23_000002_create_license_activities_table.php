@@ -11,6 +11,8 @@ return new class extends Migration
         Schema::create('license_activities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('license_id')->constrained()->onDelete('cascade');
+            $table->string('ip_address');
+            $table->string('user_agent')->nullable();
             $table->string('activity_type');
             $table->text('details')->nullable();
             $table->timestamps();

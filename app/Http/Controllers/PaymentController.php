@@ -23,9 +23,7 @@ class PaymentController extends Controller
     public function create()
     {
         // get active plans except for the one with id 1
-        $plans = Plan::active()
-            ->where('id', '!=', 1)
-            ->orderBy('price')
+        $plans = Plan::active()->orderBy('price')
             ->get();
         $pendingPayment = Payment::where('user_id', auth()->id())
             ->where('status', Payment::STATUS_PENDING_PAYMENT)
@@ -171,6 +169,12 @@ class PaymentController extends Controller
 
     public function reject(Payment $payment)
     {
+        // remove the license if it exists
+        if ($payment->license) {
+            $payment->license->delete();
+        }
+        // update the payment status
+        $payment->license_id = null; // remove the license association
         $payment->update(['status' => 'rejected']);
         return back()->with('success', 'Payment rejected successfully');
     }

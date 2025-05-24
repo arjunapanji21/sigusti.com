@@ -29,12 +29,28 @@ class LicenseController extends Controller
     public function activate(License $license)
     {
         $license->update(['is_active' => true]);
+        
+        $license->activities()->create([
+            'activity_type' => 'license_activated',
+            'details' => 'License activated by administrator',
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent()
+        ]);
+        
         return back()->with('success', 'License activated successfully');
     }
 
     public function deactivate(License $license)
     {
         $license->update(['is_active' => false]);
+        
+        $license->activities()->create([
+            'activity_type' => 'license_deactivated',
+            'details' => 'License deactivated by administrator',
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent()
+        ]);
+        
         return back()->with('success', 'License deactivated successfully');
     }
 }
