@@ -9,6 +9,12 @@ use Carbon\Carbon;
 
 class LicenseController extends Controller
 {
+    public function test(){
+        return response()->json([
+            'status' => 'success',
+            'message' => 'License API is working'
+        ]);
+    }
     public function verify(Request $request)
     {
         $request->validate([
