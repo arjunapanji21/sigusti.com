@@ -125,11 +125,22 @@ class PaymentController extends Controller
 
         if ($request->hasFile('proof')) {
             try {
-                $path = $request->file('proof')->store('payment-proofs', 'public');
+                $file = $request->file('proof');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                
+                // Create uploads directory if it doesn't exist
+                $uploadPath = public_path('uploads/payment_proofs');
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
+                }
+                
+                // Move file directly to public folder
+                $file->move($uploadPath, $filename);
+                $path = 'uploads/payment_proofs/' . $filename;
                 
                 $payment->update([
                     'proof_of_payment' => $path,
-                    'status' => Payment::STATUS_PENDING_APPROVAL // Changed from STATUS_WAITING_APPROVAL
+                    'status' => Payment::STATUS_PENDING_APPROVAL
                 ]);
 
                 if ($payment->license) {
