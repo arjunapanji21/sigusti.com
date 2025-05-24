@@ -102,7 +102,7 @@
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Proof of Payment</h3>
                     <div class="relative rounded-lg overflow-hidden bg-gray-100" style="max-width: 600px">
-                        <img src="{{ asset($payment->proof_of_payment) }}" 
+                        <img src="{{ Storage::url($payment->proof_of_payment) }}" 
                              alt="Payment Proof" 
                              class="w-full h-auto"
                              style="max-height: 400px; object-fit: contain;">
