@@ -73,6 +73,29 @@ class LicenseController extends Controller
             $license->update(['monthly_usage' => 0]);
         }
 
+        // Check usage limits
+        if ($license->daily_usage > $license->daily_limit) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Daily usage limit exceeded',
+                'data' => [
+                    'daily_remaining' => $license->daily_limit - $license->daily_usage,
+                    'monthly_remaining' => $license->monthly_limit - $license->monthly_usage
+                ]
+            ], 403);
+        }
+
+        if ($license->monthly_usage > $license->monthly_limit) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Monthly usage limit exceeded',
+                'data' => [
+                    'daily_remaining' => $license->daily_limit - $license->daily_usage,
+                    'monthly_remaining' => $license->monthly_limit - $license->monthly_usage
+                ]
+            ], 403);
+        }
+
         return response()->json([
             'status' => 'success',
             'data' => [
@@ -150,7 +173,7 @@ class LicenseController extends Controller
 
         $license->activities()->create([
             'activity_type' => 'usage_update',
-            'details' => "Usage updated - Daily: {$request->daily_usage}, Monthly: {$request->monthly_usage}",
+            'details' => "Usage updated - sent {$request->daily_usage} messages.",
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
