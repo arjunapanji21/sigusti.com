@@ -4,31 +4,74 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadController extends Controller
 {
+    private $filepath = 'downloads/AutoWhatsAppWeb_Setup_v1.0.exe';
+
     public function index()
     {
-        return view('pages.download');
+        $fileDetails = $this->getFileDetails();
+        return view('pages.download', $fileDetails);
     }
 
-    public function download(): StreamedResponse
+    public function download(): BinaryFileResponse 
     {
-        $filepath = storage_path('app/public/downloads/AutoWhatsAppWeb_Setup_v1.0.exe');
+        $filepath = 'downloads/AutoWhatsAppWeb_Setup_v1.0.exe';
         
-        if (!file_exists($filepath)) {
+        if (!Storage::disk('public')->exists($filepath)) {
             abort(404, 'The software installer could not be found. Please contact support.');
         }
 
-        $headers = [
-            'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => 'attachment; filename="AutoWhatsAppWeb_Setup_v1.0.exe"',
-            'Pragma' => 'public',
-            'Cache-Control' => 'must-revalidate',
-            'Content-Length' => filesize($filepath)
-        ];
+        $filename = basename(Storage::disk('public')->path($filepath));
 
-        return response()->download($filepath, 'AutoWhatsAppWeb_Setup_v1.0.exe', $headers);
+        return response()->download(
+            Storage::disk('public')->path($filepath), 
+            $filename,
+            [
+                'Content-Type' => 'application/octet-stream',
+                'Content-Disposition' => 'attachment',
+                'Pragma' => 'public',
+                'Cache-Control' => 'must-revalidate'
+            ]
+        );
+    }
+
+    private function getFileDetails(): array
+    {
+        $filepath = storage_path('app/public/' . $this->filepath);
+        
+        if (!file_exists($filepath)) {
+            return [
+                'fileExists' => false,
+                'fileSize' => '0 MB',
+                'lastModified' => now(),
+                'version' => '1.0.0'
+            ];
+        }
+
+        return [
+            'fileExists' => true,
+            'fileSize' => $this->formatFileSize(filesize($filepath)),
+            'lastModified' => date("F d, Y", filemtime($filepath)),
+            'version' => $this->getVersionFromFilename(basename($filepath))
+        ];
+    }
+
+    private function formatFileSize($bytes): string
+    {
+        if ($bytes >= 1048576) {
+            return number_format($bytes / 1048576, 1) . ' MB';
+        }
+        return number_format($bytes / 1024, 1) . ' KB';
+    }
+
+    private function getVersionFromFilename($filename): string
+    {
+        if (preg_match('/v(\d+\.\d+(\.\d+)?)/', $filename, $matches)) {
+            return $matches[1];
+        }
+        return '1.0.0';
     }
 }

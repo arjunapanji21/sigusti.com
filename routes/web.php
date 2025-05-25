@@ -107,7 +107,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/support', [SupportController::class, 'store'])->name('support.store');
 
     // Download routes
-    Route::prefix('download')->name('download.')->middleware(['auth', 'valid.license'])->group(function () {
+    Route::prefix('download')->name('download.')->middleware(['auth'])->group(function () {
         Route::get('/', [DownloadController::class, 'index'])->name('index');
         Route::get('/file', [DownloadController::class, 'download'])->name('file');
     });
