@@ -60,9 +60,9 @@
 
                 <p class="text-center text-sm text-gray-600">
                     By creating an account, you agree to our
-                    <a href="#" class="text-green-600 hover:text-green-700">Terms of Service</a>
+                    <a href="{{route('terms')}}" class="text-green-600 hover:text-green-700">Terms of Service</a>
                     and
-                    <a href="#" class="text-green-600 hover:text-green-700">Privacy Policy</a>
+                    <a href="{{route('privacy')}}" class="text-green-600 hover:text-green-700">Privacy Policy</a>
                 </p>
             </form>
 

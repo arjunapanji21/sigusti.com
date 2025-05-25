@@ -39,8 +39,11 @@
             <aside class="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 z-30 hidden lg:block">
                 <div class="flex flex-col h-full">
                     <!-- Logo -->
-                    <div class="h-16 flex items-center justify-center border-b border-gray-200">
-                        <img src="{{ asset('images/logo.svg') }}" alt="Logo" class="h-8 w-auto">
+                    <div class="h-16 flex items-center justify-center border-b border-gray-200 px-4">
+                        <div class="flex items-center space-x-3">
+                            <img src="{{ asset('logo.png') }}" alt="Logo" class="h-8 w-auto">
+                            <h3 class="text-lg font-semibold text-gray-800">AutoWhatsApp.Web.id</h3>
+                        </div>
                     </div>
                     
                     <!-- Navigation -->
@@ -139,7 +142,9 @@
                     <div class="border-t border-gray-200 p-4">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <img class="h-8 w-8 rounded-full" src="{{ auth()->user()->profile_photo_url }}" alt="">
+                                <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                    <span class="text-gray-600 font-medium text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                                </div>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-700">{{ auth()->user()->name }}</p>
@@ -166,7 +171,9 @@
                         <button type="button" 
                                 @click="profileOpen = !profileOpen" 
                                 class="flex items-center text-gray-500 hover:text-gray-600">
-                            <img class="h-8 w-8 rounded-full" src="{{ auth()->user()->profile_photo_url }}" alt="">
+                            <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                <span class="text-gray-600 font-medium text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                            </div>
                         </button>
                         <div x-show="profileOpen"
                              @click.outside="profileOpen = false"
@@ -204,8 +211,9 @@
                 <div class="absolute inset-0 bg-gray-600 opacity-75"></div>
                 <div class="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 z-50">
                     <!-- Add close button -->
-                    <div class="flex justify-between p-4">
-                        <img src="{{ asset('images/logo.svg') }}" alt="Logo" class="h-8 w-auto">
+                    <div class="flex items-center justify-between p-4">
+                        <img src="{{ asset('logo.png') }}" alt="Logo" class="h-8 w-auto">
+                            <h3 class="text-sm font-semibold text-gray-800">AutoWhatsApp.Web.id</h3>
                         <button @click="mobileMenu = false" class="text-gray-500 hover:text-gray-700">
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -292,7 +300,9 @@
                     <div class="border-t border-gray-200 p-4">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <img class="h-8 w-8 rounded-full" src="{{ auth()->user()->profile_photo_url }}" alt="">
+                                <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                    <span class="text-gray-600 font-medium text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                                </div>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-700">{{ auth()->user()->name }}</p>

@@ -68,4 +68,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Payment::class);
     }
+    
+    public function hasValidLicense(): bool
+    {
+        return $this->licenses()
+            ->where('is_active', true)
+            ->where('expires_at', '>', now())
+            ->exists();
+    }
 }

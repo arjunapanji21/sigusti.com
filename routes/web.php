@@ -14,9 +14,14 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\LegalController;
 
 // Public routes
 Route::get('/', [LandingController::class, 'index'])->name('landing');
+
+// Add legal routes
+Route::get('/terms', [LegalController::class, 'terms'])->name('terms');
+Route::get('/privacy', [LegalController::class, 'privacy'])->name('privacy');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
