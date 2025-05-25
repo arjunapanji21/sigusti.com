@@ -84,7 +84,7 @@
             <div class="flex justify-between h-16">
                 <div class="flex-shrink-0 flex items-center">
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/logo.svg') }}" alt="Logo" class="h-8 w-auto">
+                        <img src="{{ asset('logo.png') }}" alt="Logo" class="h-8 w-auto">
                         <h1 class="text-xl md:text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">WhatsApp Web Auto</h1>
                     </div>
                 </div>
@@ -141,14 +141,14 @@
                     <p class="mt-6 text-xl md:text-2xl text-white opacity-90 max-w-3xl mx-auto">
                         Streamline your messaging workflow with powerful automation tools
                     </p>
-                    <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="{{route('register')}}" class="inline-flex items-center px-8 py-4 rounded-lg text-green-600 bg-white hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center text-center sm:text-left">
+                        <a href="{{route('register')}}" class="inline-flex items-center justify-center sm:justify-start px-8 py-4 rounded-lg text-green-600 bg-white hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
                             <span class="text-lg font-semibold">Get Started Free</span>
                             <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                             </svg>
                         </a>
-                        <a href="#about" class="inline-flex items-center px-8 py-4 rounded-lg text-white border-2 border-white hover:bg-white/10 transition-all duration-300">
+                        <a href="#about" class="inline-flex items-center justify-center sm:justify-start px-8 py-4 rounded-lg text-white border-2 border-white hover:bg-white/10 transition-all duration-300">
                             <span class="text-lg font-semibold">Learn More</span>
                         </a>
                     </div>
@@ -191,8 +191,11 @@
                         </div>
                     </div>
                     <div class="mt-10 lg:mt-0">
-                        <img class="rounded-lg shadow-xl" src="https://placehold.co/600x400" alt="WhatsApp Web Auto Interface">
+                        <img class="rounded-lg shadow-xl" src="{{asset('screenshots/main-menu.png')}}" alt="Auto WhatsApp Web Main Menu">
                     </div>
+                </div>
+                <div class="w-full pt-10 lg:pt-20 flex justify-center items-center">
+                    <img class="shadow-xl" src="{{asset('screenshots/main-window.png')}}" alt="Auto WhatsApp Web Interface">
                 </div>
             </div>
         </div>
@@ -202,10 +205,10 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center" data-aos="fade-up">
                     <h2 class="text-3xl md:text-4xl font-extrabold gradient-text">
-                        Powerful Features
+                        Powerful Bulk Messaging Solution
                     </h2>
                     <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
-                        Everything you need to automate and streamline your WhatsApp messaging
+                        Send thousands of messages daily with our intelligent anti-ban technology
                     </p>
                 </div>
                 
@@ -217,28 +220,53 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900">Automated Responses</h3>
-                        <p class="mt-2 text-gray-600">Set up automatic replies for common messages and save time.</p>
+                        <h3 class="text-xl font-semibold text-gray-900">High-Volume Messaging</h3>
+                        <p class="mt-2 text-gray-600">Send up to 10,000 messages per day with our optimized delivery system. Perfect for large-scale campaigns.</p>
                     </div>
                     <!-- Feature 2 -->
                     <div class="bg-white p-8 rounded-xl shadow-md card-hover" data-aos="fade-up" data-aos-delay="200">
                         <div class="text-green-600 mb-4">
                             <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900">Message Scheduling</h3>
-                        <p class="mt-2 text-gray-600">Schedule messages to be sent at specific times and dates.</p>
+                        <h3 class="text-xl font-semibold text-gray-900">Advanced Safety Features</h3>
+                        <p class="mt-2 text-gray-600">Our intelligent system mimics human behavior to keep your account safe. Lowest ban rate in the industry.</p>
                     </div>
                     <!-- Feature 3 -->
                     <div class="bg-white p-8 rounded-xl shadow-md card-hover" data-aos="fade-up" data-aos-delay="300">
                         <div class="text-green-600 mb-4">
                             <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900">Analytics</h3>
-                        <p class="mt-2 text-gray-600">Track message statistics and engagement metrics.</p>
+                        <h3 class="text-xl font-semibold text-gray-900">Simple Yet Powerful</h3>
+                        <p class="mt-2 text-gray-600">Start sending bulk messages in minutes with our intuitive interface. No technical skills required.</p>
+                    </div>
+                </div>
+
+                <!-- Added Benefits Section -->
+                <div class="mt-16 text-center">
+                    <div class="inline-flex items-center px-4 py-2 bg-green-50 rounded-full">
+                        <span class="text-green-600 font-medium">Why Choose Us?</span>
+                    </div>
+                    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="p-4">
+                            <div class="text-4xl font-bold text-green-600">99.9%</div>
+                            <p class="mt-2 text-gray-600">Delivery Success Rate</p>
+                        </div>
+                        <div class="p-4">
+                            <div class="text-4xl font-bold text-green-600">&lt;0.1%</div>
+                            <p class="mt-2 text-gray-600">Account Ban Rate</p>
+                        </div>
+                        <div class="p-4">
+                            <div class="text-4xl font-bold text-green-600">10K+</div>
+                            <p class="mt-2 text-gray-600">Messages Per Day</p>
+                        </div>
+                        <div class="p-4">
+                            <div class="text-4xl font-bold text-green-600">24/7</div>
+                            <p class="mt-2 text-gray-600">Technical Support</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -248,7 +276,7 @@
         <div id="pricing" class="py-12 md:py-16 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
-                    <h2 class="text-3xl font-extrabold text-gray-900">Simple, Transparent Pricing</h2>
+                    <h2 class="text-3xl md:text-4xl font-extrabold gradient-text">Affordable Plans for Everyone</h2>
                     <p class="mt-4 text-lg text-gray-600">Choose the plan that best fits your needs</p>
                     
                     <!-- Billing Toggle -->
@@ -352,63 +380,112 @@
                 </div>
             </div>
         </div>
+        
         <!-- Testimonials Section -->
         <div id="testimonials" class="bg-gray-100 py-12 md:py-16">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
-                    <h2 class="text-3xl font-extrabold text-gray-900">
-                        What Our Users Say
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">
+                        Dipercaya oleh 1000+ Pebisnis Indonesia
                     </h2>
                     <p class="mt-4 text-lg text-gray-600">
-                        See how WhatsApp Web Auto has transformed the messaging experience for our users
+                        Bergabung dengan ribuan pebisnis sukses yang telah meningkatkan omset mereka dengan Auto WhatsApp Web
                     </p>
+                    <div class="mt-6 flex justify-center gap-8 text-sm text-gray-500">
+                        <div>
+                            <span class="block text-2xl font-bold text-green-600">50.000+</span>
+                            Pesan Terkirim/Hari
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-bold text-green-600">97%</span>
+                            Tingkat Kepuasan
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-bold text-green-600">24/7</span>
+                            Dukungan Teknis
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    <!-- Testimonial 1 -->
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <div class="flex items-center">
-                            <div class="h-12 w-12 rounded-full bg-green-500 flex items-center justify-center text-white mr-4">
-                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold">John Doe</h4>
-                                <p class="text-gray-500">Business Owner</p>
+                <div class="mt-12" x-data="{ 
+                    currentSlide: 0,
+                    autoplayInterval: null,
+                    testimonials: [
+                        { initials: 'BS', name: 'Budi Santoso', role: 'Pemilik Toko Online', text: 'Software ini sangat membantu bisnis saya dalam mengirim pesan ke ribuan pelanggan. Fitur blast messagenya mantap!' },
+                        { initials: 'DW', name: 'Dewi Wijaya', role: 'Marketing Manager F&B', text: 'Sangat aman digunakan, dalam sebulan bisa kirim puluhan ribu pesan tanpa kendala. CS nya juga responsive!' },
+                        { initials: 'AF', name: 'Ahmad Fadillah', role: 'Dropshipper', text: 'Gak nyesel subscribe premium. Fitur blast message bisa kirim ribuan pesan sekaligus dan ada laporan status delivery. Worth it banget!' },
+                        { initials: 'RS', name: 'Rudi Setiawan', role: 'Owner UMKM', text: 'Aplikasinya ringan dan mudah digunakan. Bisa broadcast ke semua pelanggan dengan sekali klik!' },
+                        { initials: 'NH', name: 'Nia Handayani', role: 'Social Media Manager', text: 'Fitur importnya keren, bisa langsung kirim ke banyak nomor sekaligus. Sangat membantu untuk campaign marketing.' },
+                        { initials: 'IP', name: 'Irfan Pratama', role: 'E-commerce Seller', text: 'Recommended banget buat yang jualan online. Follow up customer jadi lebih gampang dan cepat.' },
+                        { initials: 'SM', name: 'Siti Maryam', role: 'Business Owner', text: 'Customer service jadi lebih efisien, bisa handle banyak chat sekaligus. Top markotop!' },
+                        { initials: 'HG', name: 'Hendra Gunawan', role: 'Digital Marketing', text: 'Value for money banget. Investasi yang worth it untuk scaling bisnis online.' }
+                    ],
+                    init() {
+                        this.startAutoplay();
+                        this.$watch('currentSlide', () => {
+                            // Reset autoplay timer when manually navigating
+                            this.resetAutoplay();
+                        });
+                    },
+                    startAutoplay() {
+                        this.autoplayInterval = setInterval(() => {
+                            this.nextSlide();
+                        }, 5000); // Change slide every 5 seconds
+                    },
+                    resetAutoplay() {
+                        clearInterval(this.autoplayInterval);
+                        this.startAutoplay();
+                    },
+                    nextSlide() {
+                        this.currentSlide = (this.currentSlide >= this.testimonials.length - 3) ? 0 : this.currentSlide + 1;
+                    },
+                    prevSlide() {
+                        this.currentSlide = (this.currentSlide <= 0) ? this.testimonials.length - 3 : this.currentSlide - 1;
+                    }
+                }" @mouseleave="startAutoplay()" @mouseenter="clearInterval(autoplayInterval)">
+                    <div class="relative">
+                        <!-- Slider container -->
+                        <div class="overflow-hidden">
+                            <div class="flex transition-transform duration-500 ease-in-out" :style="{ transform: `translateX(-${currentSlide * 33.333}%)` }">
+                                <template x-for="(testimonial, index) in testimonials" :key="index">
+                                    <div class="w-full lg:w-1/3 flex-shrink-0 px-3">
+                                        <div class="bg-white p-6 rounded-lg shadow h-full">
+                                            <div class="flex items-center">
+                                                <div class="h-12 w-12 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white mr-4 font-bold text-lg" x-text="testimonial.initials"></div>
+                                                <div>
+                                                    <h4 class="font-semibold" x-text="testimonial.name"></h4>
+                                                    <p class="text-gray-500" x-text="testimonial.role"></p>
+                                                </div>
+                                            </div>
+                                            <p class="mt-4 text-gray-600" x-text="testimonial.text"></p>
+                                        </div>
+                                    </div>
+                                </template>
                             </div>
                         </div>
-                        <p class="mt-4 text-gray-600">"This tool has saved me hours of repetitive work. Highly recommended!"</p>
-                    </div>
-                    <!-- Testimonial 2 -->
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <div class="flex items-center">
-                            <div class="h-12 w-12 rounded-full bg-green-500 flex items-center justify-center text-white mr-4">
-                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold">Jane Smith</h4>
-                                <p class="text-gray-500">Marketing Manager</p>
-                            </div>
+                        
+                        <!-- Navigation buttons -->
+                        <button @click="prevSlide()" 
+                                class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white p-2 rounded-full shadow-lg text-gray-800 hover:bg-gray-50">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
+                        <button @click="nextSlide()"
+                                class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white p-2 rounded-full shadow-lg text-gray-800 hover:bg-gray-50">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- Dots indicator with active state -->
+                        <div class="flex justify-center mt-8 space-x-2">
+                            <template x-for="(dot, index) in Math.ceil(testimonials.length/3)" :key="index">
+                                <button @click="currentSlide = index * 3"
+                                        class="w-3 h-3 rounded-full transition-colors duration-200"
+                                        :class="Math.floor(currentSlide/3) === index ? 'bg-green-600' : 'bg-gray-300'"></button>
+                            </template>
                         </div>
-                        <p class="mt-4 text-gray-600">"The automation features are incredible. Perfect for my business needs."</p>
-                    </div>
-                    <!-- Testimonial 3 -->
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <div class="flex items-center">
-                            <div class="h-12 w-12 rounded-full bg-green-500 flex items-center justify-center text-white mr-4">
-                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold">Mike Johnson</h4>
-                                <p class="text-gray-500">Freelancer</p>
-                            </div>
-                        </div>
-                        <p class="mt-4 text-gray-600">"Easy to use and very reliable. Customer support is excellent!"</p>
                     </div>
                 </div>
             </div>
@@ -424,7 +501,7 @@
                     Download WhatsApp Web Auto now and transform your messaging experience
                 </p>
                 <div class="mt-8">
-                    <a href="#" class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
+                    <a href="{{route('login')}}" class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
                         Download for Windows
                         <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -438,7 +515,7 @@
         <footer class="bg-gray-800">
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 <div class="text-center text-gray-400">
-                    <p>&copy; 2023 WhatsApp Web Auto. All rights reserved.</p>
+                    <p>&copy; {{date('Y')}} autowhatsapp.web.id. All rights reserved.</p>
                 </div>
             </div>
         </footer>

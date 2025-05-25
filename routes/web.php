@@ -13,6 +13,7 @@ use App\Http\Controllers\LicenseController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\DownloadController;
 
 // Public routes
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -99,4 +100,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/support', [SupportController::class, 'index'])->name('support');
     Route::post('/support', [SupportController::class, 'store'])->name('support.store');
+
+    // Download routes
+    Route::prefix('download')->name('download.')->middleware(['auth', 'valid.license'])->group(function () {
+        Route::get('/', [DownloadController::class, 'index'])->name('index');
+        Route::get('/file', [DownloadController::class, 'download'])->name('file');
+    });
 });

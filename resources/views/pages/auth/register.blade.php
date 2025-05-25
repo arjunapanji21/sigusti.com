@@ -3,7 +3,7 @@
         <div class="w-full sm:max-w-md px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-xl">
             <div class="mb-8 text-center">
                 <div class="flex justify-center mb-4">
-                    <img src="{{ asset('images/logo.svg') }}" alt="Logo" class="h-12 w-auto">
+                    <img src="{{ asset('logo.png') }}" alt="Logo" class="h-12 w-auto">
                 </div>
                 <h2 class="text-2xl font-bold text-gray-900">Create your account</h2>
                 <p class="text-gray-600 mt-2">Start your 14-day free trial</p>
