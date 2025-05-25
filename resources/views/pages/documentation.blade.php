@@ -17,9 +17,35 @@
     </div>
 
     <div class="px-4 py-6 sm:px-0">
-        <div class="flex gap-6">
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Sidebar Navigation - Move to top on mobile -->
+            <div class="w-full lg:w-64 lg:flex-shrink-0 order-2 lg:order-1">
+                <div class="bg-white rounded-lg shadow p-4 sticky top-6">
+                    <nav class="space-y-1">
+                        <a href="#getting-started" class="flex items-center px-3 py-2 text-sm font-medium text-blue-600 rounded-md bg-blue-50">
+                            Getting Started
+                        </a>
+                        <a href="#license-management" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+                            License Management
+                        </a>
+                        <a href="#usage-limits" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+                            Usage Limits
+                        </a>
+                        <a href="#troubleshooting" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+                            Troubleshooting
+                        </a>
+                        <a href="#installation" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+                            Installation Guide
+                        </a>
+                        <a href="#user-manual" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+                            User Manual
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
             <!-- Main Content -->
-            <div class="flex-1">
+            <div class="flex-1 order-1 lg:order-2">
                 <div class="bg-white rounded-lg shadow p-6">
                     <div class="prose max-w-none">
                         <section id="getting-started">
@@ -136,35 +162,6 @@
                             </div>
                         </section>
 
-                        <section id="api-integration" class="mt-12">
-                            <h2 class="text-2xl font-semibold text-gray-900">API Integration</h2>
-                            <div class="mt-6 space-y-6">
-                                <div class="bg-gray-900 rounded-lg p-4 text-white">
-                                    <p class="text-sm font-semibold mb-2">License Verification Endpoint</p>
-                                    <pre class="text-sm font-mono overflow-x-auto"><code>POST /api/license/verify
-{
-    "license_key": "your-license-key"
-}</code></pre>
-                                </div>
-
-                                <div class="bg-gray-900 rounded-lg p-4 text-white">
-                                    <p class="text-sm font-semibold mb-2">Usage Update Endpoint</p>
-                                    <pre class="text-sm font-mono overflow-x-auto"><code>POST /api/license/update-usage
-{
-    "license_key": "your-license-key",
-    "daily_usage": 100,
-    "monthly_usage": 2500
-}</code></pre>
-                                </div>
-
-                                <div class="bg-blue-50 border-l-4 border-blue-400 p-4">
-                                    <p class="text-sm text-blue-700">
-                                        All API requests require a valid license key. Keep your key secure and never share it publicly.
-                                    </p>
-                                </div>
-                            </div>
-                        </section>
-
                         <section id="troubleshooting" class="mt-12">
                             <h2 class="text-2xl font-semibold text-gray-900">Troubleshooting</h2>
                             <div class="mt-6 space-y-6">
@@ -227,30 +224,71 @@
                                 </div>
                             </div>
                         </section>
+
+                        <section id="installation" class="mt-12">
+                            <h2 class="text-2xl font-semibold text-gray-900">Installation Guide</h2>
+                            <div class="mt-6 space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                        <h3 class="font-medium text-gray-900">System Requirements</h3>
+                                        <ul class="mt-2 list-disc list-inside space-y-2 text-gray-600">
+                                            <li>Windows 10/11 (64-bit)</li>
+                                            <li>4GB RAM minimum</li>
+                                            <li>Chrome browser installed</li>
+                                            <li>Active internet connection</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                        <h3 class="font-medium text-gray-900">Download & Setup</h3>
+                                        <ol class="mt-2 list-decimal list-inside space-y-2 text-gray-600">
+                                            <li>Download the installer package</li>
+                                            <li>Run as administrator</li>
+                                            <li>Follow installation wizard</li>
+                                            <li>Enter license key when prompted</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="user-manual" class="mt-12">
+                            <h2 class="text-2xl font-semibold text-gray-900">User Manual</h2>
+                            <div class="mt-6 space-y-6">
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <h3 class="font-medium text-gray-900">Getting Started</h3>
+                                    <ol class="mt-2 list-decimal list-inside space-y-2 text-gray-600">
+                                        <li>Launch the application</li>
+                                        <li>Scan QR code with WhatsApp mobile</li>
+                                        <li>Configure automation settings</li>
+                                        <li>Start automation process</li>
+                                    </ol>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                        <h3 class="font-medium text-gray-900">Key Features</h3>
+                                        <ul class="mt-2 list-disc list-inside space-y-2 text-gray-600">
+                                            <li>Bulk message sending</li>
+                                            <li>Contact management</li>
+                                            <li>Message templates</li>
+                                            <li>Scheduled sending</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                        <h3 class="font-medium text-gray-900">Best Practices</h3>
+                                        <ul class="mt-2 list-disc list-inside space-y-2 text-gray-600">
+                                            <li>Respect sending limits</li>
+                                            <li>Use message delays</li>
+                                            <li>Keep software updated</li>
+                                            <li>Regular backup contacts</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Existing sections... -->
                     </div>
-                </div>
-            </div>
-            
-            <!-- Sidebar Navigation -->
-            <div class="w-64 flex-shrink-0">
-                <div class="bg-white rounded-lg shadow p-4 sticky top-6">
-                    <nav class="space-y-1">
-                        <a href="#getting-started" class="flex items-center px-3 py-2 text-sm font-medium text-blue-600 rounded-md bg-blue-50">
-                            Getting Started
-                        </a>
-                        <a href="#license-management" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
-                            License Management
-                        </a>
-                        <a href="#usage-limits" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
-                            Usage Limits
-                        </a>
-                        <a href="#api-integration" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
-                            API Integration
-                        </a>
-                        <a href="#troubleshooting" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
-                            Troubleshooting
-                        </a>
-                    </nav>
                 </div>
             </div>
         </div>
@@ -270,27 +308,32 @@
         });
     });
 
-    // Highlight active section in sidebar
+    // Enhanced scroll spy for better mobile support
     function updateActiveSection() {
         const sections = document.querySelectorAll('.prose section');
         const navLinks = document.querySelectorAll('nav a');
         
+        let currentSection = '';
+        
         sections.forEach(section => {
-            const rect = section.getBoundingClientRect();
-            if (rect.top <= 100 && rect.bottom >= 100) {
-                const id = section.id;
-                navLinks.forEach(link => {
-                    const href = link.getAttribute('href').substring(1);
-                    if (href === id) {
-                        link.classList.add('text-blue-600', 'bg-blue-50');
-                    } else {
-                        link.classList.remove('text-blue-600', 'bg-blue-50');
-                    }
-                });
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (window.scrollY >= (sectionTop - 150)) {
+                currentSection = section.id;
+            }
+        });
+
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href').substring(1);
+            link.classList.remove('text-blue-600', 'bg-blue-50');
+            if (href === currentSection) {
+                link.classList.add('text-blue-600', 'bg-blue-50');
             }
         });
     }
 
     window.addEventListener('scroll', updateActiveSection);
+    window.addEventListener('resize', updateActiveSection);
+    document.addEventListener('DOMContentLoaded', updateActiveSection);
 </script>
 @endsection
