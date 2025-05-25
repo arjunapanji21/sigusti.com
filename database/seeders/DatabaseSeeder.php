@@ -73,8 +73,8 @@ class DatabaseSeeder extends Seeder
         Plan::create([
             'name' => 'Basic',
             'description' => 'Cocok untuk penggunaan pribadi',
-            'price' => 60000,
-            'discount_percentage' => 0,
+            'price' => 69000,
+            'discount_percentage' => 20,
             'duration_days' => 30,
             'daily_limit' => 2000,
             'monthly_limit' => 30000,
@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
         Plan::create([
             'name' => 'Premium',
             'description' => 'Cocok untuk penggunaan pribadi dan bisnis skala kecil',
-            'price' => 180000,
+            'price' => 69000*3,
             'discount_percentage' => 40,
             'duration_days' => 30,
             'daily_limit' => 6000,
@@ -95,8 +95,8 @@ class DatabaseSeeder extends Seeder
         Plan::create([
             'name' => 'Business',
             'description' => 'Cocok untuk penggunaan bisnis skala besar',
-            'price' => 360000,
-            'discount_percentage' => 0,
+            'price' => 69000*6,
+            'discount_percentage' => 20,
             'duration_days' => 30,
             'daily_limit' => 9000,
             'monthly_limit' => 180000,
