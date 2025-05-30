@@ -77,8 +77,16 @@
             </div>
         </div>
 
+        <!-- Revenue Chart -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Revenue Trend</h3>
+            <div class="h-80">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+
         <!-- Analytics Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Recent Activity -->
             <div class="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Recent Users -->
@@ -89,7 +97,9 @@
                     <div class="divide-y divide-gray-200">
                         @foreach($recentUsers as $user)
                             <div class="p-4 flex items-center">
-                                <img class="h-10 w-10 rounded-full" src="{{ $user->profile_photo_url }}" alt="">
+                                <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <span class="text-blue-600 font-medium text-sm">{{ substr($user->name, 0, 1) }}</span>
+                                </div>
                                 <div class="ml-3">
                                     <p class="text-sm font-medium text-gray-900">{{ $user->name }}</p>
                                     <p class="text-sm text-gray-500">{{ $user->email }}</p>
@@ -124,45 +134,45 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Quick Stats -->
-            <div class="bg-white shadow rounded-lg p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">System Health</h3>
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between mb-1">
-                            <span class="text-sm text-gray-500">Server Load</span>
-                            <span class="text-sm font-medium text-gray-900">{{ $serverLoad }}%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: {{ $serverLoad }}%"></div>
-                        </div>
+        <!-- Quick Stats -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">System Health</h3>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm text-gray-500">Server Load</span>
+                        <span class="text-sm font-medium text-gray-900">{{ $serverLoad }}%</span>
                     </div>
-                    <div>
-                        <div class="flex justify-between mb-1">
-                            <span class="text-sm text-gray-500">API Usage</span>
-                            <span class="text-sm font-medium text-gray-900">{{ number_format($apiRequests) }} reqs/min</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-green-600 h-2 rounded-full" style="width: {{ min(($apiRequests / 1000) * 100, 100) }}%"></div>
-                        </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: {{ $serverLoad }}%"></div>
                     </div>
                 </div>
-
-                <!-- Recent Events -->
-                <div class="mt-6">
-                    <h4 class="text-sm font-medium text-gray-500 mb-3">Recent Events</h4>
-                    <div class="space-y-3">
-                        @foreach($systemEvents as $event)
-                        <div class="flex items-start">
-                            <span class="flex-shrink-0 w-2 h-2 mt-1.5 rounded-full {{ $event->type === 'error' ? 'bg-red-600' : 'bg-green-600' }}"></span>
-                            <div class="ml-3">
-                                <p class="text-sm text-gray-600">{{ $event->message }}</p>
-                                <p class="text-xs text-gray-400">{{ $event->created_at->diffForHumans() }}</p>
-                            </div>
-                        </div>
-                        @endforeach
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm text-gray-500">API Usage</span>
+                        <span class="text-sm font-medium text-gray-900">{{ number_format($apiRequests) }} reqs/min</span>
                     </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-600 h-2 rounded-full" style="width: {{ min(($apiRequests / 1000) * 100, 100) }}%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Events -->
+            <div class="mt-6">
+                <h4 class="text-sm font-medium text-gray-500 mb-3">Recent Events</h4>
+                <div class="space-y-3">
+                    @foreach($systemEvents as $event)
+                    <div class="flex items-start">
+                        <span class="flex-shrink-0 w-2 h-2 mt-1.5 rounded-full {{ $event->type === 'error' ? 'bg-red-600' : 'bg-green-600' }}"></span>
+                        <div class="ml-3">
+                            <p class="text-sm text-gray-600">{{ $event->message }}</p>
+                            <p class="text-xs text-gray-400">{{ $event->created_at->diffForHumans() }}</p>
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -188,7 +198,9 @@
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <img class="h-8 w-8 rounded-full" src="{{ $payment->user->profile_photo_url }}" alt="">
+                                    <div class="h-8 w-8 rounded-full bg-green-600 flex items-center justify-center">
+                                        <span class="text-white text-sm font-medium">{{ substr($payment->user->name, 0, 1) }}</span>
+                                    </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900">{{ $payment->user->name }}</div>
                                         <div class="text-sm text-gray-500">{{ $payment->user->email }}</div>
@@ -341,11 +353,11 @@
             <div class="bg-white shadow rounded-lg p-6">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Desktop Application Integration</h3>
                 <div class="prose max-w-none">
-                    <p class="text-gray-600">To use this license with the WhatsApp Web Auto desktop application:</p>
+                    <p class="text-gray-600">To use this license with the AutoWhatsApp.web.id desktop application:</p>
                     <ol class="list-decimal list-inside space-y-2 mt-4">
-                        <li>Download and install WhatsApp Web Auto desktop application</li>
+                        <li>Download and install AutoWhatsApp.web.id desktop application</li>
                         <li>Copy your license key shown above</li>
-                        <li>Paste the license key in the application settings</li>
+                        <li>Paste the license key in the application license dialog box</li>
                         <li>The application will automatically verify and manage your usage limits</li>
                     </ol>
                 </div>
@@ -386,3 +398,61 @@
     @endif
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        const data = @json($monthlyRevenueData);
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.map(item => item.month),
+                datasets: [{
+                    label: 'Monthly Revenue',
+                    data: data.map(item => item.revenue),
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#10B981',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + value.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Revenue: Rp ' + context.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+@endpush

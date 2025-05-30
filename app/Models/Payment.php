@@ -41,6 +41,11 @@ class Payment extends Model
         return round($this->amount_before_tax * config('app.tax_percentage') / 100);
     }
 
+    public function getTotalAmountAttribute()
+    {
+        return $this->amount_before_tax + $this->tax_amount;
+    }
+
     protected $casts = [
         'amount' => 'decimal:2',
         'created_at' => 'datetime',

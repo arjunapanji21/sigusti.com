@@ -67,7 +67,7 @@ class DatabaseSeeder extends Seeder
             'duration_days' => 14, // Changed from 7 to 14
             'daily_limit' => 150,
             'monthly_limit' => 1000,
-            'max_device' => 1,
+            'max_device' => 999, // Unlimited devices for free trial
             'is_active' => true
         ]);
         Plan::create([
@@ -78,7 +78,7 @@ class DatabaseSeeder extends Seeder
             'duration_days' => 30,
             'daily_limit' => 2000,
             'monthly_limit' => 50000,
-            'max_device' => 1,
+            'max_device' => 2,
             'is_active' => true
         ]);
         Plan::create([
@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
             'duration_days' => 30,
             'daily_limit' => 5000,
             'monthly_limit' => 125000,
-            'max_device' => 2,
+            'max_device' => 4,
             'is_active' => true
         ]);
         Plan::create([
@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
             'duration_days' => 30,
             'daily_limit' => 10000,
             'monthly_limit' => 250000,
-            'max_device' => 4,
+            'max_device' => 8,
             'is_active' => true
         ]);
     }

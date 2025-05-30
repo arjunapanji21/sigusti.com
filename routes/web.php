@@ -25,13 +25,13 @@ Route::get('/privacy', [LegalController::class, 'privacy'])->name('privacy');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::get('signin', [AuthenticatedSessionController::class, 'create'])
+        ->name('signin');
+    Route::post('signin', [AuthenticatedSessionController::class, 'store']);
     
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::get('signup', [RegisteredUserController::class, 'create'])
+        ->name('signup');
+    Route::post('signup', [RegisteredUserController::class, 'store']);
 });
 
 Route::middleware('auth')->group(function () {
@@ -54,11 +54,21 @@ Route::middleware(['auth'])->group(function () {
 // Protected routes that require email verification
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     
+    // Profile routes
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index');
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
+        Route::put('/', [ProfileController::class, 'update'])->name('update');
+        Route::get('/change-password', [ProfileController::class, 'showChangePasswordForm'])->name('change-password');
+        Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change-password.update');
+        Route::get('/delete', [ProfileController::class, 'showDeleteAccountForm'])->name('delete');
+        Route::delete('/delete', [ProfileController::class, 'deleteAccount'])->name('delete.confirm');
+    });
+
     // User management
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+    Route::get('/users/export', [UsersController::class, 'export'])->name('users.export');
     Route::get('/users/{user}', [UsersController::class, 'show'])->name('users.show');
     Route::get('/users/{user}/edit', [UsersController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UsersController::class, 'update'])->name('users.update');
@@ -111,4 +121,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [DownloadController::class, 'index'])->name('index');
         Route::get('/file', [DownloadController::class, 'download'])->name('file');
     });
+});
+
+// Add fallback route for 404 errors
+Route::fallback(function () {
+    return response()->view('pages.errors.404', [], 404);
 });

@@ -53,7 +53,7 @@
                             <div class="mt-2 text-sm text-gray-500">Last updated: {{ now()->format('F d, Y') }}</div>
                             
                             <h2 class="mt-8 text-2xl font-semibold text-gray-900">Getting Started</h2>
-                            <p class="mt-4 text-gray-600">Welcome to our WhatsApp Web Auto service documentation. This guide will help you understand how to use and integrate our service effectively.</p>
+                            <p class="mt-4 text-gray-600">Welcome to our AutoWhatsApp.web.id service documentation. This guide will help you understand how to use and integrate our service effectively.</p>
                             
                             <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="bg-gray-50 p-4 rounded-lg">
@@ -69,7 +69,7 @@
                                     <h3 class="font-medium text-gray-900">Quick Links</h3>
                                     <ul class="mt-2 space-y-2 text-gray-600">
                                         <li>
-                                            <a href="#" class="flex items-center text-blue-600 hover:text-blue-800">
+                                            <a href="{{route('download.file')}}" class="flex items-center text-blue-600 hover:text-blue-800">
                                                 <span>Download Software</span>
                                                 <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
@@ -77,7 +77,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#api-integration" class="text-blue-600 hover:text-blue-800">API Documentation</a>
+                                            <a href="{{route('support')}}" class="text-blue-600 hover:text-blue-800">Customer Support</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -108,8 +108,8 @@
                                         <h3 class="font-medium text-gray-900">Activating License</h3>
                                         <ol class="mt-2 list-decimal list-inside space-y-2 text-gray-600">
                                             <li>Go to License Management in your dashboard</li>
+                                            <li>Copy and paste your license key to license dialog in application</li>
                                             <li>Click "Activate License" button</li>
-                                            <li>Enter your license key</li>
                                             <li>System will verify and activate your license</li>
                                         </ol>
                                     </div>
@@ -139,7 +139,6 @@
                                         <div class="mt-4 space-y-2 text-gray-600">
                                             <div class="flex justify-between">
                                                 <span>Messages sent today:</span>
-                                                <span class="font-mono">daily_usage/daily_limit</span>
                                             </div>
                                             <div class="w-full bg-gray-200 rounded-full h-2">
                                                 <div class="bg-blue-600 h-2 rounded-full"></div>
@@ -151,7 +150,6 @@
                                         <div class="mt-4 space-y-2 text-gray-600">
                                             <div class="flex justify-between">
                                                 <span>Messages this month:</span>
-                                                <span class="font-mono">monthly_usage/monthly_limit</span>
                                             </div>
                                             <div class="w-full bg-gray-200 rounded-full h-2">
                                                 <div class="bg-blue-600 h-2 rounded-full"></div>
@@ -184,7 +182,7 @@
                                                     <li>Verify your license key is entered correctly</li>
                                                     <li>Check if your license is still active</li>
                                                     <li>Ensure you haven't exceeded usage limits</li>
-                                                    <li>Try deactivating and reactivating the license</li>
+                                                    <li>Try contacting customer service for assistance</li>
                                                 </ol>
                                             </div>
                                         </details>
@@ -271,14 +269,14 @@
                                             <li>Bulk message sending</li>
                                             <li>Contact management</li>
                                             <li>Message templates</li>
-                                            <li>Scheduled sending</li>
+                                            <li>Smart human-like delay system</li>
                                         </ul>
                                     </div>
                                     <div class="bg-white border border-gray-200 rounded-lg p-4">
                                         <h3 class="font-medium text-gray-900">Best Practices</h3>
                                         <ul class="mt-2 list-disc list-inside space-y-2 text-gray-600">
                                             <li>Respect sending limits</li>
-                                            <li>Use message delays</li>
+                                            <li>Send personalized messages</li>
                                             <li>Keep software updated</li>
                                             <li>Regular backup contacts</li>
                                         </ul>

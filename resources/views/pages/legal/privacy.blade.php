@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - WhatsApp Web Auto</title>
+    <title>Privacy Policy - AutoWhatsApp.web.id</title>
     
     <!-- Primary Meta Tags -->
-    <meta name="title" content="Privacy Policy - WhatsApp Web Auto">
-    <meta name="description" content="Privacy policy and data handling practices for WhatsApp Web Auto automation tool.">
+    <meta name="title" content="Privacy Policy - AutoWhatsApp.web.id">
+    <meta name="description" content="Privacy policy and data handling practices for AutoWhatsApp.web.id automation tool.">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50">
@@ -18,7 +18,7 @@
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('landing') }}" class="flex items-center space-x-2">
                         <img src="{{ asset('logo.png') }}" alt="Logo" class="h-8 w-auto">
-                        <h1 class="text-xl md:text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">WhatsApp Web Auto</h1>
+                        <h1 class="text-xl md:text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">AutoWhatsApp.web.id</h1>
                     </a>
                 </div>
             </div>

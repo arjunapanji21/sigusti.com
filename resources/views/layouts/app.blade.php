@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'WhatsApp Web Auto') }} - Dashboard</title>
+    <title>{{ config('app.name', 'AutoWhatsApp.web.id') }} - Dashboard</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -50,15 +50,15 @@
                     <nav class="flex-1 px-4 py-6 space-y-1">
                         @if(auth()->user()->is_admin)
                             <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                                <x-icon name="chart-bar" class="mr-3 h-5 w-5"/>
+                                <x-icon name="chart-pie" class="mr-3 h-5 w-5"/>
                                 <span>Dashboard</span>
                             </x-nav-link>
                             <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.*')">
-                                <x-icon name="users" class="mr-3 h-5 w-5"/>
+                                <x-icon name="user-group" class="mr-3 h-5 w-5"/>
                                 <span>Users</span>
                             </x-nav-link>
                             <x-nav-link href="{{ route('plans.index') }}" :active="request()->routeIs('plans.*')">
-                                <x-icon name="template" class="mr-3 h-5 w-5"/>
+                                <x-icon name="receipt-percent" class="mr-3 h-5 w-5"/>
                                 <span>Plans</span>
                             </x-nav-link>
 
@@ -89,11 +89,11 @@
                             @endcan
 
                             <x-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
-                                <x-icon name="book-open" class="mr-3 h-5 w-5"/>
+                                <x-icon name="document-text" class="mr-3 h-5 w-5"/>
                                 <span>Documentation</span>
                             </x-nav-link>
                             <x-nav-link href="{{ route('support') }}" :active="request()->routeIs('support')">
-                                <x-icon name="support" class="mr-3 h-5 w-5"/>
+                                <x-icon name="chat-bubble-left-right" class="mr-3 h-5 w-5"/>
                                 <span>Support</span>
                             </x-nav-link>
                         @else
@@ -128,11 +128,11 @@
                             @endcan
 
                             <x-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
-                                <x-icon name="book-open" class="mr-3 h-5 w-5"/>
+                                <x-icon name="document-text" class="mr-3 h-5 w-5"/>
                                 <span>Documentation</span>
                             </x-nav-link>
                             <x-nav-link href="{{ route('support') }}" :active="request()->routeIs('support')">
-                                <x-icon name="support" class="mr-3 h-5 w-5"/>
+                                <x-icon name="chat-bubble-left-right" class="mr-3 h-5 w-5"/>
                                 <span>Support</span>
                             </x-nav-link>
                         @endif
@@ -140,18 +140,44 @@
                     
                     <!-- User -->
                     <div class="border-t border-gray-200 p-4">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
-                                    <span class="text-gray-600 font-medium text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                        <div x-data="{ userMenuOpen: false }" class="relative">
+                            <button @click="userMenuOpen = !userMenuOpen" 
+                                    @click.away="userMenuOpen = false"
+                                    class="flex items-center w-full group">
+                                <div class="flex-shrink-0">
+                                    <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                        <span class="text-gray-600 font-medium text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-700">{{ auth()->user()->name }}</p>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="text-sm text-gray-500 hover:text-gray-700">Sign out</button>
-                                </form>
+                                <div class="ml-3 flex-1">
+                                    <p class="text-sm font-medium text-gray-700 group-hover:text-gray-900">{{ auth()->user()->name }}</p>
+                                    <p class="text-xs text-gray-500 group-hover:text-gray-700">View options</p>
+                                </div>
+                                <svg class="ml-2 h-5 w-5 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            
+                            <!-- Dropdown Menu -->
+                            <div x-show="userMenuOpen"
+                                 x-transition:enter="transition ease-out duration-100"
+                                 x-transition:enter-start="transform opacity-0 scale-95"
+                                 x-transition:enter-end="transform opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-75"
+                                 x-transition:leave-start="transform opacity-100 scale-100"
+                                 x-transition:leave-end="transform opacity-0 scale-95"
+                                 class="absolute left-0 right-0 bottom-full mb-2 w-full bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                                <div class="py-1">
+                                    <a href="{{ route('profile.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        Profile Settings
+                                    </a>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            Sign out
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -224,15 +250,15 @@
                         <nav class="flex-1 px-4 py-6 space-y-1">
                             @if(auth()->user()->is_admin)
                                 <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                                    <x-icon name="chart-bar" class="mr-3 h-5 w-5"/>
+                                    <x-icon name="chart-pie" class="mr-3 h-5 w-5"/>
                                     <span>Dashboard</span>
                                 </x-nav-link>
                                 <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.*')">
-                                    <x-icon name="users" class="mr-3 h-5 w-5"/>
+                                    <x-icon name="user-group" class="mr-3 h-5 w-5"/>
                                     <span>Users</span>
                                 </x-nav-link>
                                 <x-nav-link href="{{ route('plans.index') }}" :active="request()->routeIs('plans.*')">
-                                    <x-icon name="template" class="mr-3 h-5 w-5"/>
+                                    <x-icon name="receipt-percent" class="mr-3 h-5 w-5"/>
                                     <span>Plans</span>
                                 </x-nav-link>
                                 @can('admin-actions')
@@ -255,11 +281,11 @@
                                     </x-nav-link>
                                 @endcan
                                 <x-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
-                                    <x-icon name="book-open" class="mr-3 h-5 w-5"/>
+                                    <x-icon name="document-text" class="mr-3 h-5 w-5"/>
                                     <span>Documentation</span>
                                 </x-nav-link>
                                 <x-nav-link href="{{ route('support') }}" :active="request()->routeIs('support')">
-                                    <x-icon name="support" class="mr-3 h-5 w-5"/>
+                                    <x-icon name="chat-bubble-left-right" class="mr-3 h-5 w-5"/>
                                     <span>Support</span>
                                 </x-nav-link>
                             @else
@@ -287,11 +313,11 @@
                                     </x-nav-link>
                                 @endcan
                                 <x-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
-                                    <x-icon name="book-open" class="mr-3 h-5 w-5"/>
+                                    <x-icon name="document-text" class="mr-3 h-5 w-5"/>
                                     <span>Documentation</span>
                                 </x-nav-link>
                                 <x-nav-link href="{{ route('support') }}" :active="request()->routeIs('support')">
-                                    <x-icon name="support" class="mr-3 h-5 w-5"/>
+                                    <x-icon name="chat-bubble-left-right" class="mr-3 h-5 w-5"/>
                                     <span>Support</span>
                                 </x-nav-link>
                             @endif

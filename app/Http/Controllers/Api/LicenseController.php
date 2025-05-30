@@ -19,7 +19,8 @@ class LicenseController extends Controller
     public function verify(Request $request)
     {
         $request->validate([
-            'license_key' => 'required|string'
+            'license_key' => 'required|string',
+            'mac_address' => 'required|string'
         ]);
 
         $license = License::where('license_key', $request->license_key)
@@ -40,27 +41,27 @@ class LicenseController extends Controller
             ], 403);
         }
 
-        // Hitung jumlah IP Address yang berbeda pada aktivitas license dalam 24 jam terakhir
-        $ipCount = $license->activities()
-            ->where('created_at', '>=', now()->subDay())
-            ->distinct('ip_address')
-            ->count('ip_address');
+        // Check unique MAC addresses in last 2 hours instead of IP addresses
+        $deviceCount = $license->activities()
+            ->where('created_at', '>=', now()->subHours(1))
+            ->distinct('mac_address')
+            ->count('mac_address');
         
-        // jika jumlah IP Address lebih dari jumlah license->max_devices, maka license dianggap tidak valid
-        if ($ipCount > $license->max_device) {
+        if ($deviceCount > $license->max_device) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Maximum device limit exceeded, please upgrade your license.'
             ], 403);
         }
 
-        // Update last check and create activity log
+        // Update last check and create activity log with MAC address
         $license->update(['last_check' => now()]);
         $license->activities()->create([
             'activity_type' => 'license_check',
-            'details' => 'License verified from ' . $request->ip(),
+            'details' => 'License verified from ' . $request->ip() . '(' . $request->mac_address . ')',
             'ip_address' => $request->ip(),
-            'user_agent' => $request->userAgent()
+            'user_agent' => $request->userAgent(),
+            'mac_address' => $request->mac_address
         ]);
 
         // Reset daily usage if it's a new day

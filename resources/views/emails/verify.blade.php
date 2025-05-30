@@ -12,13 +12,13 @@
 <body>
     <div class="container">
         <h2>Hello {{ $name }}!</h2>
-        <p>Please verify your email address to access all features of WhatsApp Web Auto.</p>
+        <p>Please verify your email address to access all features of AutoWhatsApp.web.id.</p>
         <p style="margin: 25px 0;">
             <a href="{{ $url }}" class="button">Verify Email Address</a>
         </p>
         <p>If you did not create an account, no further action is required.</p>
         <div class="footer">
-            <p>Thanks,<br>WhatsApp Web Auto Team</p>
+            <p>Thanks,<br>AutoWhatsApp.web.id Team</p>
         </div>
     </div>
 </body>

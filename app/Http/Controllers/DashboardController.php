@@ -54,6 +54,18 @@ class DashboardController extends Controller
                 ->take(10)
                 ->get();
             
+            // Get last 4 months revenue data
+            $monthlyRevenueData = collect(range(2, 0))->map(function($monthsAgo) {
+                $date = now()->subMonths($monthsAgo)->startOfMonth();
+                return [
+                    'month' => $date->format('M Y'),  // Changed to include year for uniqueness
+                    'revenue' => Payment::whereYear('created_at', $date->year)
+                        ->whereMonth('created_at', $date->month)
+                        ->where('status', Payment::STATUS_APPROVED)
+                        ->sum('amount')
+                ];
+            })->values();
+
             return view('pages.dashboard', compact(
                 'totalUsers',
                 'totalLicenses',
@@ -65,7 +77,8 @@ class DashboardController extends Controller
                 'serverLoad',
                 'apiRequests',
                 'systemEvents',
-                'recentPayments'
+                'recentPayments',
+                'monthlyRevenueData'
             ));
         }
 

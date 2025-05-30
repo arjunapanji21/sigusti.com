@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Payment;
 use App\Models\LicenseActivity;
 use Illuminate\Http\Request;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UsersController extends Controller
 {
@@ -92,5 +94,10 @@ class UsersController extends Controller
         $user->delete();
 
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+    }
+
+    public function export() 
+    {
+        return Excel::download(new UsersExport, 'users-' . now()->format('Y-m-d') . '.xlsx');
     }
 }

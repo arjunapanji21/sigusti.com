@@ -38,7 +38,9 @@
                                 @can('admin-actions')
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <img class="h-8 w-8 rounded-full" src="{{ $payment->user->profile_photo_url }}" alt="">
+                                            <div class="h-8 w-8 rounded-full bg-green-600 flex items-center justify-center">
+                                                <span class="text-white text-sm font-medium">{{ substr($payment->user->name, 0, 1) }}</span>
+                                            </div>
                                             <div class="ml-4">
                                                 <div class="text-sm font-medium text-gray-900">{{ $payment->user->name }}</div>
                                                 <div class="text-sm text-gray-500">{{ $payment->user->email }}</div>

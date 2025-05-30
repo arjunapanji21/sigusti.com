@@ -106,9 +106,11 @@
                                 <div class="rounded-lg bg-gray-50 p-4">
                                     <h4 class="text-sm font-medium text-gray-900">2. Configuration</h4>
                                     <ul class="mt-2 list-disc list-inside text-sm text-gray-600 space-y-1">
-                                        <li>Open WhatsApp Web on your browser</li>
-                                        <li>Scan the QR code using your phone</li>
-                                        <li>Configure auto-reply messages in the dashboard</li>
+                                        <li>Scan QR Code using your WhatsApp mobile</li>
+                                        <li>Prepare a list of contacts in an Excel file. Ensure the first row contains column headers (e.g., name, phone, company).</li>
+                                        <li>Click "Load Excel File" to import your contact list.</li>
+                                        <li>Create or load a message template. Use the column headers from your Excel file as variables (e.g., {name}, {phone}, {company}).</li>
+                                        <li>Click "Start" to begin sending messages automatically.</li>
                                     </ul>
                                 </div>
 
@@ -146,7 +148,7 @@
                                     <li>Windows 10 or later</li>
                                     <li>4GB RAM minimum</li>
                                     <li>Stable internet connection</li>
-                                    <li>Google Chrome or Microsoft Edge browser</li>
+                                    <li>Google Chrome browser installed</li>
                                 </ul>
                             </div>
                         </details>
