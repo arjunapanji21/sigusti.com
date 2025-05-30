@@ -109,7 +109,7 @@ class LicenseController extends Controller
                     'monthly_limit' => $license->monthly_limit,
                     'daily_usage' => $license->daily_usage,
                     'monthly_usage' => $license->monthly_usage,
-                    'remaining_days' => now()->diffInDays($license->expires_at)
+                    'remaining_days' => Carbon::parse($license->expires_at)->diffInDays(now())
                 ]
             ]);
         } catch (\Throwable $th) {
