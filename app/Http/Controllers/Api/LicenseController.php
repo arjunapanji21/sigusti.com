@@ -189,6 +189,9 @@ class LicenseController extends Controller
             'user_agent' => $request->userAgent()
         ]);
 
+        // Refresh the license data to get updated values
+        $license->refresh();
+
         return response()->json([
             'status' => 'success',
             'message' => 'Usage updated successfully',
