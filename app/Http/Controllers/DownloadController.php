@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadController extends Controller
 {
-    private $filepath = 'downloads/AutoWAWEB_Setup_v1.0.1.zip';
+    private $filepath = 'downloads/AutoWAWEB_Setup_v1.0.1.exe';
 
     public function index()
     {
@@ -18,7 +18,7 @@ class DownloadController extends Controller
 
     public function download(): BinaryFileResponse 
     {
-        $filepath = 'downloads/AutoWAWEB_Setup_v1.0.1.zip';
+        $filepath = 'downloads/AutoWAWEB_Setup_v1.0.1.exe';
         
         if (!Storage::disk('public')->exists($filepath)) {
             abort(404, 'The software installer could not be found. Please contact support.');
