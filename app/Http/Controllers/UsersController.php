@@ -37,7 +37,7 @@ class UsersController extends Controller
 
     public function show(User $user)
     {
-        if (!auth()->user()->is_admin && auth()->id() !== $user->id) {
+        if (!auth()->user()->is_admin && auth()->user()->id !== $user->id) {
             abort(403, 'Unauthorized access.');
         }
 
@@ -62,7 +62,7 @@ class UsersController extends Controller
 
     public function edit(User $user)
     {
-        if (!auth()->user()->is_admin && auth()->id() !== $user->id) {
+        if (!auth()->user()->is_admin && auth()->user()->id !== $user->id) {
             abort(403, 'Unauthorized access.');
         }
 
@@ -71,7 +71,7 @@ class UsersController extends Controller
 
     public function update(Request $request, User $user)
     {
-        if (!auth()->user()->is_admin && auth()->id() !== $user->id) {
+        if (!auth()->user()->is_admin && auth()->user()->id !== $user->id) {
             abort(403, 'Unauthorized access.');
         }
 

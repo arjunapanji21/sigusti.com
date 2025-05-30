@@ -22,7 +22,7 @@ class SupportController extends Controller
         ]);
 
         $support = Support::create([
-            'user_id' => auth()->id(),
+            'user_id' => auth()->user()->id,
             'subject' => $validated['subject'],
             'message' => $validated['message'],
             'priority' => $validated['priority'],

@@ -11,7 +11,7 @@ class LicenseController extends Controller
     {
         $licenses = auth()->user()->can('admin-actions') 
             ? License::with(['user', 'plan'])->latest()->paginate(10)
-            : License::where('user_id', auth()->id())->with(['plan'])->latest()->paginate(10);
+            : License::where('user_id', auth()->user()->id)->with(['plan'])->latest()->paginate(10);
 
         return view('pages.licenses.index', compact('licenses'));
     }
@@ -19,7 +19,7 @@ class LicenseController extends Controller
     public function show(License $license)
     {
         // Check if user is admin or the license owner
-        if (auth()->user()->can('admin-actions') || $license->user_id == auth()->id()) {
+        if (auth()->user()->can('admin-actions') || $license->user_id == auth()->user()->id) {
             $license->load(['user', 'plan', 'activities']);
             return view('pages.licenses.show', compact('license'));
         }

@@ -82,7 +82,7 @@ class DashboardController extends Controller
             ));
         }
 
-        $licenses = License::where('user_id', auth()->id())->get();
+        $licenses = License::where('user_id', auth()->user()->id)->get();
         
         return view('pages.dashboard', compact('licenses'));
     }

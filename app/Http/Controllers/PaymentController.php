@@ -15,7 +15,7 @@ class PaymentController extends Controller
     {
         $payments = auth()->user()->can('admin-actions')
             ? Payment::with(['user', 'plan'])->latest()->paginate(10)
-            : Payment::where('user_id', auth()->id())->with(['plan'])->latest()->paginate(10);
+            : Payment::where('user_id', auth()->user()->id)->with(['plan'])->latest()->paginate(10);
 
         return view('pages.payments.index', compact('payments'));
     }
@@ -25,7 +25,7 @@ class PaymentController extends Controller
         // get active plans except for the one with id 1
         $plans = Plan::active()->orderBy('price')
             ->get();
-        $pendingPayment = Payment::where('user_id', auth()->id())
+        $pendingPayment = Payment::where('user_id', auth()->user()->id)
             ->where('status', Payment::STATUS_PENDING_PAYMENT)
             ->whereNull('proof_of_payment')
             ->first();
@@ -59,7 +59,7 @@ class PaymentController extends Controller
         
             // Create inactive license
             $license = License::create([
-                'user_id' => auth()->id(),
+                'user_id' => auth()->user()->id,
                 'plan_id' => $plan->id,
                 'license_key' => \Str::random(32),
                 'expires_at' => now()->addDays($durationDays),
@@ -72,7 +72,7 @@ class PaymentController extends Controller
             ]);
 
             $payment = Payment::create([
-                'user_id' => auth()->id(),
+                'user_id' => auth()->user()->id,
                 'plan_id' => $plan->id,
                 'license_id' => $license->id,
                 'payment_method_id' => $request->payment_method_id,
@@ -98,7 +98,7 @@ class PaymentController extends Controller
 
     public function showUpload(Payment $payment)
     {
-        if ($payment->user_id !== auth()->id()) {
+        if ($payment->user_id !== auth()->user()->id) {
             abort(403);
         }
 
@@ -113,7 +113,7 @@ class PaymentController extends Controller
 
     public function uploadProof(Request $request, Payment $payment)
     {
-        if ($payment->user_id !== auth()->id()) {
+        if ($payment->user_id !== auth()->user()->id) {
             abort(403);
         }
 
@@ -150,7 +150,7 @@ class PaymentController extends Controller
 
     public function show(Payment $payment)
     {
-        if (!auth()->user()->can('admin-actions') && $payment->user_id !== auth()->id()) {
+        if (!auth()->user()->can('admin-actions') && $payment->user_id !== auth()->user()->id) {
             abort(403);
         }
 
@@ -181,7 +181,7 @@ class PaymentController extends Controller
 
     public function downloadInvoice(Payment $payment)
     {
-        if (!auth()->user()->can('admin-actions') && $payment->user_id !== auth()->id()) {
+        if (!auth()->user()->can('admin-actions') && $payment->user_id !== auth()->user()->id) {
             abort(403);
         }
 

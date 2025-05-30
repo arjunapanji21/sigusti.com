@@ -13,7 +13,7 @@ trait HandlesErrors
     {
         Log::error('Payment Error', [
             'error' => $e->getMessage(),
-            'user_id' => auth()->id(),
+            'user_id' => auth()->user()->id,
             'file' => $e->getFile(),
             'line' => $e->getLine()
         ]);
