@@ -54,16 +54,27 @@ class VerificationController extends Controller
 
     public function resend()
     {
-        $user = User::find(auth()->user()->id);
+        $user = auth()->user();
+        
         if (!$user) {
-            return back()->with('error', 'User not found.');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found.'
+            ], 404);
         }
 
-        if ($user && !$user->email_verified_at) {
-            $user->sendEmailVerificationNotification();
-            return back()->with('success', 'Verification link sent!');
+        if ($user->hasVerifiedEmail()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Email already verified.'
+            ], 400);
         }
 
-        return back()->with('error', 'Unable to send verification link.');
+        $user->sendEmailVerificationNotification();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Verification link sent!'
+        ]);
     }
 }
