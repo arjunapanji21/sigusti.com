@@ -127,13 +127,15 @@ class PaymentController extends Controller
                 
                 $payment->update([
                     'proof_of_payment' => $path,
-                    'status' => Payment::STATUS_PENDING_APPROVAL // Changed from STATUS_WAITING_APPROVAL
+                    'status' => Payment::STATUS_PENDING_APPROVAL
                 ]);
 
                 if ($payment->license) {
                     $payment->license->activities()->create([
                         'activity_type' => 'payment_submitted',
-                        'details' => 'Payment proof uploaded for plan: ' . $payment->plan->name
+                        'details' => 'Payment proof uploaded for plan: ' . $payment->plan->name,
+                        'ip_address' => $request->ip(),
+                        'user_agent' => $request->userAgent()
                     ]);
                 }
 
