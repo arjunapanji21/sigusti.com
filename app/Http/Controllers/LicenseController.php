@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\License;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LicenseController extends Controller
