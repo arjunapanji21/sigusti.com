@@ -5,7 +5,7 @@
     <title>Invoice #{{ $payment->id }}</title>
     <style>
         body {
-            font-family: 'Helvetica', sans-serif;
+            font-family: Arial, sans-serif;  /* Changed to single font */
             font-size: 14px;
             line-height: 1.6;
             color: #333;
@@ -19,15 +19,13 @@
         }
         .header {
             width: 100%;
-            padding-bottom: 30px;
-            margin-bottom: 30px;
             border-bottom: 2px solid #22c55e;
             display: flex;
             justify-content: space-between;
             align-items: center;  /* Add this line */
         }
         .logo {
-            width: 90px;
+            width: 80px;
             display: flex;       /* Add this line */
             align-items: center; /* Add this line */
         }
@@ -37,10 +35,6 @@
             flex-direction: column;  /* Add this line */
             justify-content: center; /* Add this line */
         }
-        .invoice-details {
-            margin-bottom: 40px;
-            width: 50%;
-        }
         .invoice-id {
             color: #22c55e;
             font-size: 24px;
@@ -48,18 +42,16 @@
         }
         .grid {
             width: 100%;
-            margin-bottom: 40px;
             border-spacing: 40px 0;
         }
         .grid td {
             width: 50%;
             vertical-align: top;
             padding: 20px;
-            background: #f9fafb;
             border-radius: 8px;
         }
         .info-block h4 {
-            margin: 0 0 10px;
+            margin: 0 0 0px;
             color: #6b7280;
             text-transform: uppercase;
             font-size: 12px;
@@ -68,7 +60,6 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 40px 0;
             background: white;
         }
         th {
@@ -84,7 +75,7 @@
             border-bottom: 1px solid #e5e7eb;
         }
         .amount {
-            font-family: monospace;
+            font-family: Arial, sans-serif;  /* Changed to match body font */
         }
         .total {
             text-align: right;
@@ -122,11 +113,19 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ public_path('logo.png') }}" alt="Logo" class="logo">
-            <div class="invoice-info">
-                <h1 class="invoice-id">Invoice #{{ $payment->reference_number }}</h1>
-                <p>Generated on {{ $payment->created_at->format('F d, Y') }}</p>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <img src="{{ public_path('logo.png') }}" alt="Logo" class="logo">
+                    </td>
+                    <td>
+                        <div class="invoice-info">
+                            <h1 class="invoice-id">Invoice #{{ $payment->reference_number }}</h1>
+                            <p>Generated on {{ $payment->created_at->format('F d, Y') }}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <table class="grid">
@@ -139,12 +138,12 @@
                         {{ $payment->user->phone ?? '' }}
                     </p>
                 </td>
-                <td>
+                <td style="text-align: right;">
                     <h4>Payment Details</h4>
                     <p>
-                        <strong>Method:</strong> {{ $payment->paymentMethod->provider }}<br>
-                        <strong>Account:</strong> {{ $payment->paymentMethod->account_number }}<br>
-                        <strong>Account Name:</strong> {{ $payment->paymentMethod->account_name }}
+                        {{ $payment->paymentMethod->provider }}<br>
+                        <strong>{{ $payment->paymentMethod->account_number }}</strong><br>
+                        {{ $payment->paymentMethod->account_name }}
                     </p>
                 </td>
             </tr>
