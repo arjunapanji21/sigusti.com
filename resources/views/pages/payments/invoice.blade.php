@@ -21,10 +21,26 @@
             padding-bottom: 30px;
             margin-bottom: 30px;
             border-bottom: 2px solid #22c55e;
+            display: flex;
+            justify-content: space-between;
+        }
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
         .logo {
-            width: 120px;
-            margin-bottom: 20px;
+            width: 90px;
+            margin-bottom: 8px;
+        }
+        .logo-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #22c55e;
+        }
+        .invoice-info {
+            text-align: right;
         }
         .invoice-details {
             margin-bottom: 40px;
@@ -110,9 +126,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ public_path('logo.png') }}" alt="Logo" class="logo">
-            <h1 class="invoice-id">Invoice #{{ $payment->reference_number }}</h1>
-            <p>Generated on {{ $payment->created_at->format('F d, Y') }}</p>
+            <div class="logo-container">
+                <img src="{{ public_path('logo.png') }}" alt="Logo" class="logo">
+                <span class="logo-text">AutoWhatsApp.web.id</span>
+            </div>
+            <div class="invoice-info">
+                <h1 class="invoice-id">Invoice #{{ $payment->reference_number }}</h1>
+                <p>Generated on {{ $payment->created_at->format('F d, Y') }}</p>
+            </div>
         </div>
 
         <table class="grid">
