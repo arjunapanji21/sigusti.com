@@ -18,32 +18,6 @@
 
     <div class="px-4 py-6 sm:px-0">
         <div class="flex flex-col lg:flex-row gap-6">
-            <!-- Sidebar Navigation - Move to top on mobile -->
-            <div class="w-full lg:w-64 lg:flex-shrink-0 order-2 lg:order-1">
-                <div class="bg-white rounded-lg shadow p-4 sticky top-6">
-                    <nav class="space-y-1">
-                        <a href="#getting-started" class="flex items-center px-3 py-2 text-sm font-medium text-blue-600 rounded-md bg-blue-50">
-                            Getting Started
-                        </a>
-                        <a href="#license-management" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
-                            License Management
-                        </a>
-                        <a href="#usage-limits" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
-                            Usage Limits
-                        </a>
-                        <a href="#troubleshooting" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
-                            Troubleshooting
-                        </a>
-                        <a href="#installation" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
-                            Installation Guide
-                        </a>
-                        <a href="#user-manual" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
-                            User Manual
-                        </a>
-                    </nav>
-                </div>
-            </div>
-
             <!-- Main Content -->
             <div class="flex-1 order-1 lg:order-2">
                 <div class="bg-white rounded-lg shadow p-6">
@@ -287,6 +261,32 @@
 
                         <!-- Existing sections... -->
                     </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Navigation - Move to top on mobile -->
+            <div class="w-full lg:w-64 lg:flex-shrink-0 order-2 lg:order-1">
+                <div class="bg-white rounded-lg shadow p-4 sticky top-6">
+                    <nav class="space-y-1">
+                        <a href="#getting-started" class="flex items-center px-3 py-2 text-sm font-medium text-blue-600 rounded-md bg-blue-50">
+                            Getting Started
+                        </a>
+                        <a href="#license-management" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+                            License Management
+                        </a>
+                        <a href="#usage-limits" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+                            Usage Limits
+                        </a>
+                        <a href="#troubleshooting" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+                            Troubleshooting
+                        </a>
+                        <a href="#installation" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+                            Installation Guide
+                        </a>
+                        <a href="#user-manual" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+                            User Manual
+                        </a>
+                    </nav>
                 </div>
             </div>
         </div>
