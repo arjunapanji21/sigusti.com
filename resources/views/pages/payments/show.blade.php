@@ -13,7 +13,7 @@
                             Back to Payments
                         </a>
                         @can('admin-actions')
-                            @if($payment->status != 'approved')
+                            @if($payment->status != 'approved' && $payment->status != 'rejected')
                                 <form action="{{ route('payments.approve', $payment) }}" method="POST">
                                     @csrf
                                     @method('PUT')
