@@ -69,7 +69,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <a href="{{ route('payments.show', $payment) }}" class="text-green-600 hover:text-green-900">View</a>
-                                    @if(auth()->user()->can('admin-actions') && $payment->status != 'approved')
+                                    @if(auth()->user()->can('admin-actions') && $payment->status != 'approved' && $payment->status != 'rejected')
                                         <form action="{{ route('payments.approve', $payment) }}" method="POST" class="inline-block ml-2">
                                             @csrf
                                             @method('PUT')
