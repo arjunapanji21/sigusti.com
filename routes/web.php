@@ -25,6 +25,7 @@ Route::get('/privacy', [LegalController::class, 'privacy'])->name('privacy');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
+    // Ensure consistent naming
     Route::get('signin', [AuthenticatedSessionController::class, 'create'])
         ->name('signin');
     Route::post('signin', [AuthenticatedSessionController::class, 'store']);
