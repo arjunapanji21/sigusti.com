@@ -27,7 +27,6 @@
         }
         .logo {
             width: 90px;
-            width: 50%;
         }
         .invoice-info {
             text-align: right;
