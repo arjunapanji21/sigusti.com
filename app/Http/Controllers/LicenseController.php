@@ -18,12 +18,13 @@ class LicenseController extends Controller
 
     public function show(License $license)
     {
-        if (!auth()->user()->can('admin-actions') && $license->user_id !== auth()->user()->id) {
-            abort(403);
+        // Check if user is admin or the license owner
+        if (auth()->user()->can('admin-actions') || $license->user_id === auth()->id()) {
+            $license->load(['user', 'plan', 'activities']);
+            return view('pages.licenses.show', compact('license'));
         }
 
-        $license->load(['user', 'plan', 'activities']);
-        return view('pages.licenses.show', compact('license'));
+        abort(403, 'Unauthorized access.');
     }
 
     public function activate(License $license)

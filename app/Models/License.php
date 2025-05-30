@@ -17,14 +17,11 @@ class License extends Model
         'monthly_limit',
         'daily_usage',
         'monthly_usage',
-        'max_device',
-        'is_active',
-        'last_check'
+        'is_active'
     ];
 
     protected $casts = [
         'expires_at' => 'datetime',
-        'last_check' => 'datetime',
         'is_active' => 'boolean'
     ];
 
@@ -36,11 +33,6 @@ class License extends Model
     public function plan()
     {
         return $this->belongsTo(Plan::class);
-    }
-
-    public function isValid(): bool
-    {
-        return $this->is_active && !$this->expires_at->isPast();
     }
 
     public function activities()
