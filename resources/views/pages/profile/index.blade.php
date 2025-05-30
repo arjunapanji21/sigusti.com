@@ -66,10 +66,10 @@
                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
                     Change Password
                 </a>
-                <a href="{{ route('profile.delete') }}" 
+                {{-- <a href="{{ route('profile.delete') }}" 
                    class="inline-flex items-center px-4 py-2 border border-red-300 rounded-md text-sm font-medium text-red-700 hover:bg-red-50">
                     Delete Account
-                </a>
+                </a> --}}
             </div>
         </div>
     </div>

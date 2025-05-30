@@ -46,6 +46,7 @@ class ProfileController extends Controller
     }
     public function deleteAccount(Request $request)
     {
+        return back()->with('error', 'Account deletion is not allowed through this method. Please contact support for assistance.');
         $request->validate([
             'password' => ['required', 'string'],
         ]);
