@@ -47,11 +47,11 @@ class PaymentController extends Controller
 
             $paymentMethod = PaymentMethod::findOrFail($request->payment_method_id);
             $plan = Plan::findOrFail($request->plan_id);
-            $price = $request->payment_frequency === 'yearly' 
+            $price = $request->payment_frequency == 'yearly' 
             ? $plan->yearly_price 
             : ($plan->isOnSale() ? $plan->sale_price : $plan->price);
             
-            $durationDays = $request->payment_frequency === 'yearly' 
+            $durationDays = $request->payment_frequency == 'yearly' 
             ? $plan->duration_days * 12 
             : $plan->duration_days;
             
@@ -98,7 +98,7 @@ class PaymentController extends Controller
 
     public function showUpload(Payment $payment)
     {
-        if ($payment->user_id !== auth()->user()->id) {
+        if ($payment->user_id != auth()->user()->id) {
             abort(403);
         }
 
@@ -113,7 +113,7 @@ class PaymentController extends Controller
 
     public function uploadProof(Request $request, Payment $payment)
     {
-        if ($payment->user_id !== auth()->user()->id) {
+        if ($payment->user_id != auth()->user()->id) {
             abort(403);
         }
 
@@ -150,7 +150,7 @@ class PaymentController extends Controller
 
     public function show(Payment $payment)
     {
-        if (!auth()->user()->can('admin-actions') && $payment->user_id !== auth()->user()->id) {
+        if (!auth()->user()->can('admin-actions') && $payment->user_id != auth()->user()->id) {
             abort(403);
         }
 
@@ -181,7 +181,7 @@ class PaymentController extends Controller
 
     public function downloadInvoice(Payment $payment)
     {
-        if (!auth()->user()->can('admin-actions') && $payment->user_id !== auth()->user()->id) {
+        if (!auth()->user()->can('admin-actions') && $payment->user_id != auth()->user()->id) {
             abort(403);
         }
 

@@ -57,9 +57,9 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                        {{ $payment->status === 'approved' ? 'bg-green-100 text-green-800' : 
-                                           ($payment->status === 'pending_payment' ? 'bg-yellow-100 text-yellow-800' : 
-                                            ($payment->status === 'pending_approval' ? 'bg-blue-100 text-blue-800' : 
+                                        {{ $payment->status == 'approved' ? 'bg-green-100 text-green-800' : 
+                                           ($payment->status == 'pending_payment' ? 'bg-yellow-100 text-yellow-800' : 
+                                            ($payment->status == 'pending_approval' ? 'bg-blue-100 text-blue-800' : 
                                              'bg-red-100 text-red-800')) }}">
                                         {{ ucfirst(str_replace('_', ' ', $payment->status)) }}
                                     </span>
@@ -69,7 +69,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <a href="{{ route('payments.show', $payment) }}" class="text-green-600 hover:text-green-900">View</a>
-                                    @if(auth()->user()->can('admin-actions') && $payment->status !== 'approved')
+                                    @if(auth()->user()->can('admin-actions') && $payment->status != 'approved')
                                         <form action="{{ route('payments.approve', $payment) }}" method="POST" class="inline-block ml-2">
                                             @csrf
                                             @method('PUT')

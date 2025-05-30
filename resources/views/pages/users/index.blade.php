@@ -49,7 +49,7 @@
                                 <div>
                                     <h3 class="text-lg font-medium text-gray-900">{{ $user->name }}</h3>
                                     <p class="mt-1 text-sm text-gray-500">{{ $user->email }}</p>
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $user->role === 'admin' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $user->role == 'admin' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
                                         {{ ucfirst($user->role ?? 'user') }}
                                     </span>
                                 </div>

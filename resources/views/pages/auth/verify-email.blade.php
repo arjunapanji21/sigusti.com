@@ -70,7 +70,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.status === 'success') {
+                    if (data.status == 'success') {
                         showMessage('Verification link sent successfully!', 'success');
                         button.disabled = true;
                         timeLeft = 60;
@@ -99,7 +99,7 @@
 
             function showMessage(message, type) {
                 const alertDiv = document.createElement('div');
-                alertDiv.className = `mb-4 text-sm font-medium ${type === 'success' ? 'text-green-600' : 'text-red-600'}`;
+                alertDiv.className = `mb-4 text-sm font-medium ${type == 'success' ? 'text-green-600' : 'text-red-600'}`;
                 alertDiv.textContent = message;
                 
                 const container = form.closest('.w-full');

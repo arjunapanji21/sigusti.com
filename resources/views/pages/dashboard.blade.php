@@ -166,7 +166,7 @@
                 <div class="space-y-3">
                     @foreach($systemEvents as $event)
                     <div class="flex items-start">
-                        <span class="flex-shrink-0 w-2 h-2 mt-1.5 rounded-full {{ $event->type === 'error' ? 'bg-red-600' : 'bg-green-600' }}"></span>
+                        <span class="flex-shrink-0 w-2 h-2 mt-1.5 rounded-full {{ $event->type == 'error' ? 'bg-red-600' : 'bg-green-600' }}"></span>
                         <div class="ml-3">
                             <p class="text-sm text-gray-600">{{ $event->message }}</p>
                             <p class="text-xs text-gray-400">{{ $event->created_at->diffForHumans() }}</p>
@@ -214,7 +214,7 @@
                                 <div class="text-sm text-gray-900">Rp. {{ number_format($payment->amount) }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $payment->status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $payment->status == 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
                                     {{ $payment->status }}
                                 </span>
                             </td>

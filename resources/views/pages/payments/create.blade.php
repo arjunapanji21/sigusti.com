@@ -158,7 +158,7 @@
                 const originalPriceSpan = card.querySelector('.original-price');
                 const finalPriceSpan = card.querySelector('.final-price');
                 
-                if (frequency === 'yearly') {
+                if (frequency == 'yearly') {
                     const yearlyPrice = parseInt(input.dataset.yearlyPrice);
                     if (originalPriceSpan) {
                         originalPriceSpan.textContent = 'Rp. ' + (parseInt(input.dataset.originalPrice) * 12).toLocaleString();

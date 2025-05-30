@@ -324,7 +324,7 @@
         navLinks.forEach(link => {
             const href = link.getAttribute('href').substring(1);
             link.classList.remove('text-blue-600', 'bg-blue-50');
-            if (href === currentSection) {
+            if (href == currentSection) {
                 link.classList.add('text-blue-600', 'bg-blue-50');
             }
         });

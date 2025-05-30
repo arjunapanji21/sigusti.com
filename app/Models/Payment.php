@@ -97,31 +97,31 @@ class Payment extends Model
     // Check if payment can be processed
     public function canBeProcessed(): bool
     {
-        return $this->status === self::STATUS_PENDING_APPROVAL;
+        return $this->status == self::STATUS_PENDING_APPROVAL;
     }
 
     // Check if payment is approved
     public function isApproved(): bool
     {
-        return $this->status === self::STATUS_APPROVED;
+        return $this->status == self::STATUS_APPROVED;
     }
 
     // Check if payment is rejected
     public function isRejected(): bool
     {
-        return $this->status === self::STATUS_REJECTED;
+        return $this->status == self::STATUS_REJECTED;
     }
 
     // Check if payment belongs to user
     public function belongsToUser(?int $userId): bool
     {
-        return $this->user_id === $userId;
+        return $this->user_id == $userId;
     }
 
     // Add this method
     public function isExpired(): bool 
     {
-        if ($this->status === self::STATUS_EXPIRED) {
+        if ($this->status == self::STATUS_EXPIRED) {
             return true;
         }
         

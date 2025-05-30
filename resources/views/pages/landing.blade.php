@@ -175,8 +175,8 @@
 
                 <div class="mt-12 flex flex-col lg:flex-row gap-8 justify-center items-center">
                     @foreach($plans as $plan)
-                        <div class="bg-white w-full lg:w-1/3 rounded-lg shadow-lg overflow-hidden relative {{ $loop->iteration === 2 ? 'border-2 border-green-500' : '' }}">
-                            @if($loop->iteration === 2 && $plan->isOnSale())
+                        <div class="bg-white w-full lg:w-1/3 rounded-lg shadow-lg overflow-hidden relative {{ $loop->iteration == 2 ? 'border-2 border-green-500' : '' }}">
+                            @if($loop->iteration == 2 && $plan->isOnSale())
                                 <div class="absolute animate-pulse -top-5 left-0 right-0 flex justify-center">
                                     <span class="pt-5 inline-flex h-11 items-center px-4 rounded-full text-sm font-semibold bg-red-500 text-white shadow-sm">
                                         Limited Time Offer!
@@ -245,7 +245,7 @@
                             </div>
                             <div class="px-6 py-4">
                                 <a href="{{ route('signup') }}" 
-                                   class="block w-full text-center px-4 py-2 {{ $loop->iteration === 2 ? 'bg-green-600 text-white hover:bg-green-700' : 'border border-green-600 text-green-600 hover:bg-green-50' }} rounded-md">
+                                   class="block w-full text-center px-4 py-2 {{ $loop->iteration == 2 ? 'bg-green-600 text-white hover:bg-green-700' : 'border border-green-600 text-green-600 hover:bg-green-50' }} rounded-md">
                                     Get Started
                                 </a>
                             </div>
@@ -374,13 +374,13 @@
 
             handleTouchStart(e) {
                 this.isDragging = true;
-                this.startX = e.type === 'mousedown' ? e.pageX : e.touches[0].pageX;
+                this.startX = e.type == 'mousedown' ? e.pageX : e.touches[0].pageX;
                 clearInterval(this.autoplayInterval);
             },
 
             handleTouchMove(e) {
                 if (!this.isDragging) return;
-                const x = e.type === 'mousemove' ? e.pageX : e.touches[0].pageX;
+                const x = e.type == 'mousemove' ? e.pageX : e.touches[0].pageX;
                 const diff = this.startX - x;
                 if (Math.abs(diff) > 50) {
                     this.isDragging = false;
@@ -397,7 +397,7 @@
             },
 
             prevSlide() {
-                this.currentSlide = this.currentSlide === 0 
+                this.currentSlide = this.currentSlide == 0 
                     ? this.testimonials.length - 1 
                     : this.currentSlide - 1;
             }
@@ -443,7 +443,7 @@
                         <div class="w-full flex-shrink-0 px-4">
                             <div class="max-w-2xl mx-auto">
                                 <div class="bg-white p-6 rounded-lg shadow-lg transform transition-all duration-500"
-                                     :class="currentSlide === index ? 'scale-100 opacity-100' : 'scale-95 opacity-75'"
+                                     :class="currentSlide == index ? 'scale-100 opacity-100' : 'scale-95 opacity-75'"
                                      role="article">
                                     <div class="flex items-center">
                                         <div class="h-16 w-16 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white mr-4 font-bold text-xl" 
@@ -479,9 +479,9 @@
                 <template x-for="(_, index) in testimonials" :key="index">
                     <button @click="currentSlide = index"
                             class="w-2.5 h-2.5 rounded-full transition-all duration-300"
-                            :class="currentSlide === index ? 'bg-green-600 w-6' : 'bg-gray-300 hover:bg-gray-400'"
+                            :class="currentSlide == index ? 'bg-green-600 w-6' : 'bg-gray-300 hover:bg-gray-400'"
                             :aria-label="`View testimonial ${index + 1}`"
-                            :aria-selected="currentSlide === index"
+                            :aria-selected="currentSlide == index"
                             role="tab"></button>
                 </template>
             </div>

@@ -13,7 +13,7 @@
                             Back to Payments
                         </a>
                         @can('admin-actions')
-                            @if($payment->status !== 'approved')
+                            @if($payment->status != 'approved')
                                 <form action="{{ route('payments.approve', $payment) }}" method="POST">
                                     @csrf
                                     @method('PUT')
@@ -47,9 +47,9 @@
                             <dt class="text-sm font-medium text-gray-500">Status</dt>
                             <dd class="mt-1">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                    {{ $payment->status === 'approved' ? 'bg-green-100 text-green-800' : 
-                                       ($payment->status === 'pending_payment' ? 'bg-yellow-100 text-yellow-800' : 
-                                        ($payment->status === 'pending_approval' ? 'bg-blue-100 text-blue-800' : 
+                                    {{ $payment->status == 'approved' ? 'bg-green-100 text-green-800' : 
+                                       ($payment->status == 'pending_payment' ? 'bg-yellow-100 text-yellow-800' : 
+                                        ($payment->status == 'pending_approval' ? 'bg-blue-100 text-blue-800' : 
                                          'bg-red-100 text-red-800')) }}">
                                     {{ ucfirst(str_replace('_', ' ', $payment->status)) }}
                                 </span>
@@ -108,7 +108,7 @@
                              style="max-height: 400px; object-fit: contain;">
                     </div>
                 </div>
-            @elseif(!$payment->isExpired() && $payment->status === 'pending_payment')
+            @elseif(!$payment->isExpired() && $payment->status == 'pending_payment')
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">No Proof of Payment Uploaded</h3>
                     <p class="text-sm text-gray-500 mb-4">Please upload your proof of payment to complete the transaction.</p>
