@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <title>AutoWhatsApp.web.id - Automate Your WhatsApp Messaging | Best WhatsApp Automation Tool</title>
     
     <!-- Primary Meta Tags -->
@@ -19,14 +20,14 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="AutoWhatsApp.web.id - Automate Your WhatsApp Messaging">
     <meta property="og:description" content="Automate your WhatsApp messages, schedule broadcasts, and streamline your messaging workflow with AutoWhatsApp.web.id.">
-    <meta property="og:image" content="{{ asset('images/wawa-social-preview.jpg') }}">
+    <meta property="og:image" content="{{ asset('meta.png') }}">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
     <meta property="twitter:title" content="AutoWhatsApp.web.id - Automate Your WhatsApp Messaging">
     <meta property="twitter:description" content="Automate your WhatsApp messages, schedule broadcasts, and streamline your messaging workflow with AutoWhatsApp.web.id.">
-    <meta property="twitter:image" content="{{ asset('images/wawa-social-preview.jpg') }}">
+    <meta property="twitter:image" content="{{ asset('meta.png') }}">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
