@@ -111,12 +111,20 @@
 </head>
 <body>
     <div class="container">
-        <div class="header grid">
-            <img src="{{ public_path('logo.png') }}" alt="Logo" class="logo">
-            <div class="invoice-info">
-                <h1 class="invoice-id">Invoice #{{ $payment->reference_number }}</h1>
-                <p>Generated on {{ $payment->created_at->format('F d, Y') }}</p>
-            </div>
+        <div class="header">
+            <table class="grid">
+                <tr>
+                    <td>
+                        <img src="{{ public_path('logo.png') }}" alt="Logo" class="logo">
+                    </td>
+                    <td>
+                        <div class="invoice-info">
+                            <h1 class="invoice-id">Invoice #{{ $payment->reference_number }}</h1>
+                            <p>Generated on {{ $payment->created_at->format('F d, Y') }}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <table class="grid">
