@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="vI5uI9lT6vz6B9dvXRgyV0daM6x2zCckYlJ1bIBWjh8" />
     <!-- Updated Favicon Tags -->
     <link rel="icon" type="image/x-icon" href="{{ url(asset('favicon.ico')) }}">
     {{-- <link rel="icon" type="image/png" sizes="32x32" href="{{ url(asset('favicon-32x32.png')) }}">

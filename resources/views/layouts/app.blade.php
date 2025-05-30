@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="google-site-verification" content="vI5uI9lT6vz6B9dvXRgyV0daM6x2zCckYlJ1bIBWjh8" />
     <link rel="icon" type="image/x-icon" href="{{ url(asset('favicon.ico')) }}">
     <title>{{ config('app.name', 'AutoWhatsApp.web.id') }} - Dashboard</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
