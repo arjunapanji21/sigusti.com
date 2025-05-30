@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <!-- Updated Favicon Tags -->
+    <link rel="icon" type="image/x-icon" href="{{ url(asset('favicon.ico')) }}">
+    {{-- <link rel="icon" type="image/png" sizes="32x32" href="{{ url(asset('favicon-32x32.png')) }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url(asset('favicon-16x16.png')) }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url(asset('apple-touch-icon.png')) }}"> --}}
     <title>AutoWhatsApp.web.id - Automate Your WhatsApp Messaging | Best WhatsApp Automation Tool</title>
     
     <!-- Primary Meta Tags -->
