@@ -59,7 +59,7 @@
         <div class="p-6 flex items-center justify-between">
             <div>
                 <h3 class="text-lg font-medium text-gray-900">Account Security</h3>
-                <p class="mt-1 text-sm text-gray-600">Update your password or delete your account</p>
+                <p class="mt-1 text-sm text-gray-600">Manage your password and enhance your account security</p>
             </div>
             <div class="flex gap-4">
                 <a href="{{ route('profile.change-password') }}" 
