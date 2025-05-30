@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\License;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class LicenseController extends Controller
@@ -19,7 +18,7 @@ class LicenseController extends Controller
 
     public function show(License $license)
     {
-        if (!auth()->user()->can('admin-actions') && $license->user_id !== auth()->user()->id()) {
+        if (!auth()->user()->can('admin-actions') && $license->user_id !== auth()->user()->id) {
             abort(403);
         }
 
