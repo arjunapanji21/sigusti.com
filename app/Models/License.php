@@ -39,4 +39,27 @@ class License extends Model
     {
         return $this->hasMany(LicenseActivity::class);
     }
+
+    public function isValid()
+    {
+        return $this->is_active &&
+               !$this->isExpired() &&
+               !$this->isDailyLimitExceeded() &&
+               !$this->isMonthlyLimitExceeded();
+    }
+
+    public function isExpired()
+    {
+        return $this->expires_at && now()->greaterThan($this->expires_at);
+    }
+
+    public function isDailyLimitExceeded()
+    {
+        return $this->daily_limit && $this->daily_usage >= $this->daily_limit;
+    }
+
+    public function isMonthlyLimitExceeded()
+    {
+        return $this->monthly_limit && $this->monthly_usage >= $this->monthly_limit;
+    }
 }
