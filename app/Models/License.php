@@ -17,13 +17,14 @@ class License extends Model
         'monthly_limit',
         'daily_usage',
         'monthly_usage',
-        'is_active'
+        'is_active',
+        'last_check'  // Add this field
     ];
 
     protected $casts = [
         'expires_at' => 'datetime',
         'is_active' => 'boolean',
-        'last_check' => 'datetime'
+        'last_check' => 'datetime'  // Add this cast
     ];
 
     public function user()
