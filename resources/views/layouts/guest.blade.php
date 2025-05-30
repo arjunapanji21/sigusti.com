@@ -104,8 +104,8 @@
                     <a href="#pricing" class="text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium">Pricing</a>
                     <a href="#testimonials" class="text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium">Testimonials</a>
                     <div class="flex items-center space-x-4">
-                        <a href="{{ route('signin') }}" class="text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium">Sign In</a>
-                        <a href="{{ route('signup') }}" class="bg-gradient-to-r from-green-600 to-emerald-500 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity duration-200 font-medium shadow-md hover:shadow-lg">Sign Up</a>
+                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium">Sign In</a>
+                        <a href="{{ route('register') }}" class="bg-gradient-to-r from-green-600 to-emerald-500 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity duration-200 font-medium shadow-md hover:shadow-lg">Sign Up</a>
                     </div>
                 </div>
             </div>
@@ -118,8 +118,8 @@
                 <a href="#pricing" class="block px-3 py-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-200">Pricing</a>
                 <a href="#testimonials" class="block px-3 py-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-200">Testimonials</a>
                 <div class="mt-4 px-3 space-y-2">
-                    <a href="{{ route('signin') }}" class="block w-full text-center px-4 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-50 transition-colors duration-200">Sign In</a>
-                    <a href="{{ route('signup') }}" class="block w-full text-center px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-500 text-white rounded-lg hover:opacity-90 transition-opacity duration-200">Sign Up</a>
+                    <a href="{{ route('login') }}" class="block w-full text-center px-4 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-50 transition-colors duration-200">Sign In</a>
+                    <a href="{{ route('register') }}" class="block w-full text-center px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-500 text-white rounded-lg hover:opacity-90 transition-opacity duration-200">Sign Up</a>
                 </div>
             </div>
         </div>

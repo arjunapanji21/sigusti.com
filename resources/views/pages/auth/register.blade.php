@@ -11,7 +11,7 @@
             <p class="text-gray-600 mt-2">Start your 14-day free trial</p>
         </div>
 
-        <form method="POST" action="{{ route('signup') }}" class="space-y-6">
+        <form method="POST" action="{{ route('register') }}" class="space-y-6">
             @csrf
 
             <!-- Name -->
@@ -70,7 +70,7 @@
 
         <p class="mt-6 text-center text-sm text-gray-600">
             Already have an account?
-            <a href="{{ route('signin') }}" class="font-medium text-green-600 hover:text-green-700">
+            <a href="{{ route('login') }}" class="font-medium text-green-600 hover:text-green-700">
                 Sign in
             </a>
         </p>

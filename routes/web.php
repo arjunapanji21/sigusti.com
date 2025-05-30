@@ -25,13 +25,12 @@ Route::get('/privacy', [LegalController::class, 'privacy'])->name('privacy');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
-    // Ensure consistent naming
     Route::get('signin', [AuthenticatedSessionController::class, 'create'])
-        ->name('signin');
+        ->name('login');
     Route::post('signin', [AuthenticatedSessionController::class, 'store']);
     
     Route::get('signup', [RegisteredUserController::class, 'create'])
-        ->name('signup');
+        ->name('register');
     Route::post('signup', [RegisteredUserController::class, 'store']);
 });
 

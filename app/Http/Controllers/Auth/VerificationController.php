@@ -25,7 +25,7 @@ class VerificationController extends Controller
             ->first();
 
         if (!$verified) {
-            return redirect()->route('signin')
+            return redirect()->route('login')
                 ->with('error', 'Invalid verification token.');
         }
 

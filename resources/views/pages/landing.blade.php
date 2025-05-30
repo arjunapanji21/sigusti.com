@@ -18,7 +18,7 @@
                 Streamline your messaging workflow with powerful automation tools
             </p>
             <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center text-center sm:text-left">
-                <a href="{{route('signup')}}" class="inline-flex items-center justify-center sm:justify-start px-8 py-4 rounded-lg text-green-600 bg-white hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <a href="{{route('register')}}" class="inline-flex items-center justify-center sm:justify-start px-8 py-4 rounded-lg text-green-600 bg-white hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
                     <span class="text-lg font-semibold">Get Started Free</span>
                     <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -244,7 +244,7 @@
                                 </ul>
                             </div>
                             <div class="px-6 py-4">
-                                <a href="{{ route('signup') }}" 
+                                <a href="{{ route('register') }}" 
                                    class="block w-full text-center px-4 py-2 {{ $loop->iteration == 2 ? 'bg-green-600 text-white hover:bg-green-700' : 'border border-green-600 text-green-600 hover:bg-green-50' }} rounded-md">
                                     Get Started
                                 </a>
@@ -499,7 +499,7 @@
             Download AutoWhatsApp.web.id now and transform your messaging experience
         </p>
         <div class="mt-8">
-            <a href="{{route('signin')}}" class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
+            <a href="{{route('login')}}" class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
                 Download for Windows
                 <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

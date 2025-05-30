@@ -32,7 +32,7 @@
         </div>
         @endif
 
-        <form method="POST" action="{{ route('signin') }}" class="space-y-6">
+        <form method="POST" action="{{ route('login') }}" class="space-y-6">
             @csrf
 
             <!-- Email Address -->
@@ -113,7 +113,7 @@
         <p class="mt-6 text-center text-sm text-gray-600">
             Don't have an account?
             <a
-                href="{{ route('signup') }}"
+                href="{{ route('register') }}"
                 class="font-medium text-green-600 hover:text-green-700"
             >
                 Sign up
