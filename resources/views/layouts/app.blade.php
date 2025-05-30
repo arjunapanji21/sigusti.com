@@ -43,7 +43,7 @@
                     <div class="h-16 flex items-center justify-center border-b border-gray-200 px-4">
                         <div class="flex items-center space-x-3">
                             <img src="{{ asset('logo.png') }}" alt="Logo" class="h-8 w-auto">
-                            <h3 class="text-lg font-semibold text-gray-800">AutoWhatsApp.Web.id</h3>
+                            <h3 class="font-semibold text-gray-800">AutoWhatsApp.Web.id</h3>
                         </div>
                     </div>
                     
