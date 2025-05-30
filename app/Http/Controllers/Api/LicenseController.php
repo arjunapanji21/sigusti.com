@@ -140,41 +140,42 @@ class LicenseController extends Controller
 
         // Reset daily usage if it's a new day
         if ($license->last_check && $license->last_check->diffInDays(now()) >= 1) {
-            $license->update(['daily_usage' => 0]);
+            $license->daily_usage = 0;
         }
 
         // Reset monthly usage if it's a new month
         if ($license->last_check && $license->last_check->diffInMonths(now()) >= 1) {
-            $license->update(['monthly_usage' => 0]);
+            $license->monthly_usage = 0;
         }
 
-        // Check usage limits
-        if ($license->daily_usage > $license->daily_limit) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Daily usage limit exceeded',
-                'data' => [
-                    'daily_remaining' => $license->daily_limit - $license->daily_usage,
-                    'monthly_remaining' => $license->monthly_limit - $license->monthly_usage
-                ]
-            ], 403);
-        }
-
-        if ($license->monthly_usage > $license->monthly_limit) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Monthly usage limit exceeded',
-                'data' => [
-                    'daily_remaining' => $license->daily_limit - $license->daily_usage,
-                    'monthly_remaining' => $license->monthly_limit - $license->monthly_usage
-                ]
-            ], 403);
-        }
-
-        // Modify the values by decreasing from current values
+        // Calculate new usage values
         $newDailyUsage = $license->daily_usage + $request->daily_usage;
         $newMonthlyUsage = $license->monthly_usage + $request->daily_usage;
 
+        // Check if new usage would exceed limits
+        if ($newDailyUsage >= $license->daily_limit) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Daily usage limit would be exceeded',
+                'data' => [
+                    'daily_remaining' => max(0, $license->daily_limit - $license->daily_usage),
+                    'monthly_remaining' => max(0, $license->monthly_limit - $license->monthly_usage)
+                ]
+            ], 403);
+        }
+
+        if ($newMonthlyUsage >= $license->monthly_limit) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Monthly usage limit would be exceeded',
+                'data' => [
+                    'daily_remaining' => max(0, $license->daily_limit - $license->daily_usage),
+                    'monthly_remaining' => max(0, $license->monthly_limit - $license->monthly_usage)
+                ]
+            ], 403);
+        }
+
+        // Apply the new usage values
         $license->update([
             'daily_usage' => $newDailyUsage,
             'monthly_usage' => $newMonthlyUsage,
