@@ -110,7 +110,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ asset('logo.png') }}" alt="Logo" class="logo">
+            <img src="{{ public_path('logo.png') }}" alt="Logo" class="logo">
             <h1 class="invoice-id">Invoice #{{ $payment->reference_number }}</h1>
             <p>Generated on {{ $payment->created_at->format('F d, Y') }}</p>
         </div>
