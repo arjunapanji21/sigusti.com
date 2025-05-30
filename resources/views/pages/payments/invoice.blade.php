@@ -18,18 +18,23 @@
             margin: 0 auto;
         }
         .header {
+            width: 100%;
             padding-bottom: 30px;
             margin-bottom: 30px;
             border-bottom: 2px solid #22c55e;
+            display: flex;
+            justify-content: space-between;
         }
         .logo {
             width: 90px;
+            width: 50%;
         }
         .invoice-info {
             text-align: right;
         }
         .invoice-details {
             margin-bottom: 40px;
+            width: 50%;
         }
         .invoice-id {
             color: #22c55e;
@@ -112,19 +117,11 @@
 <body>
     <div class="container">
         <div class="header">
-            <table class="grid">
-                <tr>
-                    <td>
-                        <img src="{{ public_path('logo.png') }}" alt="Logo" class="logo">
-                    </td>
-                    <td>
-                        <div class="invoice-info">
-                            <h1 class="invoice-id">Invoice #{{ $payment->reference_number }}</h1>
-                            <p>Generated on {{ $payment->created_at->format('F d, Y') }}</p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+            <img src="{{ public_path('logo.png') }}" alt="Logo" class="logo">
+            <div class="invoice-info">
+                <h1 class="invoice-id">Invoice #{{ $payment->reference_number }}</h1>
+                <p>Generated on {{ $payment->created_at->format('F d, Y') }}</p>
+            </div>
         </div>
 
         <table class="grid">
