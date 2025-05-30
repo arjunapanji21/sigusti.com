@@ -42,10 +42,20 @@ class LicenseController extends Controller
         }
 
         // Check unique MAC addresses in last 2 hours instead of IP addresses
-        $deviceCount = $license->activities()
-            ->where('created_at', '>=', now()->subHours(1))
-            ->distinct('mac_address')
-            ->count('mac_address');
+        $deviceCount  = 0;
+        try {
+            $deviceCount = $license->activities()
+                ->where('activity_type', 'license_check')
+                ->where('mac_address', $request->mac_address)
+                ->where('created_at', '>=', now()->subHours(2))
+                ->distinct('mac_address')
+                ->count();
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error checking device count: ' . $e->getMessage()
+            ], 500);
+        }
         
         if ($deviceCount > $license->max_device) {
             return response()->json([
