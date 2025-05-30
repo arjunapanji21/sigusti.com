@@ -61,7 +61,7 @@ class LicenseController extends Controller
             $license->update(['last_check' => now()]);
             $license->activities()->create([
                 'activity_type' => 'license_check',
-                'details' => 'License verified from ' . $request->ip() . '(' . $request->mac_address . ')',
+                'details' => 'License verified from ' . $request->ip() . ' (' . $request->mac_address . ')',
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->userAgent(),
                 'mac_address' => $request->mac_address
