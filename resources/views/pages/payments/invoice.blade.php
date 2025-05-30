@@ -21,8 +21,6 @@
             padding-bottom: 30px;
             margin-bottom: 30px;
             border-bottom: 2px solid #22c55e;
-            display: flex;
-            justify-content: space-between;
         }
         .logo {
             width: 90px;
@@ -113,7 +111,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <div class="header grid">
             <img src="{{ public_path('logo.png') }}" alt="Logo" class="logo">
             <div class="invoice-info">
                 <h1 class="invoice-id">Invoice #{{ $payment->reference_number }}</h1>
