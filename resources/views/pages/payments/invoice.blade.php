@@ -26,18 +26,9 @@
         }
         .logo-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
         }
         .logo {
             width: 90px;
-            margin-bottom: 8px;
-        }
-        .logo-text {
-            font-size: 18px;
-            font-weight: bold;
-            color: #22c55e;
         }
         .invoice-info {
             text-align: right;
@@ -128,7 +119,6 @@
         <div class="header">
             <div class="logo-container">
                 <img src="{{ public_path('logo.png') }}" alt="Logo" class="logo">
-                <span class="logo-text">AutoWhatsApp.web.id</span>
             </div>
             <div class="invoice-info">
                 <h1 class="invoice-id">Invoice #{{ $payment->reference_number }}</h1>
