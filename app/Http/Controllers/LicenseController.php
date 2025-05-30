@@ -18,7 +18,7 @@ class LicenseController extends Controller
 
     public function show(License $license)
     {
-        if (!auth()->user()->can('admin-actions') && $license->user_id !== auth()->id()) {
+        if (!auth()->user()->can('admin-actions') && $license->user_id !== auth()->user()->id()) {
             abort(403);
         }
 
