@@ -152,15 +152,6 @@ class LicenseController extends Controller
         $newDailyUsage = $license->daily_usage + $request->daily_usage;
         $newMonthlyUsage = $license->monthly_usage + $request->daily_usage;
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Usage updated successfully',
-            'data' => [
-                'new_daily_usage' => $newDailyUsage,
-                'new_monthly_usage' => $newMonthlyUsage
-            ]
-        ]);
-
         // Check if new usage would exceed limits
         if ($newDailyUsage >= $license->daily_limit) {
             return response()->json([
