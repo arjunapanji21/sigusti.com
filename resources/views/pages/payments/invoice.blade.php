@@ -24,12 +24,18 @@
             border-bottom: 2px solid #22c55e;
             display: flex;
             justify-content: space-between;
+            align-items: center;  /* Add this line */
         }
         .logo {
             width: 90px;
+            display: flex;       /* Add this line */
+            align-items: center; /* Add this line */
         }
         .invoice-info {
             text-align: right;
+            display: flex;           /* Add this line */
+            flex-direction: column;  /* Add this line */
+            justify-content: center; /* Add this line */
         }
         .invoice-details {
             margin-bottom: 40px;
