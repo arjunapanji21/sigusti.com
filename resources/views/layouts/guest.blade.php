@@ -20,14 +20,14 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="AutoWhatsApp.web.id - Automate Your WhatsApp Messaging">
     <meta property="og:description" content="Automate your WhatsApp messages, schedule broadcasts, and streamline your messaging workflow with AutoWhatsApp.web.id.">
-    <meta property="og:image" content="{{ asset('meta.png') }}">
+    <meta property="og:image" content="{{ url(asset('meta.png')) }}">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
     <meta property="twitter:title" content="AutoWhatsApp.web.id - Automate Your WhatsApp Messaging">
     <meta property="twitter:description" content="Automate your WhatsApp messages, schedule broadcasts, and streamline your messaging workflow with AutoWhatsApp.web.id.">
-    <meta property="twitter:image" content="{{ asset('meta.png') }}">
+    <meta property="twitter:image" content="{{ url(asset('meta.png')) }}">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
