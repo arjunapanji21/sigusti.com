@@ -1,11 +1,33 @@
 @import 'tailwindcss';
-
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+@source "../views";
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-primary: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Laravel brand colors */
+    --color-primary: #ff2d20; /* Laravel Red */
+    --primary-color: #ff2d20; /* Laravel Red */
+    --primary-rgb: 255, 45, 32; /* Laravel Red in RGB */
+    
+    --color-primary-light: #ff503e; /* Lighter red */
+    --color-secondary: #2d3748; /* Laravel dark blue/gray */
+    --secondary-color: #2d3748; /* Laravel dark blue/gray */
+    --secondary-rgb: 45, 55, 72; /* Secondary in RGB */
+    
+    --color-secondary-light: #4a5568; /* Lighter secondary */
+    --color-accent: #38bdf8; /* Laravel blue accent */
+    --accent-color: #38bdf8; /* Laravel blue accent */
+    --accent-rgb: 56, 189, 248; /* Accent in RGB */
+    
+    --color-base: #1a202c; /* Dark text color */
+    --base-color: #1a202c; /* Dark text color */
+    --base-rgb: 26, 32, 44; /* Base in RGB */
+    
+    --color-base-light: #718096; /* Lighter text color */
+    --base-light-rgb: 113, 128, 150; /* Base light in RGB */
+    
+    --color-background: #f8fafc; /* Light background */
+    --background-color: #f8fafc; /* Light background */
+    --color-background-dark: #1a202c; /* Dark background */
 }

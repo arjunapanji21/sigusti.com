@@ -1,5 +1,4 @@
 @props([
-    'type' => 'text',
     'name', 
     'id' => null,
     'value' => '', 
@@ -8,12 +7,10 @@
     'required' => false,
     'disabled' => false,
     'readonly' => false,
-    'autocomplete' => null,
+    'rows' => 3,
     'helper' => null,
     'leadingIcon' => null,
-    'trailingIcon' => null,
-    'floatingLabel' => false,
-    'variant' => 'default', // default, inline, floating
+    'variant' => 'default', // default, inline
 ])
 
 @php
@@ -23,9 +20,7 @@
     
     if ($disabled) $classes .= ' opacity-60 cursor-not-allowed';
     if ($leadingIcon) $classes .= ' pl-10';
-    if ($trailingIcon) $classes .= ' pr-10';
     
-    $floatingLabel = $floatingLabel || $variant === 'floating';
     $inlineLabel = $variant === 'inline';
     
     $hasError = $errors->has($name);
@@ -33,7 +28,7 @@
 @endphp
 
 <div {{ $attributes->class(['mb-4' => !$inlineLabel, 'sm:flex sm:items-center' => $inlineLabel]) }}>
-    @if($label && !$floatingLabel)
+    @if($label)
         <label for="{{ $id }}" class="{{ $inlineLabel ? 'sm:w-1/3 pr-2' : '' }} block text-sm font-medium {{ $hasError ? 'text-red-600' : 'text-base-dark' }} mb-1">
             {{ $label }}@if($required)<span class="text-red-500 ml-1">*</span>@endif
         </label>
@@ -46,32 +41,16 @@
             </div>
         @endif
         
-        <input 
-            x-data
-            type="{{ $type }}" 
+        <textarea 
             name="{{ $name }}" 
             id="{{ $id }}" 
-            value="{{ $value }}"
-            placeholder="{{ $floatingLabel && $label ? ' ' : $placeholder }}"
+            placeholder="{{ $placeholder }}"
+            rows="{{ $rows }}"
             @if($required) required @endif
             @if($disabled) disabled @endif
             @if($readonly) readonly @endif
-            @if($autocomplete) autocomplete="{{ $autocomplete }}" @endif
             {{ $attributes->except(['class', 'label', 'helper', 'variant'])->merge(['class' => $classes]) }}
-        >
-        
-        @if($floatingLabel && $label)
-            <label for="{{ $id }}" class="absolute text-sm {{ $hasError ? 'text-red-600' : 'text-base-light' }} duration-300 transform 
-                {{ strlen($value) > 0 ? '-translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3' : '-translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3' }}">
-                {{ $label }}@if($required)<span class="text-red-500 ml-1">*</span>@endif
-            </label>
-        @endif
-        
-        @if($trailingIcon)
-            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                {!! $trailingIcon !!}
-            </div>
-        @endif
+        >{{ $value }}</textarea>
     </div>
     
     @if($helper && !$hasError)

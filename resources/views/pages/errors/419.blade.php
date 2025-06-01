@@ -4,9 +4,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <div class="flex flex-col items-center justify-center text-center">
-                        <h1 class="text-9xl font-bold text-primary">404</h1>
-                        <h2 class="text-2xl font-semibold text-base-dark mt-4">Page Not Found</h2>
-                        <p class="text-base text-base-light mt-2">The page you are looking for doesn't exist or has been moved.</p>
+                        <h1 class="text-9xl font-bold text-primary">419</h1>
+                        <h2 class="text-2xl font-semibold text-base-dark mt-4">Page Expired</h2>
+                        <p class="text-base text-base-light mt-2">Your session has expired. Please refresh and try again.</p>
                         
                         <div class="mt-8">
                             <a href="{{ url('/') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">

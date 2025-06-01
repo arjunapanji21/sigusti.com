@@ -44,13 +44,79 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 - **[Redberry](https://redberry.international/laravel-development)**
 - **[Active Logic](https://activelogic.com)**
 
-## Contributing
+## Laravel 12 Boilerplate Features
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+This boilerplate extends the standard Laravel installation with several pre-configured features designed to accelerate your development workflow:
 
-## Code of Conduct
+### Core Features
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Modern Middleware Architecture** - Utilizing Laravel 12's new approach with middleware configured in bootstrap/app.php
+- **Role-based Authentication** - Complete user management system with admin privileges
+- **Responsive UI Components** - Built with Tailwind CSS 4 and Alpine.js
+- **Accessibility Features** - High contrast mode and reduced motion options for improved user experience
+- **Comprehensive Documentation** - Detailed documentation to help you get started quickly
+
+### Technical Specifications
+
+- PHP 8.1+ requirement
+- Tailwind CSS 4 for styling
+- Alpine.js for frontend interactivity
+- Modern component-based architecture
+- Laravel 12's new dependency injection approach
+
+## Getting Started
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/laravel12-boilerplate.git
+
+# Navigate to the project directory
+cd laravel12-boilerplate
+
+# Install PHP dependencies
+composer install
+
+# Install frontend dependencies
+npm install
+
+# Create environment file
+cp .env.example .env
+
+# Generate application key
+php artisan key:generate
+
+# Run database migrations
+php artisan migrate
+
+# Build frontend assets
+npm run dev
+```
+
+### Configuration
+
+After installation, you can customize your application by:
+
+1. Editing the `.env` file for environment-specific settings
+2. Using the Settings page in the admin dashboard
+3. Modifying `tailwind.config.js` for theme customization
+4. Updating middleware in `bootstrap/app.php`
+
+## Project Structure
+
+This boilerplate follows Laravel's MVC architecture with some additional organization for larger applications:
+
+- **Controllers:** Located in `app/Http/Controllers`
+- **Models:** Located in `app/Models`
+- **Views:** Located in `resources/views`
+- **Routes:** Defined in `routes/web.php` and `routes/api.php`
+- **Middleware:** Located in `app/Http/Middleware` and configured in `bootstrap/app.php`
+- **Components:** Reusable UI components in `resources/views/components`
+
+## Contributing to the Boilerplate
+
+We welcome contributions to make this boilerplate even better. Please feel free to submit issues or pull requests.
 
 ## Security Vulnerabilities
 

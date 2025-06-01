@@ -2,70 +2,80 @@
 
 namespace App\Models;
 
-use App\Notifications\VerifyEmailNotification;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
+// Laravel Sanctum trait is missing - uncomment after running: composer require laravel/sanctum
+// use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
-    use Notifiable;
-    // Use HasApiTokens only if API functionality is needed
-    // use HasApiTokens;
+    // Remove or comment out the HasApiTokens trait until Sanctum is installed
+    // use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'email',
         'phone',
         'password',
-        'is_admin',
+        'role', // Add role to fillable fields
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'password' => 'hashed',
         'is_admin' => 'boolean',
     ];
 
-    public function messages()
+    /**
+     * Check if the user is an admin.
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
     {
-        return $this->hasMany(Message::class);
+        return $this->is_admin;
     }
 
-    public function sendEmailVerificationNotification()
+    /**
+     * Check if user has the given role
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole($role)
     {
-        $token = Str::random(60);
+        // If using is_admin column for admin role
+        if ($role === 'admin') {
+            return $this->isAdmin();
+        }
         
-        // Create an email verification record
-        EmailVerification::create([
-            'user_id' => $this->id,
-            'token' => $token,
-            'expires_at' => now()->addHours(24)
-        ]);
+        // If using a role column
+        if (isset($this->attributes['role'])) {
+            return $this->role === $role;
+        }
         
-        $verificationUrl = route('verification.verify', ['token' => $token]);
-        $this->notify(new VerifyEmailNotification($verificationUrl));
-    }
-
-    public function markEmailAsVerified()
-    {
-        return $this->forceFill([
-            'email_verified_at' => now(),
-        ])->save();
-    }
-
-    public function licenses()
-    {
-        return $this->hasMany(License::class);
-    }
-
-    public function payments()
-    {
-        return $this->hasMany(Payment::class);
+        return false;
     }
 }
