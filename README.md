@@ -70,7 +70,7 @@ This boilerplate extends the standard Laravel installation with several pre-conf
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/laravel12-boilerplate.git
+git clone https://github.com/arjunapanji21/laravel12-boilerplate.git
 
 # Navigate to the project directory
 cd laravel12-boilerplate
