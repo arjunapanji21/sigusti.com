@@ -1,10 +1,10 @@
 <x-guest-layout>
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
-            <img class="mx-auto h-14 w-auto" src="{{ asset('logo.png') }}" alt="Laravel Boilerplate">
-            <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-base-dark">Sign in to your
+            <img class="mx-auto h-14 w-auto" src="{{ asset('logo.png') }}" alt="SI-GUSTI">
+            <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your
                 account</h2>
-            <p class="mt-2 text-center text-sm text-base-light">
+            <p class="mt-2 text-center text-sm text-gray-600">
                 Enter your credentials to access your account
             </p>
         </div>
@@ -12,18 +12,19 @@
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-6 shadow-lg sm:rounded-lg border border-gray-100">
                 @if ($errors->any())
-                    <div class="mb-6 rounded-md bg-primary/10 p-4">
+                    <div class="mb-6 rounded-md bg-red-50 p-4">
                         <div class="flex">
                             <div class="flex-shrink-0">
-                                <svg class="h-5 w-5 text-primary" viewBox="0 0 20 20" fill="currentColor"
+                                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor"
                                     aria-hidden="true">
                                     <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+                                        d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
                                         clip-rule="evenodd" />
+                                </svg>
                             </div>
                             <div class="ml-3">
-                                <h3 class="text-sm font-medium text-primary">There were errors with your submission</h3>
-                                <div class="mt-2 text-sm text-primary">
+                                <h3 class="text-sm font-medium text-red-800">There were errors with your submission</h3>
+                                <div class="mt-2 text-sm text-red-700">
                                     <ul class="list-disc pl-5 space-y-1">
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
@@ -75,28 +76,28 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
                             <input id="remember" name="remember" type="checkbox"
-                                class="h-4 w-4 rounded border-base-light/30 text-primary focus:ring-primary">
-                            <label for="remember" class="ml-2 block text-sm text-base-dark">Remember me</label>
+                                class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            <label for="remember" class="ml-2 block text-sm text-gray-900">Remember me</label>
                         </div>
                         <div>
-                            <a href="#" class="text-sm font-medium text-primary hover:text-primary-light">Forgot
+                            <a href="#" class="text-sm font-medium text-green-600 hover:text-green-500">Forgot
                                 password?</a>
                         </div>
                     </div>
 
                     <div>
                         <button type="submit"
-                            class="flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200">
+                            class="flex w-full justify-center rounded-md bg-gradient-to-r from-green-500 to-green-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:from-green-600 hover:to-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500 transition-all duration-200">
                             Sign in
                         </button>
                     </div>
                 </form>
             </div>
 
-            <p class="mt-6 text-center text-sm text-base-light">
+            <p class="mt-6 text-center text-sm text-gray-600">
                 Not a member?
                 <a href="{{ route('register') }}"
-                    class="font-semibold leading-6 text-primary hover:text-primary-light">Create an account</a>
+                    class="font-semibold leading-6 text-green-600 hover:text-green-500">Create an account</a>
             </p>
         </div>
     </div>

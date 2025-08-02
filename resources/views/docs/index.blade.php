@@ -25,7 +25,7 @@
                             </svg>
                             Getting Started
                         </h2>
-                        <p>Welcome to Laravel 12 Boilerplate documentation. This boilerplate is designed to accelerate your Laravel application development with pre-built features and components.</p>
+                        <p>Welcome to SI-GUSTI documentation. This boilerplate is designed to accelerate your Laravel application development with pre-built features and components.</p>
                         
                         <h3 id="features" class="flex items-center text-lg font-medium mt-6">
                             <svg class="h-5 w-5 text-primary mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

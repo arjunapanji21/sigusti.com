@@ -1,0 +1,23 @@
+[
+{"type":"header","version":"5.2.0","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"test"},
+{"type":"table","name":"perkembangans","database":"test","data":
+[
+{"id":"1","bulan":"3","usia_bayi_id":"1","text":"#Bayi Terlentangkan:","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"2","bulan":"3","usia_bayi_id":"1","text":"1. Pada waktu bayi terlentang, apakah masing-masing lengan dan tungkai \r\nbergerak dengan mudah? Jawaban TIDAK bila salah satu atau kedua tungkai \r\natau lengan bayi bergerak tak terarah\/tak terkendali","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"67","bulan":"18","usia_bayi_id":"6","text":"#Anak dipangku ibunya \/ Pengasuh ditepi meja periksa","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"68","bulan":"18","usia_bayi_id":"6","text":"1. Letakkan kismis diatas meja dekat anak, apakah anak dapat mengambil\r\ndengan ibu jari dan telunjuk?","gambar":"18_1.png","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"69","bulan":"18","usia_bayi_id":"6","text":"2. Gelindingkan bola tenis ke arah anak, apakah dapat mengelindingkan \r\n\/melempar bola kembali kepada anak?","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"70","bulan":"18","usia_bayi_id":"6","text":"#Tanya ibu","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"71","bulan":"18","usia_bayi_id":"6","text":"3. Apakah anak dapat bertepuk tangan atau melambaikan tangan tanpa \r\nbantuan?","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"72","bulan":"18","usia_bayi_id":"6","text":"4. Apakah anak dapat mengatakan \"papa\" ketika melihat atau memanggil\r\nayahnya atau mengatakan \"mama\" ketika melihat atau memanggil \r\nibunya?","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"73","bulan":"18","usia_bayi_id":"6","text":"5. Apakah anak dapat menunjukkan apa yang diingikan tanpa menangis \r\natau merengek?","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"74","bulan":"18","usia_bayi_id":"6","text":"6. Apakah anak dapat minum dari cangkir\/gelas sendiri tanpa tumpah?","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"75","bulan":"18","usia_bayi_id":"6","text":"#Coba berdirikan anak:","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"76","bulan":"18","usia_bayi_id":"6","text":"7. Apakah anak dapat berdiri kira-kira 5 detik tanpa pegangan?","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"77","bulan":"18","usia_bayi_id":"6","text":"8. Apakah anak dapat berdiri kira kira lebih dari 30 detik tanpa pegangan?","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"78","bulan":"18","usia_bayi_id":"6","text":"9. Letakkan kubus di lantai, minta anak memungut, apakah anak dapat \r\nmemungut dan berdiri kembali tanpa berpegangan?","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"},
+{"id":"79","bulan":"18","usia_bayi_id":"6","text":"10. Minta anak berjalan sepanjang ruangan, dapatkan ia berjalan tanpa \r\nterhunyung\/jatuh?","gambar":"","created_at":"0000-00-00 00:00:00","updated_at":"0"}
+]
+}
+]

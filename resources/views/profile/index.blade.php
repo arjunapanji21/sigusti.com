@@ -34,14 +34,6 @@
                                 class="block px-3 py-2 rounded-md text-base hover:bg-background hover:text-primary mt-1">
                                 Security
                             </a>
-                            <a href="#notifications"
-                                class="block px-3 py-2 rounded-md text-base hover:bg-background hover:text-primary mt-1">
-                                Notifications
-                            </a>
-                            <a href="#connected-accounts"
-                                class="block px-3 py-2 rounded-md text-base hover:bg-background hover:text-primary mt-1">
-                                Connected Accounts
-                            </a>
                         </nav>
                     </div>
                 </div>
@@ -117,26 +109,6 @@
                                     </button>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-
-                    <!-- Two-Factor Authentication -->
-                    <div class="bg-white shadow-sm rounded-lg overflow-hidden mb-6">
-                        <div class="px-6 py-4 border-b border-gray-200">
-                            <h3 class="text-lg font-medium text-base-dark">Two-Factor Authentication</h3>
-                        </div>
-                        <div class="p-6">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm text-base">Add additional security to your account using
-                                        two-factor authentication.</p>
-                                    <p class="text-sm text-base-light mt-1">When two-factor authentication is enabled,
-                                        you will be prompted for a secure, random token during authentication.</p>
-                                </div>
-                                <div class="ml-4"> <button type="button"
-                                        class="inline-flex items-center px-4 py-2 border border-base-light/30 rounded-md shadow-sm text-sm font-medium text-base bg-white hover:bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                                        Enable </button> </div>
-                            </div>
                         </div>
                     </div>
                 </div>

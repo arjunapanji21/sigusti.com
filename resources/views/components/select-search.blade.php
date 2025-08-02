@@ -112,7 +112,7 @@
             <!-- For multiple select -->
             <template x-if="{{ $multiple ? 'true' : 'false' }}">
                 <div class="flex flex-wrap gap-1">
-                    <template x-if="selectedOptions.length === 0">
+                    <template x-if="selectedOptions.length == 0">
                         <span class="text-gray-400">{{ $placeholder }}</span>
                     </template>
                     <template x-for="option in selectedOptions" :key="option.value">
@@ -181,7 +181,7 @@
             </div>
 
             <!-- No results message -->
-            <div x-show="filteredOptions.length === 0" class="px-3 py-2 text-sm text-base-light">
+            <div x-show="filteredOptions.length == 0" class="px-3 py-2 text-sm text-base-light">
                 No results found
             </div>
 
@@ -189,17 +189,17 @@
             <ul class="py-1">
                 <template x-for="(option, index) in filteredOptions" :key="option.value + index">
                     <li class="relative px-2">
-                        <template x-if="option.type === 'group'">
+                        <template x-if="option.type == 'group'">
                             <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide px-3 py-1"
                                 x-text="option.label"></div>
                         </template>
-                        <template x-if="option.type !== 'group'">
+                        <template x-if="option.type != 'group'">
                             <button type="button" @click="!option.disabled && selectOption(option)"
                                 :class="{
-                                    'bg-primary text-white': highlightedIndex === index,
-                                    'hover:bg-gray-100': highlightedIndex !== index && !option.disabled,
+                                    'bg-primary text-white': highlightedIndex == index,
+                                    'hover:bg-gray-100': highlightedIndex != index && !option.disabled,
                                     'opacity-50 cursor-not-allowed': option.disabled,
-                                    'bg-primary/10 text-primary': isOptionSelected(option) && highlightedIndex !== index
+                                    'bg-primary/10 text-primary': isOptionSelected(option) && highlightedIndex != index
                                 }"
                                 :disabled="option.disabled"
                                 class="w-full flex items-center px-3 py-2 text-sm rounded-md cursor-pointer"
@@ -247,7 +247,7 @@
                 highlightedIndex: 0,
 
                 get showClearButton() {
-                    return isMultiple ? this.selectedValues.length > 0 : this.selectedValue !== null;
+                    return isMultiple ? this.selectedValues.length > 0 : this.selectedValue != null;
                 },
 
                 get selectedOptions() {
@@ -255,7 +255,7 @@
 
                     return this.selectedValues.map(value => {
                         return this.findOptionByValue(value);
-                    }).filter(option => option !== null);
+                    }).filter(option => option != null);
                 },
 
                 get filteredOptions() {
@@ -265,7 +265,7 @@
 
                     // Filter options based on search query
                     const filterOption = (option) => {
-                        if (option.type === 'group') {
+                        if (option.type == 'group') {
                             const filteredGroupOptions = option.options.filter(o =>
                                 o.label.toLowerCase().includes(query)
                             );
@@ -297,7 +297,7 @@
                     // Flatten groups for easier navigation
                     let flattened = [];
                     for (const option of options) {
-                        if (option.type === 'group') {
+                        if (option.type == 'group') {
                             flattened.push({
                                 ...option
                             });
@@ -316,7 +316,7 @@
                 },
 
                 findAndSetSelectedOption() {
-                    if (!isMultiple && this.selectedValue !== null) {
+                    if (!isMultiple && this.selectedValue != null) {
                         this.selectedOption = this.findOptionByValue(this.selectedValue);
                     }
                 },
@@ -324,10 +324,10 @@
                 findOptionByValue(value) {
                     const findInOptions = (options) => {
                         for (const option of options) {
-                            if (option.type === 'group' && option.options) {
+                            if (option.type == 'group' && option.options) {
                                 const found = findInOptions(option.options);
                                 if (found) return found;
-                            } else if (String(option.value) === String(value)) {
+                            } else if (String(option.value) == String(value)) {
                                 return option;
                             }
                         }
@@ -361,7 +361,7 @@
 
                     if (isMultiple) {
                         const index = this.selectedValues.indexOf(option.value);
-                        if (index === -1) {
+                        if (index == -1) {
                             this.selectedValues.push(option.value);
                         } else {
                             this.selectedValues.splice(index, 1);
@@ -389,14 +389,14 @@
                     if (isMultiple) {
                         return this.selectedValues.includes(option.value);
                     } else {
-                        return this.selectedValue === option.value;
+                        return this.selectedValue == option.value;
                     }
                 },
 
                 removeSelected(option) {
                     if (isMultiple) {
                         const index = this.selectedValues.indexOf(option.value);
-                        if (index !== -1) {
+                        if (index != -1) {
                             this.selectedValues.splice(index, 1);
 
                             // Trigger change event
@@ -441,12 +441,12 @@
                             nextIndex = 0;
                         }
                     } while (
-                        nextIndex !== this.highlightedIndex &&
-                        (this.filteredOptions[nextIndex]?.type === 'group' ||
+                        nextIndex != this.highlightedIndex &&
+                        (this.filteredOptions[nextIndex]?.type == 'group' ||
                             this.filteredOptions[nextIndex]?.disabled)
                     );
 
-                    if (nextIndex !== this.highlightedIndex && this.filteredOptions[nextIndex]) {
+                    if (nextIndex != this.highlightedIndex && this.filteredOptions[nextIndex]) {
                         this.highlightedIndex = nextIndex;
                         this.scrollToHighlighted();
                     }
@@ -460,12 +460,12 @@
                             prevIndex = this.filteredOptions.length - 1;
                         }
                     } while (
-                        prevIndex !== this.highlightedIndex &&
-                        (this.filteredOptions[prevIndex]?.type === 'group' ||
+                        prevIndex != this.highlightedIndex &&
+                        (this.filteredOptions[prevIndex]?.type == 'group' ||
                             this.filteredOptions[prevIndex]?.disabled)
                     );
 
-                    if (prevIndex !== this.highlightedIndex && this.filteredOptions[prevIndex]) {
+                    if (prevIndex != this.highlightedIndex && this.filteredOptions[prevIndex]) {
                         this.highlightedIndex = prevIndex;
                         this.scrollToHighlighted();
                     }
@@ -473,7 +473,7 @@
 
                 selectHighlighted() {
                     if (this.filteredOptions[this.highlightedIndex] &&
-                        this.filteredOptions[this.highlightedIndex].type !== 'group' &&
+                        this.filteredOptions[this.highlightedIndex].type != 'group' &&
                         !this.filteredOptions[this.highlightedIndex].disabled) {
                         this.selectOption(this.filteredOptions[this.highlightedIndex]);
                     }

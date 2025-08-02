@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-// Laravel Sanctum trait is missing - uncomment after running: composer require laravel/sanctum
-// use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    // Remove or comment out the HasApiTokens trait until Sanctum is installed
-    // use HasApiTokens, HasFactory, Notifiable;
     use HasFactory, Notifiable;
 
     /**
@@ -22,9 +19,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'phone',
         'password',
-        'role', // Add role to fillable fields
+        'role',
     ];
 
     /**
@@ -45,7 +41,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'is_admin' => 'boolean',
     ];
 
     /**
@@ -53,29 +48,13 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isAdmin(): bool
+    public function isAdmin()
     {
-        return $this->is_admin;
+        return $this->role == 'admin';
     }
 
-    /**
-     * Check if user has the given role
-     *
-     * @param string $role
-     * @return bool
-     */
-    public function hasRole($role)
+    public function balita()
     {
-        // If using is_admin column for admin role
-        if ($role === 'admin') {
-            return $this->isAdmin();
-        }
-        
-        // If using a role column
-        if (isset($this->attributes['role'])) {
-            return $this->role === $role;
-        }
-        
-        return false;
+        return $this->hasMany(Balita::class);
     }
 }

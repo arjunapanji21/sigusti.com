@@ -21,7 +21,7 @@
     if ($disabled) $classes .= ' opacity-60 cursor-not-allowed';
     if ($leadingIcon) $classes .= ' pl-10';
     
-    $inlineLabel = $variant === 'inline';
+    $inlineLabel = $variant == 'inline';
     
     $hasError = $errors->has($name);
     if ($hasError) $classes .= ' border-red-500 focus:border-red-500 focus:ring-red-500';

@@ -1,26 +1,30 @@
 <x-guest-layout>
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
-            <img class="mx-auto h-14 w-auto" src="{{ asset('logo.png') }}" alt="Laravel Boilerplate">
-            <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-base-dark">Create your account</h2>
-            <p class="mt-2 text-center text-sm text-base-light">
-                Join our community and get started
+            <div class="mx-auto h-14 w-14 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Daftar Akun Baru</h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Bergabunglah dengan SI-GUSTI untuk memantau tumbuh kembang balita
             </p>
         </div>
 
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-6 shadow-lg sm:rounded-lg border border-gray-100">
                 @if ($errors->any())
-                    <div class="mb-6 rounded-md bg-primary/10 p-4">
+                    <div class="mb-6 rounded-md bg-red-50 p-4 border border-red-200">
                         <div class="flex">
                             <div class="flex-shrink-0">
-                                <svg class="h-5 w-5 text-primary" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                             <div class="ml-3">
-                                <h3 class="text-sm font-medium text-primary">There were errors with your submission</h3>
-                                <div class="mt-2 text-sm text-primary">
+                                <h3 class="text-sm font-medium text-red-800">Terdapat kesalahan dalam pengisian form</h3>
+                                <div class="mt-2 text-sm text-red-700">
                                     <ul class="list-disc pl-5 space-y-1">
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
@@ -37,11 +41,11 @@
         
                     <x-text-input
                         name="name"
-                        label="Full name"
+                        label="Nama Lengkap"
                         value="{{ old('name') }}"
                         required
-                        placeholder="John Doe"
-                        helper="Enter your first and last name"
+                        placeholder="Masukkan nama lengkap"
+                        helper="Nama akan digunakan untuk identifikasi akun"
                         leadingIcon='<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                         </svg>'
@@ -50,12 +54,12 @@
                     <x-text-input
                         type="email"
                         name="email"
-                        label="Email address"
+                        label="Alamat Email"
                         value="{{ old('email') }}"
                         required
                         autocomplete="email"
-                        placeholder="name@example.com"
-                        helper="We'll never share your email with anyone else"
+                        placeholder="nama@example.com"
+                        helper="Email akan digunakan untuk login dan notifikasi"
                         leadingIcon='<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
@@ -65,11 +69,11 @@
                     <x-text-input
                         type="text"
                         name="phone"
-                        label="Phone number"
+                        label="Nomor Telepon"
                         value="{{ old('phone') }}"
                         autocomplete="tel"
-                        placeholder="+1 (555) 123-4567"
-                        helper="Optional: For account recovery and notifications"
+                        placeholder="08123456789"
+                        helper="Opsional: Untuk pemulihan akun dan notifikasi"
                         leadingIcon='<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                         </svg>'
@@ -79,11 +83,11 @@
                         <x-text-input
                             x-bind:type="showPassword ? 'text' : 'password'"
                             name="password"
-                            label="Password"
+                            label="Kata Sandi"
                             required
                             autocomplete="new-password"
                             placeholder="••••••••"
-                            helper="Must be at least 8 characters with letters, numbers, and symbols"
+                            helper="Minimal 8 karakter dengan kombinasi huruf, angka, dan simbol"
                             leadingIcon='<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
                             </svg>'
@@ -104,11 +108,11 @@
                         <x-text-input
                             x-bind:type="showConfirmPassword ? 'text' : 'password'"
                             name="password_confirmation"
-                            label="Confirm password"
+                            label="Konfirmasi Kata Sandi"
                             required
                             autocomplete="new-password"
                             placeholder="••••••••"
-                            helper="Re-enter the same password to confirm"
+                            helper="Masukkan kembali kata sandi yang sama"
                             leadingIcon='<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
                             </svg>'
@@ -126,14 +130,16 @@
                     </div>
         
                     <div>
-                        <button type="submit" class="flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200">Create account</button>
+                        <button type="submit" class="flex w-full justify-center rounded-md bg-gradient-to-r from-green-500 to-green-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:from-green-600 hover:to-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500 transition-all duration-200">
+                            Daftar Sekarang
+                        </button>
                     </div>
                 </form>
             </div>
 
-            <p class="mt-6 text-center text-sm text-base-light">
-                Already have an account?
-                <a href="{{ route('login') }}" class="font-semibold leading-6 text-primary hover:text-primary-light">Sign in</a>
+            <p class="mt-6 text-center text-sm text-gray-600">
+                Sudah punya akun?
+                <a href="{{ route('login') }}" class="font-semibold leading-6 text-green-600 hover:text-green-700">Masuk di sini</a>
             </p>
         </div>
     </div>

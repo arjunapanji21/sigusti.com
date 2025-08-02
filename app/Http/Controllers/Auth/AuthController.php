@@ -54,7 +54,7 @@ class AuthController extends Controller
             // Check if user is verified if using email verification
             $user = Auth::user();
             
-            if ($user->email_verified_at === null && config('auth.verify_email', false)) {
+            if ($user->email_verified_at == null && config('auth.verify_email', false)) {
                 Auth::logout();
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();

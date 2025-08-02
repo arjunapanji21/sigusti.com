@@ -44,7 +44,7 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 - **[Redberry](https://redberry.international/laravel-development)**
 - **[Active Logic](https://activelogic.com)**
 
-## Laravel 12 Boilerplate Features
+## SI-GUSTI Features
 
 This boilerplate extends the standard Laravel installation with several pre-configured features designed to accelerate your development workflow:
 

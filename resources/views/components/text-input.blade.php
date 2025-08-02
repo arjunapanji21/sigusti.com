@@ -1,6 +1,6 @@
 @props([
     'type' => 'text',
-    'name', 
+    'name' => null, 
     'id' => null,
     'value' => '', 
     'label' => null,
@@ -25,8 +25,8 @@
     if ($leadingIcon) $classes .= ' pl-10';
     if ($trailingIcon) $classes .= ' pr-10';
     
-    $floatingLabel = $floatingLabel || $variant === 'floating';
-    $inlineLabel = $variant === 'inline';
+    $floatingLabel = $floatingLabel || $variant == 'floating';
+    $inlineLabel = $variant == 'inline';
     
     $hasError = $errors->has($name);
     if ($hasError) $classes .= ' border-red-500 focus:border-red-500 focus:ring-red-500';
