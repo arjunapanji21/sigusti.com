@@ -377,6 +377,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsiaBayiSeeder::class,
             PerkembanganSeeder::class,
+            MateriSeeder::class,
         ]);
     }
 }

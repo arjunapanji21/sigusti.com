@@ -1,0 +1,16 @@
+[
+{"type":"header","version":"5.2.0","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"test"},
+{"type":"table","name":"materis","database":"test","data":
+[
+{"id":"1","title":"Pengertian Pertumbuhan dan Perkembangan","type":"video","path":"https:\/\/www.youtube.com\/watch?v=N9AaDq2rLQU","created_at":"2023-09-25 06:05:09","updated_at":"2023-09-25 06:05:09"},
+{"id":"2","title":"Dampak Keterlambatan Perkembangan","type":"video","path":"https:\/\/www.youtube.com\/watch?v=MIpIbajJWNc","created_at":"2023-09-25 06:07:44","updated_at":"2023-09-25 06:07:44"},
+{"id":"3","title":"Pentingnya Stimulasi","type":"video","path":"https:\/\/www.youtube.com\/watch?v=Sah5Qsjg5V0","created_at":"2023-09-25 06:10:48","updated_at":"2023-09-25 06:10:48"},
+{"id":"4","title":"Mengukur Tinggi Badan Anak Usia 2 Tahun ke Atas","type":"video","path":"https:\/\/www.youtube.com\/watch?v=L6m9M-otIdQ","created_at":"2022-11-30 01:08:20","updated_at":"2022-11-30 01:08:20"},
+{"id":"5","title":"Mengukur Panjang Badan Bayi & Anak 0-2 Tahun","type":"video","path":"https:\/\/www.youtube.com\/watch?v=HWhQ6H0rgi4","created_at":"2022-11-30 01:09:42","updated_at":"2022-11-30 01:09:42"},
+{"id":"6","title":"Menimbang Berat Badan Anak menggunakan Timbangan Digital","type":"video","path":"https:\/\/www.youtube.com\/watch?v=9sQRLStpt0E","created_at":"2022-11-30 01:11:01","updated_at":"2022-11-30 01:11:01"},
+{"id":"7","title":"Menimbang Berat Badan Anak Menggunakan Dacin","type":"video","path":"https:\/\/www.youtube.com\/watch?v=N9ot8taDSQA","created_at":"2022-11-30 01:12:04","updated_at":"2022-11-30 01:12:04"},
+{"id":"8","title":"Menimbang Berat Badang Anak Menggunakan BabyScale","type":"video","path":"https:\/\/www.youtube.com\/watch?v=hT3qFlYqBg8","created_at":"2022-11-30 01:13:09","updated_at":"2022-11-30 01:13:09"}
+]
+}
+]

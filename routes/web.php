@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PemeriksaanController;
 use App\Http\Controllers\BalitaController;
+use App\Http\Controllers\MateriController;
+use App\Http\Controllers\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,9 +52,26 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('balita', BalitaController::class);
     Route::get('/balita-search', [BalitaController::class, 'search'])->name('balita.search');
 
+    // Materi routes
+    Route::resource('materi', MateriController::class);
+
     // Admin routes
-    Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
-        Route::resource('users', UserController::class);
+    Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+    });
+
+    // Chat routes
+    Route::middleware('auth')->group(function () {
+        Route::get('/chat', [App\Http\Controllers\ChatController::class, 'index'])->name('chat.index');
+        Route::get('/chat/create', function () {
+            if (auth()->user()->is_admin) {
+                abort(403, 'Admin cannot create new messages');
+            }
+            return view('chat.create');
+        })->name('chat.create');
+        Route::get('/chat/{user}', [App\Http\Controllers\ChatController::class, 'show'])->name('chat.show');
+        Route::post('/chat/send', [App\Http\Controllers\ChatController::class, 'send'])->name('chat.send');
+        Route::patch('/chat/{message}/read', [App\Http\Controllers\ChatController::class, 'markAsRead'])->name('chat.read');
     });
 });
 

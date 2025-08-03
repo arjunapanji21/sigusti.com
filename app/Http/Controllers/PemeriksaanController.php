@@ -233,7 +233,7 @@ class PemeriksaanController extends Controller
     public function riwayat($user_id)
     {
         $user = User::find($user_id);
-        if ($user->role == 'admin') {
+        if ($user->is_admin) {
             $pemeriksaan = Pemeriksaan::all();
         } else {
             $pemeriksaan = Pemeriksaan::where('user_id', $user->id)->get();

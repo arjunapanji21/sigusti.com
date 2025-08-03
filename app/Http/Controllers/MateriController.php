@@ -1,69 +1,70 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Materi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MateriController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $materi = Materi::all();
-        return [
-            "success" => true,
-            "data" => $materi,
-        ];
+        $materi = Materi::latest()->paginate(10);
+        return view('materi.index', compact('materi'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function create()
+    {
+        return view('materi.create');
+    }
+
     public function store(Request $request)
     {
-        // $request->validate
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'type' => 'required|in:pdf,video',
+            'path' => 'required|string',
+        ]);
+
+        Materi::create($request->all());
+
+        return redirect()->route('materi.index')->with('success', 'Materi berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Materi  $materi
-     * @return \Illuminate\Http\Response
-     */
     public function show(Materi $materi)
     {
-        //
+        // Extract video ID if it's a YouTube video
+        $videoId = null;
+        if ($materi->type == 'video' && str_contains($materi->path, 'youtube')) {
+            preg_match('/(?:youtube\.com\/(?:embed\/|watch\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $materi->path, $matches);
+            $videoId = $matches[1] ?? null;
+        }
+        
+        return view('materi.show', compact('materi', 'videoId'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Materi  $materi
-     * @return \Illuminate\Http\Response
-     */
+    public function edit(Materi $materi)
+    {
+        return view('materi.edit', compact('materi'));
+    }
+
     public function update(Request $request, Materi $materi)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'type' => 'required|in:pdf,video',
+            'path' => 'required|string',
+        ]);
+
+        $materi->update($request->all());
+
+        return redirect()->route('materi.index')->with('success', 'Materi berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Materi  $materi
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Materi $materi)
     {
-        //
+        $materi->delete();
+        return redirect()->route('materi.index')->with('success', 'Materi berhasil dihapus.');
     }
 }
