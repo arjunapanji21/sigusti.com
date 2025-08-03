@@ -39,10 +39,10 @@
                 <form class="space-y-6" action="{{ route('login') }}" method="POST">
                     @csrf
 
-                    <x-text-input type="email" name="email" label="Email address" value="{{ old('email') }}" required
-                        autocomplete="email"
-                        placeholder="name@example.com"
-                        helper="Enter the email you used to register"
+                    <x-text-input type="text" name="email_or_phone" label="Email or Phone Number" value="{{ old('email_or_phone') }}" required
+                        autocomplete="username"
+                        placeholder="name@example.com or 08123456789"
+                        helper="Enter your email address or phone number"
                         leadingIcon='<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />

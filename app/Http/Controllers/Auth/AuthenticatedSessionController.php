@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
@@ -26,22 +30,41 @@ class AuthenticatedSessionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
+        // Validate the input
+        $validator = Validator::make($request->all(), [
+            'email_or_phone' => ['required', 'string'],
+            'password' => ['required', 'string'],
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
-            throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
-            ]);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
 
-        $request->session()->regenerate();
+        $input = $request->input('email_or_phone');
+        $password = $request->input('password');
+        $remember = $request->boolean('remember');
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // Determine if input is email or phone
+        $field = filter_var($input, FILTER_VALIDATE_EMAIL) ? 'email' : 'telp';
+        
+        // Attempt authentication
+        $credentials = [
+            $field => $input,
+            'password' => $password
+        ];
+
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+
+            return redirect()->intended(RouteServiceProvider::HOME ?? '/dashboard');
+        }
+
+        // If authentication fails
+        throw ValidationException::withMessages([
+            'email_or_phone' => trans('auth.failed'),
+        ]);
     }
 
     /**
@@ -50,7 +73,7 @@ class AuthenticatedSessionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
 
