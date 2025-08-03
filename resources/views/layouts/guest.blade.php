@@ -83,8 +83,6 @@
                 <div class="hidden lg:flex lg:items-center lg:space-x-8">
                     <a href="#features" class="text-white/80 hover:text-white transition-colors duration-200 font-medium">Features</a>
                     <a href="#getting-started" class="text-white/80 hover:text-white transition-colors duration-200 font-medium">Getting Started</a>
-                    <a href="#docs" class="text-white/80 hover:text-white transition-colors duration-200 font-medium">Documentation</a>
-                    <a href="https://github.com/laravel/laravel" target="_blank" class="text-white/80 hover:text-white transition-colors duration-200 font-medium">GitHub</a>
                     <div class="flex items-center space-x-4">
                         <a href="{{ route('login') }}" class="text-white/80 hover:text-white transition-colors duration-200 font-medium">Log in</a>
                         <a href="{{ route('register') }}" class="bg-white/20 text-white px-6 py-2 rounded-lg hover:bg-white/30 transition-all duration-200 font-medium shadow-md hover:shadow-lg border border-white/20">Register</a>
@@ -97,8 +95,6 @@
             <div class="px-2 pt-2 pb-8 space-y-1">
                 <a href="#features" class="block px-3 py-2 rounded-md text-white/80 hover:text-white hover:bg-white/10 transition-colors duration-200">Features</a>
                 <a href="#getting-started" class="block px-3 py-2 rounded-md text-white/80 hover:text-white hover:bg-white/10 transition-colors duration-200">Getting Started</a>
-                <a href="#docs" class="block px-3 py-2 rounded-md text-white/80 hover:text-white hover:bg-white/10 transition-colors duration-200">Documentation</a>
-                <a href="https://github.com/laravel/laravel" target="_blank" class="block px-3 py-2 rounded-md text-white/80 hover:text-white hover:bg-white/10 transition-colors duration-200">GitHub</a>
                 <div class="mt-4 px-3 space-y-2">
                     <a href="{{ route('login') }}" class="block w-full text-center px-4 py-2 border border-white/30 text-white rounded-lg hover:bg-white/10 transition-colors duration-200">Sign In</a>
                     <a href="{{ route('register') }}" class="block w-full text-center px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-all duration-200 border border-white/20">Sign Up</a>
@@ -118,7 +114,7 @@
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 <div class="text-center text-gray-400">
                     <p>&copy; {{date('Y')}} SI-GUSTI. All rights reserved.</p>
-                    <p class="mt-2">Built with <span class="text-green-500">♥</span> using Laravel {{ app()->version() }} and Tailwind CSS 4</p>
+                    <p class="mt-2">Built with <span class="text-green-500">♥</span> by <a href="https://arjunaprakarsa.com/" target="_blank">arjunaprakarsa.com</a></p>
                 </div>
             </div>
         </footer>

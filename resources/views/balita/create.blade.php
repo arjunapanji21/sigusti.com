@@ -25,19 +25,6 @@
                 <form action="{{ route('balita.store') }}" method="POST" class="space-y-6 p-6" x-data="balitaForm()">
                     @csrf
                     
-                    <!-- Quick Select from Existing Data -->
-                    @if(auth()->user()->isAdmin())
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <h3 class="text-sm font-medium text-blue-900 mb-3">Pilih dari Data Existing (Opsional)</h3>
-                        <select id="existing-balita-select" class="w-full">
-                            <option value="">Pilih balita existing untuk mengisi form otomatis</option>
-                        </select>
-                        <p class="mt-2 text-xs text-blue-700">
-                            Sebagai admin, Anda dapat memilih data balita yang sudah ada untuk mengisi form secara otomatis
-                        </p>
-                    </div>
-                    @endif
-                    
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <!-- Nama Balita -->
                         <div>
@@ -132,9 +119,6 @@
                 
                 init() {
                     this.initSelect2Components();
-                    @if(auth()->user()->isAdmin())
-                    this.initExistingBalitaSelect();
-                    @endif
                 },
                 
                 initSelect2Components() {
@@ -153,104 +137,6 @@
                     }).on('select2:select select2:clear', (e) => {
                         this.formData.gender = e.target.value || '';
                     });
-                },
-                
-                @if(auth()->user()->isAdmin())
-                initExistingBalitaSelect() {
-                    $('#existing-balita-select').select2({
-                        placeholder: 'Cari nama balita atau nama ibu...',
-                        allowClear: true,
-                        ajax: {
-                            url: '{{ route('api.balita.search') }}',
-                            dataType: 'json',
-                            delay: 250,
-                            data: function (params) {
-                                return {
-                                    q: params.term,
-                                    page: params.page || 1
-                                };
-                            },
-                            processResults: function (data, params) {
-                                params.page = params.page || 1;
-                                
-                                return {
-                                    results: data.data.map(item => ({
-                                        id: item.id,
-                                        text: `${item.name} - ${item.gender == 'L' ? 'Laki-laki' : 'Perempuan'} (${item.ibu}) - ${item.user.name}`,
-                                        data: item
-                                    })),
-                                    pagination: {
-                                        more: data.pagination ? data.pagination.more : false
-                                    }
-                                };
-                            },
-                            cache: true
-                        },
-                        minimumInputLength: 2,
-                        templateResult: function(repo) {
-                            if (repo.loading) {
-                                return $(`<div class="flex items-center"><div class="animate-spin rounded-full h-4 w-4 border-b-2 border-green-500 mr-2"></div>Mencari...</div>`);
-                            }
-                            
-                            if (!repo.data) {
-                                return repo.text;
-                            }
-                            
-                            const data = repo.data;
-                            const birthDate = new Date(data.tgl_lahir);
-                            const age = new Date().getFullYear() - birthDate.getFullYear();
-                            const genderIcon = data.gender == 'L' ? '👦' : '👧';
-                            
-                            return $(`
-                                <div class="select2-result-balita">
-                                    <div class="select2-result-balita__avatar">${genderIcon}</div>
-                                    <div class="select2-result-balita__meta">
-                                        <div class="select2-result-balita__name">${data.name}</div>
-                                        <div class="select2-result-balita__description">
-                                            Ibu: ${data.ibu} | Umur: ~${age} tahun | Owner: ${data.user.name}
-                                        </div>
-                                    </div>
-                                </div>
-                            `);
-                        },
-                        templateSelection: function(repo) {
-                            if (!repo.data) {
-                                return repo.text || 'Pilih balita existing...';
-                            }
-                            
-                            const data = repo.data;
-                            const genderIcon = data.gender == 'L' ? '👦' : '👧';
-                            return `${genderIcon} ${data.name} (${data.ibu})`;
-                        }
-                    }).on('select2:select', (e) => {
-                        const selectedData = e.params.data.data;
-                        this.populateForm(selectedData);
-                    }).on('select2:clear', () => {
-                        this.clearForm();
-                    });
-                },
-                @endif
-                
-                populateForm(data) {
-                    this.formData.name = data.name;
-                    this.formData.gender = data.gender;
-                    this.formData.tgl_lahir = data.tgl_lahir;
-                    this.formData.ibu = data.ibu;
-                    
-                    // Update Select2 components
-                    $('#gender-select').val(data.gender).trigger('change');
-                },
-                
-                clearForm() {
-                    this.formData = {
-                        name: '',
-                        gender: '',
-                        tgl_lahir: '',
-                        ibu: ''
-                    };
-                    
-                    // Clear Select2 components
-                    $('#gender-select').val('').trigger('change');
                 }
             }
         }
@@ -309,43 +195,6 @@
             border-color: #10b981;
             outline: none;
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-        }
-        
-        /* Existing Balita Select Styles */
-        .select2-result-balita {
-            display: flex;
-            align-items: center;
-            padding: 8px;
-        }
-        
-        .select2-result-balita__avatar {
-            font-size: 20px;
-            margin-right: 12px;
-        }
-        
-        .select2-result-balita__meta {
-            flex: 1;
-        }
-        
-        .select2-result-balita__name {
-            font-weight: 600;
-            color: #1f2937;
-            font-size: 14px;
-        }
-        
-        .select2-result-balita__description {
-            font-size: 12px;
-            color: #6b7280;
-            margin-top: 2px;
-        }
-        
-        /* Loading animation */
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .animate-spin {
-            animation: spin 1s linear infinite;
         }
     </style>
     @endpush

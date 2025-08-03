@@ -25,7 +25,7 @@
                 <label for="to_user_id" class="block text-sm font-medium text-gray-700">Pilih Admin</label>
                 <select name="to_user_id" id="to_user_id" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                     <option value="">Pilih Admin Puskesmas</option>
-                    @foreach(App\Models\User::where('is_admin', true)->where('wilayah_id', auth()->user()->wilayah_id)->get() as $admin)
+                    @foreach(App\Models\User::where('role', 'admin')->where('wilayah_id', auth()->user()->wilayah_id)->get() as $admin)
                         <option value="{{ $admin->id }}">{{ $admin->name }}</option>
                     @endforeach
                 </select>

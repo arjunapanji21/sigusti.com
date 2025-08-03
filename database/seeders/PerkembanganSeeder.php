@@ -14,7 +14,7 @@ class PerkembanganSeeder extends Seeder
         Perkembangan::truncate();
 
         // Read the JSON file
-        $jsonPath = 'C:\Users\arjun_000\Downloads\perkembangans.json';
+        $jsonPath = public_path('backup/perkembangans.json');
         
         if (!file_exists($jsonPath)) {
             $this->command->error('perkembangans.json file not found in Downloads folder');

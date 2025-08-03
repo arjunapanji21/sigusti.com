@@ -11,9 +11,17 @@ class BalitaController extends Controller
     // Web routes
     public function index()
     {
-        $balita = Balita::where('user_id', auth()->id())
-            ->orderBy('created_at', 'desc')
-            ->get();
+        if (auth()->user()->isAdmin()) {
+            // Admin can see all balita data with user information
+            $balita = Balita::with('user')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        } else {
+            // Regular user can only see their own balita data
+            $balita = Balita::where('user_id', auth()->id())
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        }
         
         return view('balita.index', compact('balita'));
     }

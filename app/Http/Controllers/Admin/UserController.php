@@ -21,13 +21,17 @@ class UserController extends Controller
         if ($request->filled('search')) {
             $query->where(function($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('email', 'like', '%' . $request->search . '%');
+                  ->orWhere('telp', 'like', '%' . $request->search . '%');
             });
         }
 
-        // Role filter - using is_admin boolean field
+        // Role filter - using role enum field
         if ($request->filled('role')) {
-            $query->where('is_admin', $request->role == '1');
+            if ($request->role === '1') {
+                $query->where('role', 'admin');
+            } elseif ($request->role === '0') {
+                $query->where('role', 'user');
+            }
         }
 
         $users = $query->orderBy('created_at', 'desc')->paginate(15);
@@ -50,16 +54,16 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'telp' => ['required', 'string', 'max:20', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'is_admin' => ['required', 'boolean'],
+            'role' => ['required', 'in:admin,user'],
         ]);
 
         User::create([
             'name' => $request->name,
-            'email' => $request->email,
+            'telp' => $request->telp,
             'password' => Hash::make($request->password),
-            'is_admin' => (bool) $request->is_admin,
+            'role' => $request->role,
         ]);
 
         return redirect()->route('admin.users.index')
@@ -81,8 +85,8 @@ class UserController extends Controller
     {
         $rules = [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'is_admin' => ['required', 'boolean'],
+            'telp' => ['required', 'string', 'max:20', 'unique:users,telp,' . $user->id],
+            'role' => ['required', 'in:admin,user'],
         ];
 
         if ($request->filled('password')) {
@@ -92,8 +96,8 @@ class UserController extends Controller
         $validated = $request->validate($rules);
 
         $user->name = $validated['name'];
-        $user->email = $validated['email'];
-        $user->is_admin = (bool) $validated['is_admin'];
+        $user->telp = $validated['telp'];
+        $user->role = $validated['role'];
 
         if ($request->filled('password')) {
             $user->password = Hash::make($validated['password']);

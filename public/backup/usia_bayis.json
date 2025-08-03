@@ -1,0 +1,22 @@
+[
+{"type":"header","version":"5.2.0","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"test"},
+{"type":"table","name":"usia_bayis","database":"test","data":
+[
+{"id":"1","rentang":"0-3","created_at":"2021-09-10 05:00:02","updated_at":"2021-09-10 05:00:03"},
+{"id":"2","rentang":"3-6","created_at":"2021-09-10 05:00:23","updated_at":"2021-09-10 05:00:24"},
+{"id":"3","rentang":"6-9","created_at":"2021-09-10 05:00:23","updated_at":"2021-09-10 05:00:24"},
+{"id":"4","rentang":"9-12","created_at":"2021-09-10 05:02:32","updated_at":"2021-09-10 05:02:40"},
+{"id":"5","rentang":"12-15","created_at":"2021-09-10 05:02:32","updated_at":"2021-09-10 05:02:40"},
+{"id":"6","rentang":"15-18","created_at":"2021-09-10 05:02:33","updated_at":"2021-09-10 05:02:39"},
+{"id":"7","rentang":"18-21","created_at":"2021-09-10 05:02:33","updated_at":"2021-09-10 05:02:39"},
+{"id":"8","rentang":"21-24","created_at":"2021-09-10 05:02:34","updated_at":"2021-09-10 05:02:38"},
+{"id":"9","rentang":"24-30","created_at":"2021-09-10 05:02:34","updated_at":"2021-09-10 05:02:38"},
+{"id":"10","rentang":"30-36","created_at":"2021-09-10 05:02:35","updated_at":"2021-09-10 05:02:37"},
+{"id":"11","rentang":"36-42","created_at":"2021-09-10 05:02:35","updated_at":"2021-09-10 05:02:37"},
+{"id":"12","rentang":"42-48","created_at":"2021-09-10 05:02:36","updated_at":"2021-09-10 05:02:36"},
+{"id":"13","rentang":"48-54","created_at":"2021-09-10 05:02:36","updated_at":"2021-09-10 05:02:36"},
+{"id":"14","rentang":"54-60","created_at":"2021-09-10 05:02:36","updated_at":"2021-09-10 05:02:36"}
+]
+}
+]

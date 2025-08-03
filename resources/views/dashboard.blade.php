@@ -104,10 +104,10 @@
 
             <!-- Stats Overview -->
             @php
-                if (auth()->user()->is_admin) {
+                if (auth()->user()->isAdmin()) {
                     $totalBalita = \App\Models\Balita::count();
                     $totalPemeriksaan = \App\Models\Pemeriksaan::count();
-                    $totalUsers = \App\Models\User::where('is_admin', false)->count();
+                    $totalUsers = \App\Models\User::where('role', 'user')->count();
                     $pemeriksaanBulanIni = \App\Models\Pemeriksaan::whereMonth('created_at', now()->month)->count();
                 } else {
                     $totalBalita = \App\Models\Balita::where('user_id', auth()->id())->count();

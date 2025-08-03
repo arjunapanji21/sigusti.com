@@ -47,12 +47,20 @@
                         </div>
 
                         <div>
-                            <label for="is_admin" class="block text-sm font-medium text-gray-700">Role</label>
-                            <select name="is_admin" id="is_admin" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                                <option value="0" {{ old('is_admin', $user->is_admin) ? '' : 'selected' }}>Pengguna</option>
-                                <option value="1" {{ old('is_admin', $user->is_admin) ? 'selected' : '' }}>Admin</option>
+                            <label for="telp" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
+                            <input type="text" name="telp" id="telp" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm" value="{{ old('telp', $user->telp) }}" required>
+                            @error('telp')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                            <select name="role" id="role" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <option value="user" {{ old('role', $user->role) === 'user' ? 'selected' : '' }}>Pengguna</option>
+                                <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Admin</option>
                             </select>
-                            @error('is_admin')
+                            @error('role')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

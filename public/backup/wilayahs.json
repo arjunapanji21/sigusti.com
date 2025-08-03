@@ -1,0 +1,18 @@
+[
+{"type":"header","version":"5.2.0","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"test"},
+{"type":"table","name":"wilayahs","database":"test","data":
+[
+{"id":"1","name":"Wilayah 1","created_at":"2023-03-03 08:57:13","updated_at":"2023-03-03 08:57:13"},
+{"id":"2","name":"Wilayah 2","created_at":"2023-03-03 08:57:13","updated_at":"2023-03-03 08:57:13"},
+{"id":"3","name":"Wilayah 3","created_at":"2023-03-03 08:57:14","updated_at":"2023-03-03 08:57:14"},
+{"id":"4","name":"Wilayah 4","created_at":"2023-03-03 08:57:14","updated_at":"2023-03-03 08:57:14"},
+{"id":"5","name":"Wilayah 5","created_at":"2023-03-03 08:57:14","updated_at":"2023-03-03 08:57:14"},
+{"id":"6","name":"Wilayah 6","created_at":"2023-03-03 08:57:14","updated_at":"2023-03-03 08:57:14"},
+{"id":"7","name":"Wilayah 7","created_at":"2023-03-03 08:57:14","updated_at":"2023-03-03 08:57:14"},
+{"id":"8","name":"Wilayah 8","created_at":"2023-03-03 08:57:14","updated_at":"2023-03-03 08:57:14"},
+{"id":"9","name":"Wilayah 9","created_at":"2023-03-03 08:57:14","updated_at":"2023-03-03 08:57:14"},
+{"id":"10","name":"Wilayah 10","created_at":"2023-03-03 08:57:14","updated_at":"2023-03-03 08:57:14"}
+]
+}
+]

@@ -18,9 +18,14 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
+        'tgl_lahir',
+        'gender',
+        'alamat',
+        'telp',
+        'otp',
+        'role',
         'password',
-        'is_admin',
+        'wilayah_id',
     ];
 
     /**
@@ -31,6 +36,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'otp',
     ];
 
     /**
@@ -39,9 +45,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'is_admin' => 'boolean',
     ];
 
     /**
@@ -51,7 +55,17 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        return $this->is_admin;
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Get the is_admin attribute for backward compatibility.
+     *
+     * @return bool
+     */
+    public function getIsAdminAttribute()
+    {
+        return $this->role === 'admin';
     }
 
     public function balita()

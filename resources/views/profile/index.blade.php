@@ -46,8 +46,9 @@
                             <h3 class="text-lg font-medium text-base-dark">Personal Information</h3>
                         </div>
                         <div class="p-6">
-                            <form action="#" method="POST">
+                            <form action="{{ route('profile.update') }}" method="POST">
                                 @csrf
+                                @method('PUT')
                                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <x-text-input name="name" label="Full Name" value="{{ auth()->user()->name }}"
                                         required
@@ -65,11 +66,18 @@
                                         placeholder="Enter your phone number"
                                         helper="Optional. For account recovery and notifications." />
 
-                                    <x-select-search name="is_admin" label="Role"
-                                        :options="[0 => 'Pengguna', 1 => 'Admin']"
-                                        :selected="auth()->user()->is_admin ? 1 : 0"
-                                        leadingIcon='<svg class="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>'
-                                        helper="Select your role in the system." />
+                                    @if(auth()->user()->isAdmin())
+                                        <x-select-search name="role" label="Role"
+                                            :options="['user' => 'Pengguna', 'admin' => 'Admin']"
+                                            :selected="auth()->user()->role"
+                                            leadingIcon='<svg class="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>'
+                                            helper="Select your role in the system." />
+                                    @else
+                                        <div class="col-span-2">
+                                            <label class="block text-sm font-medium text-gray-700">Role</label>
+                                            <div class="mt-1 text-sm text-gray-500">{{ ucfirst(auth()->user()->role ?? 'user') }}</div>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="mt-6">
                                     <button type="submit"
@@ -87,8 +95,9 @@
                             <h3 class="text-lg font-medium text-base-dark">Security</h3>
                         </div>
                         <div class="p-6">
-                            <form action="#" method="POST">
+                            <form action="{{ route('profile.password') }}" method="POST">
                                 @csrf
+                                @method('PUT')
                                 <div class="space-y-6">
                                     <x-text-input type="password" name="current_password" label="Current Password"
                                         autocomplete="current-password"

@@ -16,10 +16,18 @@ class PemeriksaanController extends Controller
     // Web routes
     public function index()
     {
-        $pemeriksaan = Pemeriksaan::where('user_id', auth()->id())
-            ->with(['user'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        if (auth()->user()->isAdmin()) {
+            // Admin can see all pemeriksaan data with user information
+            $pemeriksaan = Pemeriksaan::with(['user'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        } else {
+            // Regular user can only see their own pemeriksaan data
+            $pemeriksaan = Pemeriksaan::where('user_id', auth()->id())
+                ->with(['user'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        }
         
         return view('pemeriksaan.index', compact('pemeriksaan'));
     }

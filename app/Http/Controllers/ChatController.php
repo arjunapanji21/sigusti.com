@@ -13,7 +13,7 @@ class ChatController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data'  => User::where('is_admin', true)->where('wilayah_id', $wilayah_id)->get(),
+            'data'  => User::where('role', 'admin')->where('wilayah_id', $wilayah_id)->get(),
         ], 201);
     }
 
@@ -81,46 +81,74 @@ class ChatController extends Controller
     public function index()
     {
         $user = auth()->user();
+        $conversations = collect();
         
-        if ($user->is_admin) {
-            // Get users who have sent messages to this admin
-            $conversations = Chat::where('to_user_id', $user->id)
-                ->with(['from_user'])
-                ->latest()
+        if ($user->isAdmin()) {
+            // Admin sees conversations from users
+            $chats = Chat::with(['from_user', 'to_user'])
+                ->where('to_user_id', $user->id)
+                ->orderBy('created_at', 'desc')
                 ->get()
-                ->groupBy('from_user_id')
-                ->map(function ($messages) {
-                    $lastMessage = $messages->first();
-                    return [
-                        'user' => $lastMessage->from_user,
-                        'last_message' => $lastMessage->message,
-                        'last_message_time' => $lastMessage->created_at,
-                        'unread_count' => $messages->where('seen', 0)->count(),
-                    ];
-                });
-        } else {
-            // Get admins this user can chat with
-            $conversations = User::where('is_admin', true)
-                ->where('wilayah_id', $user->wilayah_id)
-                ->get()
-                ->map(function ($admin) use ($user) {
-                    $lastMessage = Chat::where(function ($q) use ($user, $admin) {
-                        $q->where('from_user_id', $user->id)->where('to_user_id', $admin->id);
-                    })->orWhere(function ($q) use ($user, $admin) {
-                        $q->where('from_user_id', $admin->id)->where('to_user_id', $user->id);
-                    })->latest()->first();
-                    
-                    return [
-                        'user' => $admin,
+                ->groupBy('from_user_id');
+                
+            foreach ($chats as $fromUserId => $chatGroup) {
+                $fromUser = User::find($fromUserId);
+                if ($fromUser) {
+                    $lastMessage = $chatGroup->first();
+                    $conversations->push([
+                        'user' => $fromUser,
                         'last_message' => $lastMessage ? $lastMessage->message : null,
                         'last_message_time' => $lastMessage ? $lastMessage->created_at : null,
-                        'unread_count' => Chat::where('from_user_id', $admin->id)
-                            ->where('to_user_id', $user->id)
-                            ->where('seen', 0)
-                            ->count(),
-                    ];
-                });
+                        'unread_count' => $chatGroup->where('seen', 0)->count(),
+                    ]);
+                }
+            }
+        } else {
+            // Regular user sees their conversations with admins
+            $chats = Chat::with(['from_user', 'to_user'])
+                ->where(function($q) use ($user) {
+                    $q->where('from_user_id', $user->id)
+                      ->orWhere('to_user_id', $user->id);
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+                
+            // Group by the other user (not current user)
+            $groupedChats = $chats->groupBy(function($chat) use ($user) {
+                return $chat->from_user_id == $user->id ? $chat->to_user_id : $chat->from_user_id;
+            });
+            
+            foreach ($groupedChats as $otherUserId => $chatGroup) {
+                $otherUser = User::find($otherUserId);
+                if ($otherUser && $otherUser->id != $user->id) {
+                    $lastMessage = $chatGroup->first();
+                    $conversations->push([
+                        'user' => $otherUser,
+                        'last_message' => $lastMessage ? $lastMessage->message : null,
+                        'last_message_time' => $lastMessage ? $lastMessage->created_at : null,
+                        'unread_count' => $chatGroup->where('to_user_id', $user->id)->where('seen', 0)->count(),
+                    ]);
+                }
+            }
         }
+        
+        // Sort by last message time and paginate
+        $conversations = $conversations->sortByDesc('last_message_time');
+        
+        // Manual pagination for collection
+        $perPage = 10;
+        $currentPage = request()->get('page', 1);
+        $total = $conversations->count();
+        $conversations = $conversations->slice(($currentPage - 1) * $perPage, $perPage)->values();
+        
+        // Create paginator
+        $conversations = new \Illuminate\Pagination\LengthAwarePaginator(
+            $conversations,
+            $total,
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'pageName' => 'page']
+        );
         
         return view('chat.index', compact('conversations'));
     }
@@ -128,7 +156,11 @@ class ChatController extends Controller
     public function show($userId)
     {
         $user = auth()->user();
-        $chatUser = User::findOrFail($userId);
+        $chatUser = User::find($userId);
+        
+        if (!$chatUser) {
+            abort(404, 'User not found');
+        }
         
         // Get messages between current user and chat user
         $messages = Chat::where(function ($q) use ($user, $userId) {

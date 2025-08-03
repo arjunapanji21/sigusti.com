@@ -83,19 +83,19 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10">
-                                            <div class="h-10 w-10 rounded-full {{ $user->is_admin ? 'bg-green-100' : 'bg-blue-100' }} flex items-center justify-center">
-                                                <span class="{{ $user->is_admin ? 'text-green-600' : 'text-blue-600' }} font-medium">{{ strtoupper(substr($user->name, 0, 2)) }}</span>
+                                            <div class="h-10 w-10 rounded-full {{ $user->isAdmin() ? 'bg-green-100' : 'bg-blue-100' }} flex items-center justify-center">
+                                                <span class="{{ $user->isAdmin() ? 'text-green-600' : 'text-blue-600' }} font-medium">{{ strtoupper(substr($user->name, 0, 2)) }}</span>
                                             </div>
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">{{ $user->name }}</div>
-                                            <div class="text-sm text-gray-500">{{ $user->email }}</div>
+                                            <div class="text-sm text-gray-500">{{ $user->telp ?? 'No phone' }}</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->is_admin ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
-                                        {{ $user->is_admin ? 'Admin' : 'Pengguna' }}
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->isAdmin() ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
+                                        {{ $user->isAdmin() ? 'Admin' : 'Pengguna' }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -133,19 +133,100 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- Pagination -->
+                <!-- Enhanced Pagination -->
                 @if(isset($users) && $users->hasPages())
-                <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
-                    <div class="flex items-center justify-between">
-                        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                            <div>
-                                <p class="text-sm text-gray-700">
-                                    Menampilkan {{ $users->firstItem() }} sampai {{ $users->lastItem() }} dari {{ $users->total() }} hasil
-                                </p>
-                            </div>
-                            <div>
-                                {{ $users->links() }}
-                            </div>
+                <div class="bg-white px-6 py-4 border-t border-gray-200">
+                    <div class="flex flex-col sm:flex-row items-center justify-between space-y-3 sm:space-y-0">
+                        <!-- Results Info -->
+                        <div class="flex items-center text-sm text-gray-700">
+                            <span class="font-medium">{{ $users->firstItem() }}</span>
+                            <span class="mx-1">-</span>
+                            <span class="font-medium">{{ $users->lastItem() }}</span>
+                            <span class="mx-1">dari</span>
+                            <span class="font-medium">{{ $users->total() }}</span>
+                            <span class="ml-1">hasil</span>
+                        </div>
+                        
+                        <!-- Pagination Links -->
+                        <div class="flex items-center space-x-1">
+                            {{-- Previous Page Link --}}
+                            @if ($users->onFirstPage())
+                                <span class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-l-md cursor-not-allowed">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="ml-1">Prev</span>
+                                </span>
+                            @else
+                                <a href="{{ $users->previousPageUrl() }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 hover:text-green-600 transition-colors duration-200">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="ml-1">Prev</span>
+                                </a>
+                            @endif
+
+                            {{-- Pagination Elements with Intervals --}}
+                            @php
+                                $currentPage = $users->currentPage();
+                                $lastPage = $users->lastPage();
+                                $start = max(1, $currentPage - 2);
+                                $end = min($lastPage, $currentPage + 2);
+                            @endphp
+
+                            {{-- First Page --}}
+                            @if($start > 1)
+                                <a href="{{ $users->url(1) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 hover:text-green-600 transition-colors duration-200">
+                                    1
+                                </a>
+                                @if($start > 2)
+                                    <span class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300">
+                                        ...
+                                    </span>
+                                @endif
+                            @endif
+
+                            {{-- Page Numbers Around Current Page --}}
+                            @for ($i = $start; $i <= $end; $i++)
+                                @if ($i == $currentPage)
+                                    <span class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-green-500 to-green-600 border border-green-500 shadow-sm">
+                                        {{ $i }}
+                                    </span>
+                                @else
+                                    <a href="{{ $users->url($i) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 hover:text-green-600 transition-colors duration-200">
+                                        {{ $i }}
+                                    </a>
+                                @endif
+                            @endfor
+
+                            {{-- Last Page --}}
+                            @if($end < $lastPage)
+                                @if($end < $lastPage - 1)
+                                    <span class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300">
+                                        ...
+                                    </span>
+                                @endif
+                                <a href="{{ $users->url($lastPage) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 hover:text-green-600 transition-colors duration-200">
+                                    {{ $lastPage }}
+                                </a>
+                            @endif
+
+                            {{-- Next Page Link --}}
+                            @if ($users->hasMorePages())
+                                <a href="{{ $users->nextPageUrl() }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 hover:text-green-600 transition-colors duration-200">
+                                    <span class="mr-1">Next</span>
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </a>
+                            @else
+                                <span class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-r-md cursor-not-allowed">
+                                    <span class="mr-1">Next</span>
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </div>
