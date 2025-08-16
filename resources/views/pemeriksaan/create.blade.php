@@ -1,4 +1,240 @@
 <x-app-layout>
+    <!-- Define the function before Alpine.js loads -->
+    <script>
+        window.pemeriksaanForm = function() {
+            return {
+                showKpspQuestions: false,
+                selectedBalitaInfo: null,
+                measurementData: {
+                    berat: '',
+                    tinggi: ''
+                },
+                localData: {},
+                soalList: [],
+                jawaban: [],
+                loading: false,
+                questionCounter: 1,
+                
+                init() {
+                    @if($balita->count() > 0)
+                    this.$nextTick(() => {
+                        this.initSelect2();
+                    });
+                    @endif
+                },
+                
+                canContinue() {
+                    return this.selectedBalitaInfo && 
+                           this.measurementData.berat && 
+                           this.measurementData.tinggi;
+                },
+                
+                saveDataAndContinue() {
+                    if (!this.canContinue()) return;
+                    
+                    this.localData = {
+                        balita_id: this.selectedBalitaInfo.id,
+                        nama_balita: this.selectedBalitaInfo.name,
+                        gender: this.selectedBalitaInfo.gender,
+                        usia_saat_pemeriksaan: this.selectedBalitaInfo.ageInMonths,
+                        ageText: this.selectedBalitaInfo.ageText,
+                        berat: this.measurementData.berat,
+                        tinggi: this.measurementData.tinggi
+                    };
+                    
+                    this.showKpspQuestions = true;
+                    this.loadSoal(this.selectedBalitaInfo.ageInMonths);
+                },
+                
+                editData() {
+                    this.showKpspQuestions = false;
+                    this.soalList = [];
+                    this.jawaban = [];
+                },
+                
+                allQuestionsAnswered() {
+                    if (this.soalList.length == 0) return false;
+                    let answeredCount = 0;
+                    let questionCount = 0;
+                    this.soalList.forEach((soal, index) => {
+                        if (!soal.text.includes('#')) {
+                            questionCount++;
+                            if (this.jawaban[index] && this.jawaban[index] != '') {
+                                answeredCount++;
+                            }
+                        }
+                    });
+                    return questionCount > 0 && answeredCount == questionCount;
+                },
+                
+                initSelect2() {
+                    const self = this;
+                    $('#balita_select').select2({
+                        placeholder: 'Ketik untuk mencari balita...',
+                        allowClear: true,
+                        minimumInputLength: 2,
+                        ajax: {
+                            url: '{{ route('balita.search') }}',
+                            dataType: 'json',
+                            delay: 300,
+                            data: function (params) {
+                                return {
+                                    q: params.term,
+                                    page: params.page || 1
+                                };
+                            },
+                            processResults: function (data, params) {
+                                if (!data.success) {
+                                    return { results: [], pagination: { more: false } };
+                                }
+                                return {
+                                    results: data.data.map(item => ({
+                                        id: item.id,
+                                        text: item.name + ' - ' + (item.gender == 'L' ? 'Laki-laki' : 'Perempuan') + ' (Ibu: ' + item.ibu + ')',
+                                        data: item
+                                    })),
+                                    pagination: {
+                                        more: data.pagination ? data.pagination.more : false
+                                    }
+                                };
+                            },
+                            cache: true
+                        },
+                        templateResult: function(repo) {
+                            if (repo.loading || !repo.data) return repo.text;
+                            const data = repo.data;
+                            const birthDate = new Date(data.tgl_lahir);
+                            const today = new Date();
+                            const ageInMonths = (today.getFullYear() - birthDate.getFullYear()) * 12 + 
+                                                  (today.getMonth() - birthDate.getMonth());
+                            const ageInYears = Math.floor(ageInMonths / 12);
+                            const remainingMonths = ageInMonths % 12;
+                            let ageText = '';
+                            if (ageInYears > 0) {
+                                ageText = ageInYears + ' tahun ' + remainingMonths + ' bulan';
+                            } else {
+                                ageText = remainingMonths + ' bulan';
+                            }
+                            const genderIcon = data.gender == 'L' ? '👦' : '👧';
+                            
+                            return $('<div class="select2-result-balita">' +
+                                '<div class="select2-result-balita__avatar">' + genderIcon + '</div>' +
+                                '<div class="select2-result-balita__meta">' +
+                                    '<div class="select2-result-balita__name">' + data.name + '</div>' +
+                                    '<div class="select2-result-balita__description">' +
+                                        'Ibu: ' + data.ibu + ' | Usia: ' + ageText +
+                                        @if(auth()->user()->isAdmin())
+                                            ' | Owner: ' + data.user.name +
+                                        @endif
+                                    '</div>' +
+                                '</div>' +
+                            '</div>');
+                        },
+                        templateSelection: function(repo) {
+                            if (!repo.data) return repo.text || 'Pilih balita...';
+                            
+                            const data = repo.data;
+                            const genderIcon = data.gender == 'L' ? '👦' : '👧';
+                            return genderIcon + ' ' + data.name;
+                        }
+                    }).on('select2:select', (e) => {
+                        const selectedData = e.params.data.data;
+                        self.selectBalita(selectedData);
+                    }).on('select2:clear', () => {
+                        self.selectedBalitaInfo = null;
+                    });
+                },
+                
+                selectBalita(data) {
+                    const birthDate = new Date(data.tgl_lahir);
+                    const today = new Date();
+                    const ageInMonths = (today.getFullYear() - birthDate.getFullYear()) * 12 + 
+                                          (today.getMonth() - birthDate.getMonth());
+                    const ageInYears = Math.floor(ageInMonths / 12);
+                    const remainingMonths = ageInMonths % 12;
+                    let ageText = '';
+                    if (ageInYears > 0) {
+                        ageText = ageInYears + ' tahun ' + remainingMonths + ' bulan';
+                    } else {
+                        ageText = remainingMonths + ' bulan';
+                    }
+                    this.selectedBalitaInfo = {
+                        ...data,
+                        ageInMonths: ageInMonths,
+                        ageText: ageText
+                    };
+                },
+                
+                async loadSoal(ageInMonths) {
+                    const usiaBayiMap = {
+                        @foreach($usiaBayi as $usia)
+                        {{ $usia->rentang }}: {{ $usia->id }},
+                        @endforeach
+                    };
+                    
+                    let usiaBayiId = usiaBayiMap[ageInMonths];
+                    if (!usiaBayiId) {
+                        const availableAges = Object.keys(usiaBayiMap).map(Number).sort((a, b) => a - b);
+                        for (let age of availableAges) {
+                            if (ageInMonths <= age) {
+                                usiaBayiId = usiaBayiMap[age];
+                                break;
+                            }
+                        }
+                        if (!usiaBayiId && ageInMonths > Math.max(...availableAges)) {
+                            usiaBayiId = usiaBayiMap[Math.max(...availableAges)];
+                        }
+                    }
+                    if (!usiaBayiId) {
+                        console.log('No KPSP questions available for age:', ageInMonths, 'months');
+                        alert('Tidak ada pertanyaan KPSP yang tersedia untuk usia ' + ageInMonths + ' bulan');
+                        return;
+                    }
+                    
+                    this.loading = true;
+                    this.soalList = [];
+                    this.jawaban = [];
+                    this.questionCounter = 1;
+                    
+                    try {
+                        const response = await fetch('{{ route("pemeriksaan.soal") }}?usia_bayi_id=' + usiaBayiId, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            }
+                        });
+                        const data = await response.json();
+                        if (data.success && data.data && data.data.length > 0) {
+                            this.soalList = data.data;
+                            this.jawaban = new Array(this.soalList.length).fill('');
+                            console.log('Loaded ' + this.soalList.length + ' KPSP questions for age ' + ageInMonths + ' months (usia_bayi_id: ' + usiaBayiId + ')');
+                        } else {
+                            console.log('No KPSP questions found for usia_bayi_id:', usiaBayiId);
+                            alert('Tidak ada pertanyaan KPSP yang ditemukan untuk usia tersebut');
+                        }
+                    } catch (error) {
+                        console.error('Error loading KPSP questions:', error);
+                        alert('Gagal memuat pertanyaan KPSP: ' + error.message);
+                        this.soalList = [];
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+                
+                getQuestionNumber(index) {
+                    if (index == 0) this.questionCounter = 1;
+                    const soal = this.soalList[index];
+                    if (soal && soal.text.includes('#')) {
+                        return '';
+                    }
+                    return this.questionCounter++;
+                }
+            }
+        }
+    </script>
+
     <div class="py-6" x-data="pemeriksaanForm()">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <!-- Header -->
@@ -351,239 +587,6 @@
     @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script>
-        function pemeriksaanForm() {
-            return {
-                showKpspQuestions: false,
-                selectedBalitaInfo: null,
-                measurementData: {
-                    berat: '',
-                    tinggi: ''
-                },
-                localData: {},
-                soalList: [],
-                jawaban: [],
-                loading: false,
-                questionCounter: 1,
-                
-                init() {
-                    @if($balita->count() > 0)
-                    this.initSelect2();
-                    @endif
-                },
-                
-                canContinue() {
-                    return this.selectedBalitaInfo && 
-                           this.measurementData.berat && 
-                           this.measurementData.tinggi;
-                },
-                
-                saveDataAndContinue() {
-                    if (!this.canContinue()) return;
-                    
-                    this.localData = {
-                        balita_id: this.selectedBalitaInfo.id,
-                        nama_balita: this.selectedBalitaInfo.name,
-                        gender: this.selectedBalitaInfo.gender,
-                        usia_saat_pemeriksaan: this.selectedBalitaInfo.ageInMonths,
-                        ageText: this.selectedBalitaInfo.ageText,
-                        berat: this.measurementData.berat,
-                        tinggi: this.measurementData.tinggi
-                    };
-                    
-                    this.showKpspQuestions = true;
-                    this.loadSoal(this.selectedBalitaInfo.ageInMonths);
-                },
-                
-                editData() {
-                    this.showKpspQuestions = false;
-                    this.soalList = [];
-                    this.jawaban = [];
-                },
-                
-                allQuestionsAnswered() {
-                    if (this.soalList.length == 0) return false;
-                    let answeredCount = 0;
-                    let questionCount = 0;
-                    this.soalList.forEach((soal, index) => {
-                        if (!soal.text.includes('#')) {
-                            questionCount++;
-                            if (this.jawaban[index] && this.jawaban[index] != '') {
-                                answeredCount++;
-                            }
-                        }
-                    });
-                    return questionCount > 0 && answeredCount == questionCount;
-                },
-                
-                initSelect2() {
-                    $('#balita_select').select2({
-                        placeholder: 'Ketik untuk mencari balita...',
-                        allowClear: true,
-                        minimumInputLength: 2,
-                        ajax: {
-                            url: '{{ route('balita.search') }}',
-                            dataType: 'json',
-                            delay: 300,
-                            data: function (params) {
-                                return {
-                                    q: params.term,
-                                    page: params.page || 1
-                                };
-                            },
-                            processResults: function (data, params) {
-                                if (!data.success) {
-                                    return { results: [], pagination: { more: false } };
-                                }
-                                return {
-                                    results: data.data.map(item => ({
-                                        id: item.id,
-                                        text: `${item.name} - ${item.gender == 'L' ? 'Laki-laki' : 'Perempuan'} (Ibu: ${item.ibu})`,
-                                        data: item
-                                    })),
-                                    pagination: {
-                                        more: data.pagination ? data.pagination.more : false
-                                    }
-                                };
-                            },
-                            cache: true
-                        },
-                        templateResult: function(repo) {
-                            if (repo.loading || !repo.data) return repo.text;
-                            const data = repo.data;
-                            const birthDate = new Date(data.tgl_lahir);
-                            const today = new Date();
-                            const ageInMonths = (today.getFullYear() - birthDate.getFullYear()) * 12 + 
-                                                  (today.getMonth() - birthDate.getMonth());
-                            const ageInYears = Math.floor(ageInMonths / 12);
-                            const remainingMonths = ageInMonths % 12;
-                            let ageText = '';
-                            if (ageInYears > 0) {
-                                ageText = `${ageInYears} tahun ${remainingMonths} bulan`;
-                            } else {
-                                ageText = `${remainingMonths} bulan`;
-                            }
-                            const genderIcon = data.gender == 'L' ? '👦' : '👧';
-                            
-                            return $(`
-                                <div class="select2-result-balita">
-                                    <div class="select2-result-balita__avatar">${genderIcon}</div>
-                                    <div class="select2-result-balita__meta">
-                                        <div class="select2-result-balita__name">${data.name}</div>
-                                        <div class="select2-result-balita__description">
-                                            Ibu: ${data.ibu} | Usia: ${ageText}
-                                            @if(auth()->user()->isAdmin())
-                                                | Owner: ${data.user.name}
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            `);
-                        },
-                        templateSelection: function(repo) {
-                            if (!repo.data) return repo.text || 'Pilih balita...';
-                            
-                            const data = repo.data;
-                            const genderIcon = data.gender == 'L' ? '👦' : '👧';
-                            return `${genderIcon} ${data.name}`;
-                        }
-                    }).on('select2:select', (e) => {
-                        const selectedData = e.params.data.data;
-                        this.selectBalita(selectedData);
-                    }).on('select2:clear', () => {
-                        this.selectedBalitaInfo = null;
-                    });
-                },
-                
-                selectBalita(data) {
-                    const birthDate = new Date(data.tgl_lahir);
-                    const today = new Date();
-                    const ageInMonths = (today.getFullYear() - birthDate.getFullYear()) * 12 + 
-                                          (today.getMonth() - birthDate.getMonth());
-                    const ageInYears = Math.floor(ageInMonths / 12);
-                    const remainingMonths = ageInMonths % 12;
-                    let ageText = '';
-                    if (ageInYears > 0) {
-                        ageText = `${ageInYears} tahun ${remainingMonths} bulan`;
-                    } else {
-                        ageText = `${remainingMonths} bulan`;
-                    }
-                    this.selectedBalitaInfo = {
-                        ...data,
-                        ageInMonths: ageInMonths,
-                        ageText: ageText
-                    };
-                },
-                
-                async loadSoal(ageInMonths) {
-                    const usiaBayiMap = {
-                        @foreach($usiaBayi as $usia)
-                            {{ $usia->rentang }}: {{ $usia->id }},
-                        @endforeach
-                    };
-                    let usiaBayiId = usiaBayiMap[ageInMonths];
-                    if (!usiaBayiId) {
-                        const availableAges = Object.keys(usiaBayiMap).map(Number).sort((a, b) => a - b);
-                        for (let age of availableAges) {
-                            if (ageInMonths <= age) {
-                                usiaBayiId = usiaBayiMap[age];
-                                break;
-                            }
-                        }
-                        if (!usiaBayiId && ageInMonths > Math.max(...availableAges)) {
-                            usiaBayiId = usiaBayiMap[Math.max(...availableAges)];
-                        }
-                    }
-                    if (!usiaBayiId) {
-                        console.log('No KPSP questions available for age:', ageInMonths, 'months');
-                        alert('Tidak ada pertanyaan KPSP yang tersedia untuk usia ' + ageInMonths + ' bulan');
-                        return;
-                    }
-                    this.loading = true;
-                    this.soalList = [];
-                    this.jawaban = [];
-                    this.questionCounter = 1;
-                    try {
-                        const response = await fetch(`{{ route('pemeriksaan.soal') }}?usia_bayi_id=${usiaBayiId}`, {
-                            method: 'GET',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                            }
-                        });
-                        const data = await response.json();
-                        if (data.success && data.data && data.data.length > 0) {
-                            this.soalList = data.data;
-                            this.jawaban = new Array(this.soalList.length).fill('');
-                            console.log(`Loaded ${this.soalList.length} KPSP questions for age ${ageInMonths} months (usia_bayi_id: ${usiaBayiId})`);
-                        } else {
-                            console.log('No KPSP questions found for usia_bayi_id:', usiaBayiId);
-                            alert('Tidak ada pertanyaan KPSP yang ditemukan untuk usia tersebut');
-                        }
-                    } catch (error) {
-                        console.error('Error loading KPSP questions:', error);
-                        alert('Gagal memuat pertanyaan KPSP: ' + error.message);
-                        
-                        // Fallback: show manual message
-                        this.soalList = [];
-                    } finally {
-                        this.loading = false;
-                    }
-                },
-                
-                getQuestionNumber(index) {
-                    if (index == 0) this.questionCounter = 1;
-                    const soal = this.soalList[index];
-                    if (soal && soal.text.includes('#')) {
-                        return '';
-                    }
-                    return this.questionCounter++;
-                }
-            }
-        }
-    </script>
-
     <style>
         .select2-result-balita {
             display: flex;
