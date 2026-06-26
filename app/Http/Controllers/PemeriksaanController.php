@@ -269,7 +269,7 @@ class PemeriksaanController extends Controller
             'tinggi' => 'required|numeric|min:0|max:200',
             'nama_balita' => 'required|string',
             'gender' => 'required|in:L,P',
-            'usia_saat_pemeriksaan' => 'required|integer|min:3|max:60',
+            'usia_saat_pemeriksaan' => 'required|integer|min:0|max:60',
             'jawaban_array' => 'nullable|string'
         ]);
 
@@ -312,11 +312,13 @@ class PemeriksaanController extends Controller
         $jumlah_ya = 0;
         $jawaban_array = json_decode($data['jawaban_array'] ?? '[]', true);
 
-        if (is_array($jawaban_array)) {
-            foreach ($jawaban_array as $jawaban) {
-                if ($jawaban == "Ya") {
-                    $jumlah_ya += 1;
-                }
+        if (!is_array($jawaban_array)) {
+            $jawaban_array = [];
+        }
+
+        foreach ($jawaban_array as $jawaban) {
+            if ($jawaban == "Ya") {
+                $jumlah_ya += 1;
             }
         }
 

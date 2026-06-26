@@ -49,6 +49,34 @@
                 questionCounter: 1,
                 
                 init() {
+                    @if($errors->any() && old('balita_id'))
+                    this.localData = {
+                        balita_id: @json(old('balita_id')),
+                        nama_balita: @json(old('nama_balita')),
+                        gender: @json(old('gender')),
+                        usia_saat_pemeriksaan: @json(old('usia_saat_pemeriksaan')),
+                        berat: @json(old('berat')),
+                        tinggi: @json(old('tinggi')),
+                    };
+                    this.measurementData.berat = @json(old('berat', ''));
+                    this.measurementData.tinggi = @json(old('tinggi', ''));
+                    this.showKpspQuestions = true;
+                    let savedJawaban = [];
+                    try {
+                        const oldJawaban = @json(old('jawaban_array', '[]'));
+                        savedJawaban = typeof oldJawaban === 'string' ? JSON.parse(oldJawaban) : oldJawaban;
+                    } catch (e) {
+                        savedJawaban = [];
+                    }
+                    if (this.localData.usia_saat_pemeriksaan) {
+                        this.loadSoal(this.localData.usia_saat_pemeriksaan).then(() => {
+                            if (Array.isArray(savedJawaban) && savedJawaban.length) {
+                                this.jawaban = savedJawaban;
+                            }
+                        });
+                    }
+                    @endif
+
                     @if($balita->count() > 0)
                     this.$nextTick(() => {
                         this.initSelect2();
@@ -245,6 +273,25 @@
                         return '';
                     }
                     return this.questionCounter++;
+                },
+
+                syncFormFields(event) {
+                    const form = event.target;
+                    const fields = {
+                        balita_id: this.localData.balita_id ?? '',
+                        nama_balita: this.localData.nama_balita ?? '',
+                        gender: this.localData.gender ?? '',
+                        usia_saat_pemeriksaan: this.localData.usia_saat_pemeriksaan ?? '',
+                        berat: this.localData.berat ?? '',
+                        tinggi: this.localData.tinggi ?? '',
+                        jawaban_array: JSON.stringify(this.jawaban),
+                    };
+                    for (const [name, value] of Object.entries(fields)) {
+                        const input = form.elements[name];
+                        if (input) {
+                            input.value = value;
+                        }
+                    }
                 }
             }
         }
@@ -273,6 +320,23 @@
                     </div>
                 </div>
             </div>
+
+            @if ($errors->any())
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                    <h4 class="text-sm font-medium text-red-800 mb-2">Gagal menyimpan pemeriksaan:</h4>
+                    <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                    <p class="text-sm text-red-700">{{ session('error') }}</p>
+                </div>
+            @endif
 
             <!-- Progress Indicator -->
             <div class="bg-white shadow sm:rounded-lg mb-6">
@@ -456,7 +520,7 @@
                 </div>
 
                 <!-- KPSP Questions Form -->
-                <form action="{{ route('pemeriksaan.store') }}" method="POST" class="space-y-6">
+                <form action="{{ route('pemeriksaan.store') }}" method="POST" class="space-y-6" @submit="syncFormFields($event)">
                     @csrf
                     
                     <!-- Hidden Fields with Local Data -->
