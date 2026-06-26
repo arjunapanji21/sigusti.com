@@ -2,6 +2,39 @@
     <!-- Define the function before Alpine.js loads -->
     <script>
         window.pemeriksaanForm = function() {
+            const usiaBayiList = @json($usiaBayi);
+
+            function findUsiaBayiId(ageInMonths) {
+                const rangeItems = usiaBayiList.filter(item => String(item.rentang).includes('-'));
+                if (rangeItems.length > 0) {
+                    const sorted = [...rangeItems].sort((a, b) =>
+                        Number(String(a.rentang).split('-')[0]) - Number(String(b.rentang).split('-')[0])
+                    );
+                    for (const item of sorted) {
+                        const [min, max] = String(item.rentang).split('-').map(Number);
+                        if (ageInMonths >= min && ageInMonths <= max) {
+                            return item.id;
+                        }
+                    }
+                    return null;
+                }
+
+                const thresholds = usiaBayiList
+                    .map(item => ({ id: item.id, age: Number(item.rentang) }))
+                    .filter(item => !isNaN(item.age))
+                    .sort((a, b) => a.age - b.age);
+
+                for (const item of thresholds) {
+                    if (ageInMonths <= item.age) {
+                        return item.id;
+                    }
+                }
+                if (thresholds.length) {
+                    return thresholds[thresholds.length - 1].id;
+                }
+                return null;
+            }
+
             return {
                 showKpspQuestions: false,
                 selectedBalitaInfo: null,
@@ -166,25 +199,7 @@
                 },
                 
                 async loadSoal(ageInMonths) {
-                    const usiaBayiMap = {
-                        @foreach($usiaBayi as $usia)
-                        {{ $usia->rentang }}: {{ $usia->id }},
-                        @endforeach
-                    };
-                    
-                    let usiaBayiId = usiaBayiMap[ageInMonths];
-                    if (!usiaBayiId) {
-                        const availableAges = Object.keys(usiaBayiMap).map(Number).sort((a, b) => a - b);
-                        for (let age of availableAges) {
-                            if (ageInMonths <= age) {
-                                usiaBayiId = usiaBayiMap[age];
-                                break;
-                            }
-                        }
-                        if (!usiaBayiId && ageInMonths > Math.max(...availableAges)) {
-                            usiaBayiId = usiaBayiMap[Math.max(...availableAges)];
-                        }
-                    }
+                    const usiaBayiId = findUsiaBayiId(ageInMonths);
                     if (!usiaBayiId) {
                         console.log('No KPSP questions available for age:', ageInMonths, 'months');
                         alert('Tidak ada pertanyaan KPSP yang tersedia untuk usia ' + ageInMonths + ' bulan');
